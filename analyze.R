@@ -42,7 +42,8 @@ export_names <- names(pkg_env[[".__NAMESPACE__."]][["exports"]])
 # TODO: figure out how to handle S3Methods
 # TODO: figure out and document how to handle Python magic methods
 out <- list(
-    "functions" = list()
+    "language" = 'r'
+    , "functions" = list()
     , "classes" = list()
 )
 

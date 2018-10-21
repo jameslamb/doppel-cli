@@ -4,16 +4,29 @@
 
 # R example
 
-Test a package
+Test an R package
 
 ```{shell}
 ./analyze.R --pkg rsixygen --output_dir $(pwd)
+cat rsixygen.json | jq .
 ```
 
-Check out the output
+Test a python package
 
 ```{shell}
-cat rsixygen.json | jq .
+./analyze.py --pkg networkx --output_dir $(pwd)
+cat networkx.json | jq .
+```
+
+# Usage in CI
+
+The example below describes how to use this project in your CI environment (e.g. Travis, Jenkins, Appveyor).
+
+```{shell}
+doppel \
+    --verbose \
+    -r "optparse" \
+    -py "optparse"
 ```
 
 # Ideas
