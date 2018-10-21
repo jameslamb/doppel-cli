@@ -19,12 +19,11 @@ parser.add_argument(
    , help="Path to write files to"
 )
 
-# get args
+# Grab args (store in constants for easier debugging)
 args = parser.parse_args()
-
-# Store in constants for easier debugging
 PKG_NAME = args.pkg
 OUT_DIR = args.output_dir
+LANGUAGE = 'python'
 
 # Import that module
 top_level_env = __import__(PKG_NAME)
@@ -72,7 +71,7 @@ while len(modules_to_parse) > 0:
             _log_info("Could not figure out what {} is".format(obj_name))
 
 # write it out
-out_file = os.path.join(OUT_DIR, "{}.json".format(PKG_NAME))
+out_file = os.path.join(OUT_DIR, "{}_{}.json".format(LANGUAGE, PKG_NAME))
 _log_info("Writing output to {}".format(PKG_NAME))
 with open(out_file, 'w') as f:
     f.write(json.dumps(out))

@@ -18,18 +18,17 @@ parser$add_argument(
    , help = "Path to write files to"
 )
 
-# Grab args
+# Grab args (store in constants for easier debugging)
 args <- parser$parse_args()
+PKG_NAME <- args[["pkg"]]
+OUT_DIR <- args[["output_dir"]]
+LANGUAGE <- 'r'
 
 # lil helper
 .log_info <- function(msg){
     futile.logger::flog.info(msg)
     return(invisible(NULL))
 }
-
-# Store in constants for easier debugging
-PKG_NAME <- args[["pkg"]]
-OUT_DIR <- args[["output_dir"]]
 
 # grab just the exported objects
 .log_info(sprintf("Loading up namespace for package %s", PKG_NAME))
@@ -64,7 +63,7 @@ for (obj_name in export_names){
 }
 
 # write it out
-out_file <- file.path(OUT_DIR, sprintf("%s.json", PKG_NAME))
+out_file <- file.path(OUT_DIR, sprintf("%s_%s.json", LANGUAGE, PKG_NAME))
 .log_info(sprintf("Writing output to %s", out_file))
-write(x = jsonlite::toJSON(out), file = out_file, append = FALSE)
+write(x = jsonlite::toJSON(out, auto_unbox = TRUE), file = out_file, append = FALSE)
 .log_info("Done analyzing this package.")

@@ -23,10 +23,16 @@ cat networkx.json | jq .
 The example below describes how to use this project in your CI environment (e.g. Travis, Jenkins, Appveyor).
 
 ```{shell}
+mkdir -p $(pwd)/test_data
+./analyze.R --pkg argparse --output_dir $(pwd)/test_data
+./analyze.py --pkg argparse --output_dir $(pwd)/test_data
+```
+
+
+```{shell}
 doppel \
     --verbose \
-    -r "optparse" \
-    -py "optparse"
+    -pkgs "optparse[r],optparse[python]"
 ```
 
 # Ideas
