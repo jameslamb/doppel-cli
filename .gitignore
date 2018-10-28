@@ -1,0 +1,6 @@
+
+# Python caches and build artifacts
+**/__pycache__/
+**/*.egg-info/
+cli/build/
+cli/dist/

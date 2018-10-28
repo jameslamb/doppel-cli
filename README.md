@@ -7,6 +7,7 @@
 Test an R package
 
 ```{shell}
+PKG=
 ./analyze.R --pkg rsixygen --output_dir $(pwd)
 cat rsixygen.json | jq .
 ```
@@ -14,8 +15,9 @@ cat rsixygen.json | jq .
 Test a python package
 
 ```{shell}
-./analyze.py --pkg networkx --output_dir $(pwd)
-cat networkx.json | jq .
+PKG=feather
+./analyze.py --pkg ${PKG} --output_dir $(pwd)
+cat python_${PKG}.json | jq .
 ```
 
 # Usage in CI
@@ -34,6 +36,23 @@ doppel \
     --verbose \
     -pkgs "optparse[r],optparse[python]"
 ```
+
+# Design Principles
+
+A `test_failure` always results in a non-zero exit code.
+
+# What is the value of keeping the same public interface?
+
+This project tests API consistency in libraries across languages.
+
+Why is this valuable?
+
+* For developers:
+    * less communication overhead implementing changes across languages
+    * forcing function to limit growth in complexity of the public API
+* For users:
+    * no need to re-learn the API when switching languages
+    * form better expectations when switching languages
 
 # Ideas
 
@@ -61,3 +80,8 @@ doppel \
     * 'specific_member' exists in one but not other
     * different number of args for a particular function or method
     * 'specific_arg' is in the signature of 'specific_function_or_method' in one but not the other
+
+# References
+
+1. [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
+2. [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
