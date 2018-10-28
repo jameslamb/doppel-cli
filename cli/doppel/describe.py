@@ -12,9 +12,14 @@ import os
     '--pkg_name', '-p',
     help="Name of a package"
 )
-def main(language, pkg_name):
+@click.option(
+    '--data-dir', '-d',
+    help="Path to write output file to."
+)
+def main(language, pkg_name, data_dir):
     """
-    Generate a description of the public API for a software package.
+    Generate a description of the public API for a software package and
+    write out a JSON representation of it.
     """
     language = language.lower()
     print("Testing package {} [{}]".format(pkg_name, language))
@@ -31,10 +36,9 @@ def main(language, pkg_name):
     except KeyError:
         raise KeyError("doppel does not know how to test {} pckages".format(language))
 
-    output_dir = '/Users/jlamb/repos/doppel/more_tests'
     print(analysis_script)
 
-    cmd = '{} --pkg {} --output_dir {}'.format(analysis_script, pkg_name, output_dir)
+    cmd = '{} --pkg {} --output_dir {}'.format(analysis_script, pkg_name, data_dir)
 
     print("Describing package with command:\n {}".format(cmd))
     # Invoke the analysis script

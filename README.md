@@ -2,48 +2,6 @@
 
 `doppel` is an integration testing framework for testing API similarity across languages.
 
-# R example
-
-Analyze
-
-```{shell}
-doppel-describe -p argparse --language R
-```
-
-Test a python package
-
-```{shell}
-doppel-describe -p argparse --language python
-```
-
-Compare them
-
-```{shell}
-doppel-test --files more_tests/python_argparse.json,more_tests/r_argparse.json
-```
-
-# Usage in CI
-
-The example below describes how to use this project in your CI environment (e.g. Travis, Jenkins, Appveyor).
-
-```{shell}
-
-```
-
-
-```{shell}
-doppel-test --files test_data/python_argparse.json
-```
-
-```{shell}
-doppel-describe -l R -p argparse
-doppel-describe -l python -p argparse
-```
-
-# Design Principles
-
-A `test_failure` always results in a non-zero exit code.
-
 # What is the value of keeping the same public interface?
 
 This project tests API consistency in libraries across languages.
@@ -56,6 +14,71 @@ Why is this valuable?
 * For users:
     * no need to re-learn the API when switching languages
     * form better expectations when switching languages
+
+## Example: Testing continuity between R and Python implementations
+
+In this example, I'll show how to use `doppel` to test continuity between R and Python implementations of the same API. For this example, I used the `argparse` library.
+
+NOTE: This example assumes that you already have `argparse` installed locally. If you don't run one or both of these:
+
+```{shell}
+Rscript -e "install.packages('argparse')"
+pip install argparse
+```
+
+First, you need to generate special files that `doppel` uses to store information about a project's API. These are created using the `doppel-describe` tool.
+
+
+```{shell}
+# The R package
+doppel-describe -p argparse --language R --data-dir $(pwd)/test_data
+
+# The python package
+doppel-describe -p argparse --language python --data-dir $(pwd)/test_data
+```
+
+Cool! Let's do some testing! `doppel-test` can be used to compare multiple packages.
+
+```{shell}
+doppel-test \
+    --files test_data/python_argparse.json,test_data/r_argparse.json
+```
+
+This will yield something like this:
+
+```{text}
+Function Count
+==============
++---------------------+----------------+
+|   argparse [python] |   argparse [r] |
++=====================+================+
+|                   1 |              1 |
++---------------------+----------------+
+
+
+Class Count
+===========
++---------------------+----------------+
+|   argparse [python] |   argparse [r] |
++=====================+================+
+|                   9 |              0 |
++---------------------+----------------+
+
+
+Test Failures (1)
+===================
+1. Packages have different counts of exported classes! argparse [python] (9), argparse [r] (0)
+```
+
+As you can see above, the `argparse` Python package has 9 exported classes while the R package has none.
+
+From `doppel`'s perspective, this is considered a test failure. If you run `echo $?` in the terminal, should should see `1` printed. Returning a non-zero exit code like this tells CI tools like [Travis](https://travis-ci.org/) that the test was a failure, making `doppel` useful for CI (more on this in a future example).
+
+You may be thinking "well wait, surely you'd want to test for way more stuff than just counts of classes and functions, right?". Absolutely! See [doppel's issues]() for a backlog of features I'd like to add. PRs are welcomed!!!
+
+# Design Principles
+
+A `test_failure` always results in a non-zero exit code.
 
 # Ideas
 

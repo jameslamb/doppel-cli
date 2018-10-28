@@ -28,7 +28,7 @@ class OutputTable:
 
     def write(self):
         stdout.write(tabulate(self.rows, self.headers, tablefmt="grid"))
-        stdout.write('\n\n')
+        stdout.write('\n')
 
 
 class SimpleReporter:
@@ -69,7 +69,7 @@ class SimpleReporter:
         i = 1
         if num_errors > 0:
 
-            stdout.write("\n\nTest Failures ({})\n".format(num_errors))
+            stdout.write("\nTest Failures ({})\n".format(num_errors))
             stdout.write("===================\n")
             for err in self.errors:
                 stdout.write("{}. {}\n".format(i, str(err)))
@@ -82,7 +82,7 @@ class SimpleReporter:
         Check consistency between exported functions
         """
 
-        stdout.write("\n\nFunction Count\n")
+        stdout.write("\nFunction Count\n")
         stdout.write("==============\n")
 
         # Compare number of functions
@@ -100,7 +100,7 @@ class SimpleReporter:
         if len(set(counts)) > 1:
             error_txt = "Packages have different counts of public functions! {}"
             error_txt = error_txt.format(
-                ", ".join(["{} ({}])".format(x, y) for x, y in zip(names, counts)])
+                ", ".join(["{} ({})".format(x, y) for x, y in zip(names, counts)])
             )
             self.errors.append(DoppelTestError(error_txt))
 
@@ -115,7 +115,7 @@ class SimpleReporter:
         Check consistency between exported classes
         """
 
-        stdout.write("\n\nClass Count\n")
+        stdout.write("\nClass Count\n")
         stdout.write("===========\n")
 
         # Compare number of class
@@ -133,7 +133,7 @@ class SimpleReporter:
         if len(set(counts)) > 1:
             error_txt = "Packages have different counts of exported classes! {}"
             error_txt = error_txt.format(
-                ["{} [{}]".format(x, y) for x, y in zip(names, counts)]
+                ", ".join(["{} ({})".format(x, y) for x, y in zip(names, counts)])
             )
             self.errors.append(DoppelTestError(error_txt))
 
