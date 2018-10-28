@@ -63,6 +63,15 @@ for (obj_name in export_names){
     }
 }
 
+# jsonlite treates mpty, unnamed lists as arrays, we want to write empty dicts
+for (obj_type in c("functions", "classes")){
+    if (identical(out[[obj_type]], list())){
+        lst <- list()
+        names(lst) <- character(0)
+        out[[obj_type]] <- lst
+    }
+}
+
 # write it out
 out_file <- file.path(OUT_DIR, sprintf("%s_%s.json", LANGUAGE, PKG_NAME))
 .log_info(sprintf("Writing output to %s", out_file))

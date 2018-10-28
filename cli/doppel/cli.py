@@ -49,7 +49,8 @@ class PackageAPI():
         return(len(self.pkg_dict['functions'].keys()))
 
     def num_classes(self):
-        return(len(self.pkg_dict['functions'].keys()))
+        return(len(self.pkg_dict['classes'].keys()))
+
 
 @click.command()
 @click.option(
