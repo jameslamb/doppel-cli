@@ -32,9 +32,7 @@ mkdir -p $(pwd)/test_data
 
 
 ```{shell}
-doppel \
-    --verbose \
-    -pkgs "optparse[r],optparse[python]"
+doppel-test --files test_data/python_argparse.json
 ```
 
 # Design Principles

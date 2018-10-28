@@ -1,4 +1,4 @@
-from setuptools import setup
+from distutils.core import setup
 
 setup(
     name='doppel',
@@ -7,9 +7,13 @@ setup(
         'click'
     ],
     packages=['doppel'],
+    package_data={
+        'doppel': ['bin/analyze.R', 'bin/analyze.py']
+    },
     entry_points={
         'console_scripts': [
-            'doppel = doppel.cli:main',
+            'doppel-describe = doppel.describe:main',
+            'doppel-test = doppel.cli:main'
         ]
     }
 )

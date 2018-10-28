@@ -3,6 +3,10 @@ import click
 import json
 
 
+def _log_info(msg):
+    print(msg)
+
+
 class PackageAPI():
     """
     This class is used to hold the interface of a given package
@@ -11,21 +15,33 @@ class PackageAPI():
     to happen across programming languages.
     """
 
-    def __init__(self):
+    def __init__(self, pkg_dict):
+
+        self._validate_pkg(pkg_dict)
         pass
 
     @classmethod
-    def from_json(self, filename):
+    def from_json(cls, filename):
+        """
+        Instantiate a Package object from a file.
+        """
+        _log_info("Creating package from {}".format(filename))
 
         # read in output of "analyze.*" script
         with open(filename, 'r') as f:
             pkg_dict = json.loads(f.read())
 
         # validate
-        return PackageAPI(pkg_dict)
+        return cls(pkg_dict)
 
     def _validate_pkg(self, pkg_dict):
-        pass
+
+        assert isinstance(pkg_dict, dict)
+        assert pkg_dict['language']
+        assert pkg_dict['functions']
+        assert pkg_dict['classes']
+
+        return
 
 
 @click.command()
@@ -35,15 +51,17 @@ class PackageAPI():
 )
 def main(files):
     """
-    doppel is a a clntinuous integration tool for testing
+    doppel is a a continuous integration tool for testing
     the continuity of APIs for libraries implemented in
     different languages.
     """
     print("Loading comparison files")
 
     f_list = files.split(',')
-    for (f in f_list):
-        print(f)
+
+    # Check if these are legit package objects
+    pkgs = [PackageAPI.from_json(f) for f in f_list]
+
 
 if __name__ == "__main__":
     main()
