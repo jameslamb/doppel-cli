@@ -4,20 +4,22 @@
 
 # R example
 
-Test an R package
+Analyze
 
 ```{shell}
-PKG=
-./analyze.R --pkg rsixygen --output_dir $(pwd)
-cat rsixygen.json | jq .
+doppel-describe -p argparse --language R
 ```
 
 Test a python package
 
 ```{shell}
-PKG=feather
-./analyze.py --pkg ${PKG} --output_dir $(pwd)
-cat python_${PKG}.json | jq .
+doppel-describe -p argparse --language python
+```
+
+Compare them
+
+```{shell}
+doppel-test --files more_tests/python_argparse.json,more_tests/r_argparse.json
 ```
 
 # Usage in CI
@@ -25,14 +27,17 @@ cat python_${PKG}.json | jq .
 The example below describes how to use this project in your CI environment (e.g. Travis, Jenkins, Appveyor).
 
 ```{shell}
-mkdir -p $(pwd)/test_data
-./analyze.R --pkg argparse --output_dir $(pwd)/test_data
-./analyze.py --pkg argparse --output_dir $(pwd)/test_data
+
 ```
 
 
 ```{shell}
 doppel-test --files test_data/python_argparse.json
+```
+
+```{shell}
+doppel-describe -l R -p argparse
+doppel-describe -l python -p argparse
 ```
 
 # Design Principles

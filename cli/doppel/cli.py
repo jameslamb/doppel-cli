@@ -1,6 +1,7 @@
 
 import click
 import json
+from doppel.reporters import SimpleReporter
 
 
 def _log_info(msg):
@@ -18,6 +19,7 @@ class PackageAPI():
     def __init__(self, pkg_dict):
 
         self._validate_pkg(pkg_dict)
+        self.pkg_dict = pkg_dict
         pass
 
     @classmethod
@@ -37,12 +39,17 @@ class PackageAPI():
     def _validate_pkg(self, pkg_dict):
 
         assert isinstance(pkg_dict, dict)
-        assert pkg_dict['language']
-        assert pkg_dict['functions']
-        assert pkg_dict['classes']
+        assert pkg_dict['language'] is not None
+        assert pkg_dict['functions'] is not None
+        assert pkg_dict['classes'] is not None
 
         return
 
+    def num_functions(self):
+        return(len(self.pkg_dict['functions'].keys()))
+
+    def num_classes(self):
+        return(len(self.pkg_dict['functions'].keys()))
 
 @click.command()
 @click.option(
@@ -61,6 +68,10 @@ def main(files):
 
     # Check if these are legit package objects
     pkgs = [PackageAPI.from_json(f) for f in f_list]
+
+    # Report
+    reporter = SimpleReporter(pkgs)
+    reporter.compare()
 
 
 if __name__ == "__main__":

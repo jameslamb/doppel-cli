@@ -4,7 +4,8 @@ setup(
     name='doppel',
     version='0.0.1',
     install_requires=[
-        'click'
+        'click',
+        'tabulate'
     ],
     packages=['doppel'],
     package_data={

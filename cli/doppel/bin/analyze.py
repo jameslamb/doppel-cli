@@ -30,6 +30,7 @@ top_level_env = __import__(PKG_NAME)
 
 # Set up the thing
 out = {
+    "name": "{} [python]".format(PKG_NAME),
     "language": "python",
     "functions": {},
     "classes": {}
