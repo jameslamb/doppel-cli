@@ -164,6 +164,17 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
+    def _check_function_arg_names(self):
+        """
+        For each function that is in both packages, check
+        whether the arguments to the functions differ.
+
+        This method does not consider argument order.
+        """
+        stdout.write("\nFunction Argument Names\n")
+        stdout.write("=======================\n")
+        stdout.write("COMING SOON\n")
+
     def _check_class_count(self):
         """
         Check consistency between exported classes

@@ -74,6 +74,16 @@ Function Count
 +---------------------+----------------+
 
 
+Function Names
+==============
++-----------------+---------------------+----------------+
+| function_name   | argparse [python]   | argparse [r]   |
++=================+=====================+================+
+| ngettext        | yes                 | no             |
++-----------------+---------------------+----------------+
+| ArgumentParser  | no                  | yes            |
++-----------------+---------------------+----------------+
+
 Class Count
 ===========
 +---------------------+----------------+
@@ -83,9 +93,56 @@ Class Count
 +---------------------+----------------+
 
 
-Test Failures (1)
+Class Names
+===========
++-------------------------------+---------------------+----------------+
+| class_name                    | argparse [python]   | argparse [r]   |
++===============================+=====================+================+
+| HelpFormatter                 | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| Namespace                     | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| RawDescriptionHelpFormatter   | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| ArgumentParser                | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| MetavarTypeHelpFormatter      | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| Action                        | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| ArgumentDefaultsHelpFormatter | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| FileType                      | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| RawTextHelpFormatter          | yes                 | no             |
++-------------------------------+---------------------+----------------+
+
+
+Test Failures (12)
 ===================
-1. Packages have different counts of exported classes! argparse [python] (9), argparse [r] (0)
+1. Function 'ngettext()' is not exported by all packages
+
+2. Function 'ArgumentParser()' is not exported by all packages
+
+3. Packages have different counts of exported classes! argparse [python] (9), argparse [r] (0)
+
+4. Class 'HelpFormatter()' is not exported by all packages
+
+5. Class 'Namespace()' is not exported by all packages
+
+6. Class 'RawDescriptionHelpFormatter()' is not exported by all packages
+
+7. Class 'ArgumentParser()' is not exported by all packages
+
+8. Class 'MetavarTypeHelpFormatter()' is not exported by all packages
+
+9. Class 'Action()' is not exported by all packages
+
+10. Class 'ArgumentDefaultsHelpFormatter()' is not exported by all packages
+
+11. Class 'FileType()' is not exported by all packages
+
+12. Class 'RawTextHelpFormatter()' is not exported by all packages
 ```
 
 As you can see above, the `argparse` Python package has 9 exported classes while the R package has none.
