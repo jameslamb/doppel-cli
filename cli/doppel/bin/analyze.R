@@ -17,11 +17,17 @@ parser$add_argument(
    , default = getwd()
    , help = "Path to write files to"
 )
+parser$add_argument(
+   "--kwargs-string"
+   , type = "character"
+   , help = "String value to replace **kwarg"
+)
 
 # Grab args (store in constants for easier debugging)
 args <- parser$parse_args()
 PKG_NAME <- args[["pkg"]]
 OUT_DIR <- args[["output_dir"]]
+KWARGS_STRING <- args[["kwargs_string"]]
 LANGUAGE <- 'r'
 
 # lil helper
@@ -52,7 +58,11 @@ for (obj_name in export_names){
 
     if (is.function(obj)){
         out[["functions"]][[obj_name]] <- list(
-            "args" = names(formals(obj))
+            "args" = gsub(
+                "\\.\\.\\."
+                , KWARGS_STRING
+                , names(formals(obj))
+            )
         )
         next
     }

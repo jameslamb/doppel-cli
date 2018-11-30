@@ -57,7 +57,9 @@ Cool! Let's do some testing! `doppel-test` can be used to compare multiple packa
 
 ```{shell}
 doppel-test \
-    --files $(pwd)/test_data/python_${PACKAGE}.json,$(pwd)/test_data/r_${PACKAGE}.json
+    --files $(pwd)/test_data/python_${PACKAGE}.json,$(pwd)/test_data/r_${PACKAGE}.json \
+    | tee out.log \
+    cat
 ```
 
 This will yield something like this:
