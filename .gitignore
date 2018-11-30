@@ -4,3 +4,20 @@
 **/*.egg-info/
 cli/build/
 cli/dist/
+
+# Python files
+**/*.ipynb_checkpoints/
+**/*.ipynb
+
+# R files
+**/*.Rhistory
+**/*.rda
+**/*.rds
+**/*.Rdata
+
+# test data
+test_data/*.json
+
+# misc files
+**/*.DS_Store
+**/*.log
