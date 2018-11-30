@@ -55,6 +55,7 @@ class SimpleReporter:
         # Checks (these print output as they're run)
         self._check_function_count()
         self._check_function_names()
+        self._check_function_arg_names()
 
         self._check_class_count()
         self._check_class_names()
@@ -113,6 +114,11 @@ class SimpleReporter:
         stdout.write("\n")
 
     def _check_function_names(self):
+        """
+        Check consistency between names of functions. Looking
+        for errors of the form "function F does not exist
+        in all packages".
+        """
 
         stdout.write("\nFunction Names\n")
         stdout.write("==============\n")
@@ -189,6 +195,11 @@ class SimpleReporter:
         stdout.write("\n")
 
     def _check_class_names(self):
+        """
+        Check consistency between names of classes. Looking
+        for errors of the form "class X does not exist
+        in all packages".
+        """
 
         stdout.write("\nClass Names\n")
         stdout.write("===========\n")

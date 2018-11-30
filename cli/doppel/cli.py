@@ -51,6 +51,9 @@ class PackageAPI():
     def function_names(self):
         return(list(self.pkg_dict['functions'].keys()))
 
+    def functions_with_args(self):
+        return(self.pkg_dict['functions'])
+
     def num_classes(self):
         return(len(self.class_names()))
 
