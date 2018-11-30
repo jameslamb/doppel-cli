@@ -22,6 +22,7 @@ class OutputTable:
 
     Ref: https://pypi.org/project/tabulate/#description
     """
+
     def __init__(self, rows, headers):
         self.rows = rows
         self.headers = headers
@@ -173,7 +174,15 @@ class SimpleReporter:
         """
         stdout.write("\nFunction Argument Names\n")
         stdout.write("=======================\n")
-        stdout.write("COMING SOON\n")
+
+
+
+        # Report output
+        #out = OutputTable(headers=headers, rows=rows)
+        #out.write()
+
+        # Print output
+        stdout.write("\n")
 
     def _check_class_count(self):
         """
