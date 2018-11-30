@@ -19,11 +19,17 @@ parser.add_argument(
    , default=os.getcwd()
    , help="Path to write files to"
 )
+parser.add_argument(
+   "--kwargs-string"
+   , type=str
+   , help="String value to replace **kwarg"
+)
 
 # Grab args (store in constants for easier debugging)
 args = parser.parse_args()
 PKG_NAME = args.pkg
 OUT_DIR = args.output_dir
+KWARGS_STRING = args.kwargs_string
 LANGUAGE = 'python'
 
 # Import that module
@@ -40,6 +46,19 @@ out = {
 # lil helper
 def _log_info(msg):
     print(msg)
+
+def _get_arg_names(f, kwargs_string):
+    """
+    Given a function object, get it's argument names.
+    """
+    f_dict = inspect.getfullargspec(f)._asdict()
+    args = f_dict['args']
+
+    # deal with people passing "**kwargs"
+    if f_dict['varkw'] is not None:
+        args.append(kwargs_string)
+
+    return(args)
 
 modules_to_parse = [top_level_env]
 
@@ -58,8 +77,11 @@ while len(modules_to_parse) > 0:
 
         # Is it a function?
         if isinstance(obj, types.FunctionType):
-            out["functions"][obj_name] = []
+            out["functions"][obj_name] = {
+                "args": _get_arg_names(obj, kwargs_string=KWARGS_STRING)
+            }
             next
+
         # Is it a class?
         elif inspect.isclass(obj):
             # Is it an exception? (skip)
