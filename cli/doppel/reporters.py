@@ -34,6 +34,8 @@ class OutputTable:
 class SimpleReporter:
 
     errors = []
+    exists_string = 'yes'
+    absent_string = 'no'
 
     def __init__(self, pkgs):
 
@@ -52,8 +54,10 @@ class SimpleReporter:
 
         # Checks (these print output as they're run)
         self._check_function_count()
-        self._check_class_count()
         self._check_function_names()
+
+        self._check_class_count()
+        self._check_class_names()
 
         # Finally
         self._respond()
@@ -110,6 +114,9 @@ class SimpleReporter:
 
     def _check_function_names(self):
 
+        stdout.write("\nFunction Names\n")
+        stdout.write("==============\n")
+
         pkg_names = []
         functions_by_package = {}
         for pkg in self.pkgs:
@@ -132,9 +139,9 @@ class SimpleReporter:
             row = [func_name]
             for pkg_name in pkg_names:
                 if func_name in functions_by_package[pkg_name]:
-                    row += ['x']
+                    row += [self.exists_string]
                 else:
-                    row += ['---']
+                    row += [self.absent_string]
                     functions_not_shared_by_all_pkgs.add(func_name)
             rows += [row]
 
@@ -182,4 +189,47 @@ class SimpleReporter:
         stdout.write("\n")
 
     def _check_class_names(self):
-        raise NotImplementedError
+
+        stdout.write("\nClass Names\n")
+        stdout.write("===========\n")
+
+        pkg_names = []
+        classes_by_package = {}
+        for pkg in self.pkgs:
+            pkg_name = pkg.pkg_dict['name']
+            pkg_names.append(pkg_name)
+            classes_by_package[pkg_name] = pkg.class_names()
+
+        # Headers are easy moeny
+        headers = ['class_name'] + [pkg.pkg_dict['name'] for pkg in self.pkgs]
+
+        # Build up the rows. This is slow but w/e it works.
+        all_classes = set([])
+        for _, v in classes_by_package.items():
+            for name in v:
+                all_classes.add(name)
+
+        classes_not_shared_by_all_pkgs = set([])
+        rows = []
+        for class_name in all_classes:
+            row = [class_name]
+            for pkg_name in pkg_names:
+                if class_name in classes_by_package[pkg_name]:
+                    row += [self.exists_string]
+                else:
+                    row += [self.absent_string]
+                    classes_not_shared_by_all_pkgs.add(class_name)
+            rows += [row]
+
+        # Report output
+        out = OutputTable(headers=headers, rows=rows)
+        out.write()
+
+        # Append errors
+        if len(classes_not_shared_by_all_pkgs) > 0:
+            for class_name in classes_not_shared_by_all_pkgs:
+                error_txt = "Class '{}()' is not exported by all packages".format(class_name)
+                self.errors.append(DoppelTestError(error_txt))
+
+        # Print output
+        stdout.write("\n")
