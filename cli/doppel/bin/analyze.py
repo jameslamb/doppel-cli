@@ -5,6 +5,7 @@ import inspect
 import json
 import os
 import types
+import re
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -67,7 +68,13 @@ while len(modules_to_parse) > 0:
             next
         elif isinstance(obj, types.ModuleType):
             _log_info("{} is a module".format(obj_name))
-            modules_to_parse.append(obj)
+
+            # If the module isn't defined inside this package, ignore it.
+            # Otherwise, it must be a sub-package we need to explore
+            regex = '.*[/]' + PKG_NAME + '[/]+.*'
+            is_in_package = bool(re.search(regex, str(obj)))
+            if is_in_package:
+                modules_to_parse.append(obj)
         else:
             _log_info("Could not figure out what {} is".format(obj_name))
 
