@@ -15,6 +15,14 @@ Why is this valuable?
     * no need to re-learn the API when switching languages
     * form better expectations when switching languages
 
+## Getting started
+
+`doppel` can be installed from source just like any other python package.
+
+```
+cd cli && python setup.py install
+```
+
 ## Example: Testing continuity between R and Python implementations
 
 In this example, I'll show how to use `doppel` to test continuity between R and Python implementations of the same API. For this example, I used the `argparse` library.
@@ -30,11 +38,19 @@ First, you need to generate special files that `doppel` uses to store informatio
 
 
 ```{shell}
+PACKAGE=argparse
+
 # The R package
-doppel-describe -p argparse --language R --data-dir $(pwd)/test_data
+doppel-describe \
+    -p ${PACKAGE} \
+    --language R \
+    --data-dir $(pwd)/test_data
 
 # The python package
-doppel-describe -p argparse --language python --data-dir $(pwd)/test_data
+doppel-describe \
+    -p ${PACKAGE} \
+    --language python \
+    --data-dir $(pwd)/test_data
 ```
 
 Cool! Let's do some testing! `doppel-test` can be used to compare multiple packages.
