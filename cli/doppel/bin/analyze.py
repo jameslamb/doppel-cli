@@ -52,8 +52,10 @@ while len(modules_to_parse) > 0:
     export_names = list(filter(lambda x: not x.startswith('_'), dir(pkg_env)))
 
     for obj_name in export_names:
+
         # Grab the object
         obj = getattr(pkg_env, obj_name)
+
         # Is it a function?
         if isinstance(obj, types.FunctionType):
             out["functions"][obj_name] = []

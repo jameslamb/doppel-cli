@@ -57,7 +57,7 @@ Cool! Let's do some testing! `doppel-test` can be used to compare multiple packa
 
 ```{shell}
 doppel-test \
-    --files test_data/python_argparse.json,test_data/r_argparse.json
+    --files $(pwd)/test_data/python_${PACKAGE}.json,$(pwd)/test_data/r_${PACKAGE}.json
 ```
 
 This will yield something like this:

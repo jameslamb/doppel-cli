@@ -46,7 +46,10 @@ class PackageAPI():
         return
 
     def num_functions(self):
-        return(len(self.pkg_dict['functions'].keys()))
+        return(len(self.function_names()))
+
+    def function_names(self):
+        return(list(self.pkg_dict['functions'].keys()))
 
     def num_classes(self):
         return(len(self.pkg_dict['classes'].keys()))

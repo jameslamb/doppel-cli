@@ -53,6 +53,7 @@ class SimpleReporter:
         # Checks (these print output as they're run)
         self._check_function_count()
         self._check_class_count()
+        self._check_function_names()
 
         # Finally
         self._respond()
@@ -86,21 +87,21 @@ class SimpleReporter:
         stdout.write("==============\n")
 
         # Compare number of functions
-        names = []
+        pkg_names = []
         counts = []
         for pkg in self.pkgs:
-            names.append(pkg.pkg_dict['name'])
+            pkg_names.append(pkg.pkg_dict['name'])
             counts.append(pkg.num_functions())
 
         # Report output
-        out = OutputTable(headers=names, rows=[counts])
+        out = OutputTable(headers=pkg_names, rows=[counts])
         out.write()
 
         # Append errors
         if len(set(counts)) > 1:
             error_txt = "Packages have different counts of public functions! {}"
             error_txt = error_txt.format(
-                ", ".join(["{} ({})".format(x, y) for x, y in zip(names, counts)])
+                ", ".join(["{} ({})".format(x, y) for x, y in zip(pkg_names, counts)])
             )
             self.errors.append(DoppelTestError(error_txt))
 
@@ -108,7 +109,47 @@ class SimpleReporter:
         stdout.write("\n")
 
     def _check_function_names(self):
-        raise NotImplementedError
+
+        pkg_names = []
+        functions_by_package = {}
+        for pkg in self.pkgs:
+            pkg_name = pkg.pkg_dict['name']
+            pkg_names.append(pkg_name)
+            functions_by_package[pkg_name] = pkg.function_names()
+
+        # Headers are easy moeny
+        headers = ['function_name'] + [pkg.pkg_dict['name'] for pkg in self.pkgs]
+
+        # Build up the rows. This is slow but w/e it works.
+        all_functions = set([])
+        for _, v in functions_by_package.items():
+            for name in v:
+                all_functions.add(name)
+
+        functions_not_shared_by_all_pkgs = set([])
+        rows = []
+        for func_name in all_functions:
+            row = [func_name]
+            for pkg_name in pkg_names:
+                if func_name in functions_by_package[pkg_name]:
+                    row += ['x']
+                else:
+                    row += ['---']
+                    functions_not_shared_by_all_pkgs.add(func_name)
+            rows += [row]
+
+        # Report output
+        out = OutputTable(headers=headers, rows=rows)
+        out.write()
+
+        # Append errors
+        if len(functions_not_shared_by_all_pkgs) > 0:
+            for func_name in functions_not_shared_by_all_pkgs:
+                error_txt = "Function '{}()' is not exported by all packages".format(func_name)
+                self.errors.append(DoppelTestError(error_txt))
+
+        # Print output
+        stdout.write("\n")
 
     def _check_class_count(self):
         """
@@ -140,5 +181,5 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_method_names(self):
+    def _check_class_names(self):
         raise NotImplementedError
