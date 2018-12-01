@@ -34,7 +34,7 @@ def main(language, pkg_name, data_dir):
                 'doppel', 'bin/{}'.format(files[language])
         )
     except KeyError:
-        raise KeyError("doppel does not know how to test {} pckages".format(language))
+        raise KeyError("doppel does not know how to test {} packages".format(language))
 
     print(analysis_script)
 
