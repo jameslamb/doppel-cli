@@ -207,7 +207,6 @@ class SimpleReporter:
 
             # check 1: same number of arguments?
             same_length = reduce(lambda a, b: len(a) == len(b), args)
-            print('here')
             if not same_length:
                 error_txt = "Function '{}()' exists in all packages but with differing number of arguments ({})."
                 error_txt = error_txt.format(
@@ -220,7 +219,6 @@ class SimpleReporter:
 
             # check 2: same set of arguments
             same_args = reduce(lambda a, b: sorted(a) == sorted(b), args)
-            print('there')
             if not same_args:
                 error_txt = "Function '{}()' exists in all packages but with differing set of keyword arguments."
                 self.errors.append(DoppelTestError(error_txt))
@@ -229,7 +227,6 @@ class SimpleReporter:
 
             # check 3: same set or arguments and same order
             same_order = reduce(lambda a, b: a == b, args)
-            print('where')
             if not same_order:
                 error_txt = "Function '{}()' exists in all packages but with differing order of keyword arguments."
                 self.errors.append(DoppelTestError(error_txt))
@@ -240,14 +237,13 @@ class SimpleReporter:
             rows.append([func_name, 'yes'])
 
         # Report output
-        stdout.write('{} or the {} functions shared across all packages have identical signatures\n'.format(
+        stdout.write('\n{} or the {} functions shared across all packages have identical signatures\n\n'.format(
             len([r for r in filter(lambda x: x[1] == 'yes', rows)]),
             len(all_functions)
         ))
 
         out = OutputTable(headers=headers, rows=rows)
         out.write()
-        stdout.write(str(shared_functions))
 
         # Print output
         stdout.write("\n")
