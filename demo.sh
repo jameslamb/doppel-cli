@@ -3,7 +3,7 @@
 # failure is a natural part of life
 set -e
 
-for pkg in xgboost argparse; do
+for pkg in uptasticsearch; do
 
     # The R package
     doppel-describe \

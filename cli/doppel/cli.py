@@ -39,11 +39,15 @@ class PackageAPI():
     def _validate_pkg(self, pkg_dict):
 
         assert isinstance(pkg_dict, dict)
+        assert pkg_dict['name'] is not None
         assert pkg_dict['language'] is not None
         assert pkg_dict['functions'] is not None
         assert pkg_dict['classes'] is not None
 
         return
+
+    def name(self):
+        return(self.pkg_dict['name'])
 
     def num_functions(self):
         return(len(self.function_names()))

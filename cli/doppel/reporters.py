@@ -2,6 +2,7 @@ import sys
 import doppel
 from sys import stdout
 from tabulate import tabulate
+from functools import reduce
 
 
 class DoppelTestError:
@@ -96,7 +97,7 @@ class SimpleReporter:
         pkg_names = []
         counts = []
         for pkg in self.pkgs:
-            pkg_names.append(pkg.pkg_dict['name'])
+            pkg_names.append(pkg.name())
             counts.append(pkg.num_functions())
 
         # Report output
@@ -127,12 +128,12 @@ class SimpleReporter:
         pkg_names = []
         functions_by_package = {}
         for pkg in self.pkgs:
-            pkg_name = pkg.pkg_dict['name']
+            pkg_name = pkg.name()
             pkg_names.append(pkg_name)
             functions_by_package[pkg_name] = pkg.function_names()
 
         # Headers are easy moeny
-        headers = ['function_name'] + [pkg.pkg_dict['name'] for pkg in self.pkgs]
+        headers = ['function_name'] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
         all_functions = set([])
@@ -175,11 +176,78 @@ class SimpleReporter:
         stdout.write("\nFunction Argument Names\n")
         stdout.write("=======================\n")
 
+        func_blocks_by_package = {}
+        pkg_names = []
+        shared_functions = None
+        all_functions = set([])
+        for pkg in self.pkgs:
+            funcs = pkg.functions_with_args()
+            func_blocks_by_package[pkg.name()] = funcs
+            pkg_names.append(pkg.name())
+            func_names = funcs.keys()
 
+            for func_name in func_names:
+                all_functions.add(func_name)
+
+            if shared_functions is None:
+                shared_functions = set(func_names)
+            else:
+                shared_functions = shared_functions.intersection(set(func_names))
+
+        # If there are no shared functions, skip
+        if len(shared_functions) == 0:
+            stdout.write('No shared functions.\n')
+            return
+
+        headers = ['function_name', 'identical api?']
+        rows = []
+
+        for func_name in shared_functions:
+            args = [func_blocks_by_package[p][func_name]['args'] for p in pkg_names]
+
+            # check 1: same number of arguments?
+            same_length = reduce(lambda a, b: len(a) == len(b), args)
+            print('here')
+            if not same_length:
+                error_txt = "Function '{}()' exists in all packages but with differing number of arguments ({})."
+                error_txt = error_txt.format(
+                    func_name,
+                    ",".join([str(len(a)) for a in args])
+                )
+                self.errors.append(DoppelTestError(error_txt))
+                rows.append([func_name, 'no'])
+                continue
+
+            # check 2: same set of arguments
+            same_args = reduce(lambda a, b: sorted(a) == sorted(b), args)
+            print('there')
+            if not same_args:
+                error_txt = "Function '{}()' exists in all packages but with differing set of keyword arguments."
+                self.errors.append(DoppelTestError(error_txt))
+                rows.append([func_name, 'no'])
+                continue
+
+            # check 3: same set or arguments and same order
+            same_order = reduce(lambda a, b: a == b, args)
+            print('where')
+            if not same_order:
+                error_txt = "Function '{}()' exists in all packages but with differing order of keyword arguments."
+                self.errors.append(DoppelTestError(error_txt))
+                rows.append([func_name, 'no'])
+                continue
+
+            # if you get here, we're gucci
+            rows.append([func_name, 'yes'])
 
         # Report output
-        #out = OutputTable(headers=headers, rows=rows)
-        #out.write()
+        stdout.write('{} or the {} functions shared across all packages have identical signatures\n'.format(
+            len([r for r in filter(lambda x: x[1] == 'yes', rows)]),
+            len(all_functions)
+        ))
+
+        out = OutputTable(headers=headers, rows=rows)
+        out.write()
+        stdout.write(str(shared_functions))
 
         # Print output
         stdout.write("\n")
@@ -196,7 +264,7 @@ class SimpleReporter:
         names = []
         counts = []
         for pkg in self.pkgs:
-            names.append(pkg.pkg_dict['name'])
+            names.append(pkg.name())
             counts.append(pkg.num_classes())
 
         # Report output
@@ -227,12 +295,12 @@ class SimpleReporter:
         pkg_names = []
         classes_by_package = {}
         for pkg in self.pkgs:
-            pkg_name = pkg.pkg_dict['name']
+            pkg_name = pkg.name()
             pkg_names.append(pkg_name)
             classes_by_package[pkg_name] = pkg.class_names()
 
         # Headers are easy moeny
-        headers = ['class_name'] + [pkg.pkg_dict['name'] for pkg in self.pkgs]
+        headers = ['class_name'] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
         all_classes = set([])
