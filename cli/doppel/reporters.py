@@ -39,12 +39,13 @@ class SimpleReporter:
     exists_string = 'yes'
     absent_string = 'no'
 
-    def __init__(self, pkgs):
+    def __init__(self, pkgs, errors_allowed):
 
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
         self.pkgs = pkgs
+        self._errors_allowed = errors_allowed
 
     def compare(self):
         """
@@ -83,7 +84,8 @@ class SimpleReporter:
                 stdout.write("{}. {}\n".format(i, str(err)))
                 i += 1
 
-        sys.exit(num_errors)
+        # Only throw a non-zero exit code if you had too many errors
+        sys.exit(max(0, num_errors - self._errors_allowed))
 
     def _check_function_count(self):
         """

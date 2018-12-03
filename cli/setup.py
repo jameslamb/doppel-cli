@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='doppel',
-    version='0.0.4',
+    version='0.1.0',
     install_requires=[
         'click',
         'tabulate'

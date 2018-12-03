@@ -70,7 +70,12 @@ class PackageAPI():
     '--files', '-f',
     help="Comma-delimited list of doppel output files."
 )
-def main(files):
+@click.option(
+    '--errors-allowed',
+    default=0,
+    help="Integer number of errors to allow before returning non-zero exit code. Default is 0."
+)
+def main(files, errors_allowed):
     """
     doppel is a a continuous integration tool for testing
     the continuity of APIs for libraries implemented in
@@ -84,7 +89,7 @@ def main(files):
     pkgs = [PackageAPI.from_json(f) for f in f_list]
 
     # Report
-    reporter = SimpleReporter(pkgs)
+    reporter = SimpleReporter(pkgs, errors_allowed)
     reporter.compare()
 
 

@@ -36,7 +36,6 @@ pip install argparse
 
 First, you need to generate special files that `doppel` uses to store information about a project's API. These are created using the `doppel-describe` tool.
 
-
 ```{shell}
 PACKAGE=argparse
 
@@ -150,6 +149,18 @@ As you can see above, the `argparse` Python package has 9 exported classes while
 From `doppel`'s perspective, this is considered a test failure. If you run `echo $?` in the terminal, should should see `1` printed. Returning a non-zero exit code like this tells CI tools like [Travis](https://travis-ci.org/) that the test was a failure, making `doppel` useful for CI (more on this in a future example).
 
 You may be thinking "well wait, surely you'd want to test for way more stuff than just counts of classes and functions, right?". Absolutely! See [doppel's issues]() for a backlog of features I'd like to add. PRs are welcomed!!!
+
+To learn more about the things that are currently configurable, you can run:
+
+```
+doppel-describe --help
+```
+
+and
+
+```
+doppel-test --help
+```
 
 # Design Principles
 
