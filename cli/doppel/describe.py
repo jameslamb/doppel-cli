@@ -3,6 +3,7 @@ import click
 import pkg_resources
 import os
 
+
 @click.command()
 @click.option(
     '--language', '-l',
@@ -38,7 +39,9 @@ def main(language, pkg_name, data_dir):
 
     print(analysis_script)
 
-    cmd = '{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~'.format(analysis_script, pkg_name, data_dir)
+    cmd = '{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~'.format(
+        analysis_script, pkg_name, data_dir
+    )
 
     print("Describing package with command:\n {}".format(cmd))
     # Invoke the analysis script
