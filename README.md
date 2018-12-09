@@ -27,7 +27,9 @@ cd cli && python setup.py install
 
 In this example, I'll show how to use `doppel` to test continuity between R and Python implementations of the same API. For this example, I used the `argparse` library.
 
-NOTE: This example assumes that you already have `argparse` installed locally. If you don't run one or both of these:
+NOTE: This example assumes that you already have `argparse` installed locally.
+
+If you don't run one or both of these:
 
 ```{shell}
 Rscript -e "install.packages('argparse')"

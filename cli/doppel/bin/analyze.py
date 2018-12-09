@@ -9,20 +9,20 @@ import re
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--pkg"
-    , type=str
-    , help="Name of the python package to test"
+    "--pkg",
+    type=str,
+    help="Name of the python package to test"
 )
 parser.add_argument(
-   "--output_dir"
-   , type=str
-   , default=os.getcwd()
-   , help="Path to write files to"
+   "--output_dir",
+   type=str,
+   default=os.getcwd(),
+   help="Path to write files to"
 )
 parser.add_argument(
-   "--kwargs-string"
-   , type=str
-   , help="String value to replace **kwarg"
+   "--kwargs-string",
+   type=str,
+   help="String value to replace **kwarg"
 )
 
 # Grab args (store in constants for easier debugging)
@@ -43,9 +43,11 @@ out = {
     "classes": {}
 }
 
+
 # lil helper
 def _log_info(msg):
     print(msg)
+
 
 def _get_arg_names(f, kwargs_string):
     """
@@ -59,6 +61,7 @@ def _get_arg_names(f, kwargs_string):
         args.append(kwargs_string)
 
     return(args)
+
 
 modules_to_parse = [top_level_env]
 
@@ -88,7 +91,12 @@ while len(modules_to_parse) > 0:
             if issubclass(obj, Exception):
                 _log_info("{} is an Exception. Skipping.".format(obj_name))
             else:
-                out['classes'][obj_name] = []
+                # imoprts like 'from requests.adapter import HTTPAdapter'
+                regex = "'" + PKG_NAME + "\\.+.*"
+                is_in_package = bool(re.search(regex, str(obj)))
+
+                if is_in_package:
+                    out['classes'][obj_name] = []
             next
         elif isinstance(obj, types.ModuleType):
             _log_info("{} is a module".format(obj_name))
