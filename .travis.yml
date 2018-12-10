@@ -13,5 +13,5 @@ python:
  - "3.6"
 # command to run tests
 script:
-  - sh runtests.sh
+  - ./runtests.sh
 
