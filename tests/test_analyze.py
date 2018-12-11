@@ -1,5 +1,5 @@
 import unittest
-from doppel import analyze as al
+from doppel.cil.bin.analyze import analyze as al
 
 
 class AnalyzeTest(unittest.TestCase):
