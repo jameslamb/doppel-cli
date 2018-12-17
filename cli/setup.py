@@ -28,5 +28,15 @@ setup(
             'doppel-describe = doppel.describe:main',
             'doppel-test = doppel.cli:main'
         ]
-    }
+    },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apple Public Source License',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: Software Development :: Testing'
+    ]
 )
