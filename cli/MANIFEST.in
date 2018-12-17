@@ -1,2 +1,3 @@
 include bin/analyze.py
 include bin/analyze.R
+include VERSION
