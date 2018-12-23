@@ -6,5 +6,5 @@ install:
   - python setup.py install
 script:
   - echo "integration tests"
-  - doppel-describe -p requests --language python --data-dir $(pwd)/test_data
-  - doppel-test --files $(pwd)/test_data/python_requests.json --errors-allowed 0
+  - doppel-describe -p os --language python --data-dir $(pwd)/test_data
+  - doppel-test --files $(pwd)/test_data/python_os.json --errors-allowed 0
