@@ -13,7 +13,7 @@ setup(
     long_description=readme,
     version=version,
     url='http://github.com/jameslamb/doppel',
-    license='Apache 2.0',
+    license='BSD 3-clause',
     maintainer='James Lamb',
     maintainer_email='jaylamb20@gmail.com',
     install_requires=[
@@ -32,7 +32,7 @@ setup(
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apple Public Source License',
+        'License :: OSI Approved :: BSD License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
