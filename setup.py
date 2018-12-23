@@ -1,6 +1,6 @@
 from setuptools import setup
 
-with open('../README.md', 'r') as f:
+with open('README.md', 'r') as f:
     readme = f.read()
 
 with open('VERSION', 'r') as f:
@@ -8,7 +8,7 @@ with open('VERSION', 'r') as f:
 
 setup(
     name='doppel',
-    description='an integration testing framework for testing API similarity across languages.',
+    description='An integration testing framework for testing API similarity of software libraries.',
     long_description=readme,
     version=version,
     url='http://github.com/jameslamb/doppel',

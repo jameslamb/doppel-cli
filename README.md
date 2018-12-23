@@ -20,7 +20,7 @@ Why is this valuable?
 `doppel` can be installed from source just like any other python package.
 
 ```
-cd cli && python setup.py install
+python setup.py install
 ```
 
 ## Example: Testing continuity between R and Python implementations
