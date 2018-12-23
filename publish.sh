@@ -3,13 +3,15 @@
 # Failure is a natural part of life
 set -e
 
+PYPI_REPO=$0
+
 pushd cli/
 
     VERSION=$(cat VERSION)
 
     python setup.py sdist
 
-    twine upload dist/doppel-${VERSION}.tar.gz -r testpypi
+    twine upload dist/doppel-${VERSION}.tar.gz -r ${PYPI_REPO}
 
 popd
 

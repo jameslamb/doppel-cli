@@ -9,5 +9,11 @@ PyPi is the official package manage used for distributing Python packages. A "te
 To test whether the current state of publishing `doppel` plays nicely with PyPi, maintainers may from time to time run the following:
 
 ```
-./test_publish.sh
+./publish.sh testpypi
+```
+
+To actually publish a new version, run:
+
+```
+./publish.sh pypi
 ```
