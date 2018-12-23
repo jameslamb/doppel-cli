@@ -1,5 +1,7 @@
 # doppel
 
+[![Build Status](https://travis-ci.org/jameslamb/doppel.svg?branch=master)](https://travis-ci.org/jameslamb/doppel)
+
 `doppel` is an integration testing framework for testing API similarity across languages.
 
 # What is the value of keeping the same public interface?
