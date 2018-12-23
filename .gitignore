@@ -2,8 +2,8 @@
 # Python caches and build artifacts
 **/__pycache__/
 **/*.egg-info/
-cli/build/
-cli/dist/
+build/
+dist/
 
 # Python files
 **/*.ipynb_checkpoints/
