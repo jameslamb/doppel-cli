@@ -1,6 +1,8 @@
 # doppel
 
 [![Build Status](https://travis-ci.org/jameslamb/doppel.svg?branch=master)](https://travis-ci.org/jameslamb/doppel)
+[![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
+[![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
 
 `doppel` is an integration testing framework for testing API similarity across languages.
 
@@ -23,6 +25,12 @@ Why is this valuable?
 
 ```
 python setup.py install
+```
+
+You can also install from PyPi, the official package manage for Python. To avoid conflicts with the existing `doppel` project on that repository, it is distributed as `doppel-cli`.
+
+```
+pip install doppel-cli
 ```
 
 ## Example: Testing continuity between R and Python implementations

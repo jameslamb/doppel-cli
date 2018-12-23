@@ -7,7 +7,8 @@ with open('VERSION', 'r') as f:
     version = f.read().strip()
 
 setup(
-    name='doppel',
+    name='doppel-cli',
+    packages=['doppel'],
     description='An integration testing framework for testing API similarity of software libraries.',
     long_description=readme,
     version=version,
@@ -19,7 +20,6 @@ setup(
         'click',
         'tabulate'
     ],
-    packages=['doppel'],
     package_data={
         'doppel': ['bin/analyze.R', 'bin/analyze.py']
     },

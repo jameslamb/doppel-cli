@@ -3,17 +3,11 @@
 # Failure is a natural part of life
 set -e
 
-PYPI_REPO=$0
+PYPI_REPO=$1
 
-pushd cli/
-
-    VERSION=$(cat VERSION)
-
-    python setup.py sdist
-
-    twine upload dist/doppel-${VERSION}.tar.gz -r ${PYPI_REPO}
-
-popd
+VERSION=$(cat VERSION)
+python setup.py sdist
+twine upload dist/doppel-cli-${VERSION}.tar.gz -r ${PYPI_REPO}
 
 # References
 # [1] https://blog.jetbrains.com/pycharm/2017/05/how-to-publish-your-package-on-pypi/
