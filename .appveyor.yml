@@ -1,0 +1,44 @@
+# As config was originally based on an example by Olivier Grisel. Thanks!
+# https://github.com/ogrisel/python-appveyor-demo/blob/master/appveyor.yml
+clone_depth: 10
+
+# No reason for us to restrict the number concurrent jobs
+max_jobs: 5
+
+cache:
+  - '%LOCALAPPDATA%\pip\Cache'
+
+environment:
+
+  matrix:
+
+    - PYTHON: C:\Python35-x64
+      PYTHON_VERSION: 3.5
+      PYTHON_ARCH: 64
+
+    - PYTHON: C:\Python36-x64
+      PYTHON_VERSION: 3.6
+      PYTHON_ARCH: 64
+
+install:
+  # Prepend newly installed Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+  - if [%PYTHON_ARCH%]==[32] SET PATH=%MINGW_32%;%PATH% & SET OPENBLAS=%OPENBLAS_32%
+  - if [%PYTHON_ARCH%]==[64] SET PATH=%MINGW_64%;%PATH% & SET OPENBLAS=%OPENBLAS_64%
+
+  # Check that we have the expected version and architecture for Python
+  - python --version
+  - >-
+     %CMD_IN_ENV%
+     python -c "import sys,platform,struct;
+     print(sys.platform, platform.machine(), struct.calcsize('P') * 8, )"
+
+  # Install the numpy test dependencies.
+  - 'pip install .'
+
+build: false
+
+test_script:
+  - python -m unittest
