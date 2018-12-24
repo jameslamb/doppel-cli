@@ -3,8 +3,25 @@ os:
   - linux
 python: 3.5
 install:
+  # Enable conda
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  - conda info -a
+  # Set up R (gulp)
+  - conda install -c r r r-jsonlite r-r6 r-argparse
+  # Get packages for testing
+  - Rscript -e "install.packages('futile.logger', repos = 'http://cran.rstudio.com')"
+  - pip install argparse
+  # Actually install doppel-cli
   - python setup.py install
+
+# Testing strategy is just "run the code and see if it executes at all"
 script:
   - echo "integration tests"
-  - doppel-describe -p os --language python --data-dir $(pwd)/test_data
-  - doppel-test --files $(pwd)/test_data/python_os.json --errors-allowed 0
+  - doppel-describe -p argparse --language python --data-dir $(pwd)/test_data
+  - doppel-describe -p argparse --language r --data-dir $(pwd)/test_data
+  - doppel-test --files $(pwd)/test_data/python_argparse.json,$(pwd)/test_data/r_argparse.json --errors-allowed 100

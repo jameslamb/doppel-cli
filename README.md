@@ -174,10 +174,6 @@ and
 doppel-test --help
 ```
 
-# Design Principles
-
-A `test_failure` always results in a non-zero exit code.
-
 # Ideas
 
 * Degree of similarity should be configurable
@@ -186,18 +182,11 @@ A `test_failure` always results in a non-zero exit code.
     * should be able to whitelist "extras" and have them not count against the final test
 * Handling of language-specific features
     * constructor names
-    * kwargs
-    * active bindings (R)
     * magic methods (Python)
     * S3 methods (R)
 * should handle within-package inheritance in classes
 * should handle cross-package inheritance with classes
-* should have its own reliable CI (this will be fun to set up...)
 * checks:
-    * differing number of classes
-    * differing number of functions
-    * 'specific_function' exists in one but not other
-    * 'specific class' exists in one but not other
     * differing number of public methods for 'specific_class'
     * 'specific_method' exists in one but not other
     * differing number of public members for class in one but not other
@@ -209,3 +198,7 @@ A `test_failure` always results in a non-zero exit code.
 
 1. [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
 2. [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
+3. [Testing on multiple operating systems with Travis](https://docs.travis-ci.com/user/multi-os/)
+4. [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
+5. [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
+6. [networkx: example appveyor setup for python](https://github.com/networkx/networkx/blob/master/.appveyor.yml)
