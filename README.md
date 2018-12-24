@@ -1,6 +1,7 @@
 # doppel
 
-[![Build Status](https://travis-ci.org/jameslamb/doppel.svg?branch=master)](https://travis-ci.org/jameslamb/doppel)
+[![Travis Build Status](https://travis-ci.org/jameslamb/doppel.svg?branch=master)](https://travis-ci.org/jameslamb/doppel)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/doppel?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/doppel)
 [![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
 [![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
 
