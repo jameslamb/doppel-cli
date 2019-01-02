@@ -325,7 +325,7 @@ class SimpleReporter:
         # Append errors
         if len(classes_not_shared_by_all_pkgs) > 0:
             for class_name in classes_not_shared_by_all_pkgs:
-                error_txt = "Class '{}()' is not exported by all packages".format(class_name)
+                error_txt = "Class '{}' is not exported by all packages".format(class_name)
                 self.errors.append(DoppelTestError(error_txt))
 
         # Print output
