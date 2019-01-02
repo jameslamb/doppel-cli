@@ -80,9 +80,14 @@ while len(modules_to_parse) > 0:
 
         # Is it a function?
         if isinstance(obj, types.FunctionType):
-            out["functions"][obj_name] = {
-                "args": _get_arg_names(obj, kwargs_string=KWARGS_STRING)
-            }
+
+            # Handle special cases where someone did
+            # "from <pkg> import <whatever>" in a module.
+            if obj_name.startswith(PKG_NAME):
+                out["functions"][obj_name] = {
+                    "args": _get_arg_names(obj, kwargs_string=KWARGS_STRING)
+                }
+
             next
 
         # Is it a class?
@@ -98,6 +103,7 @@ while len(modules_to_parse) > 0:
                 if is_in_package:
                     out['classes'][obj_name] = []
             next
+
         elif isinstance(obj, types.ModuleType):
             _log_info("{} is a module".format(obj_name))
 
