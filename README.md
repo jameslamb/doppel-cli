@@ -175,26 +175,6 @@ and
 doppel-test --help
 ```
 
-# Ideas
-
-* Degree of similarity should be configurable
-    * should be able to say "only functions"
-    * should be able to say "only classes"
-    * should be able to whitelist "extras" and have them not count against the final test
-* Handling of language-specific features
-    * constructor names
-    * magic methods (Python)
-    * S3 methods (R)
-* should handle within-package inheritance in classes
-* should handle cross-package inheritance with classes
-* checks:
-    * differing number of public methods for 'specific_class'
-    * 'specific_method' exists in one but not other
-    * differing number of public members for class in one but not other
-    * 'specific_member' exists in one but not other
-    * different number of args for a particular function or method
-    * 'specific_arg' is in the signature of 'specific_function_or_method' in one but not the other
-
 # References
 
 1. [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
