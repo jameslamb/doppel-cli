@@ -29,7 +29,6 @@ class PackageAPI():
 
         self._validate_pkg(pkg_dict)
         self.pkg_dict = pkg_dict
-        pass
 
     @classmethod
     def from_json(cls, filename: str):

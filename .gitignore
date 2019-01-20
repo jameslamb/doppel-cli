@@ -15,8 +15,10 @@ dist/
 **/*.rds
 **/*.Rdata
 
-# test data
+# testing stuff
 test_data/*.json
+**/.coverage
+**/htmlcov/
 
 # misc files
 **/*.DS_Store

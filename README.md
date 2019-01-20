@@ -3,7 +3,7 @@
 [![Travis Build Status](https://travis-ci.org/jameslamb/doppel.svg?branch=master)](https://travis-ci.org/jameslamb/doppel)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/doppel?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/doppel)
 [![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
-[![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest)
+[![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/gh/jameslamb/doppel-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/jameslamb/doppel-cli)
 
 `doppel` is an integration testing framework for testing API similarity across languages.
 
