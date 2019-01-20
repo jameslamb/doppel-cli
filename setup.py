@@ -27,6 +27,10 @@ setup(
     maintainer='James Lamb',
     maintainer_email='jaylamb20@gmail.com',
     install_requires=runtime_deps,
+    extras_require={
+        'all': runtime_deps + documentation_deps,
+        'docs': documentation_deps
+    },
     package_data={
         'doppel': ['bin/analyze.R', 'bin/analyze.py']
     },
