@@ -6,6 +6,16 @@ with open('README.md', 'r') as f:
 with open('VERSION', 'r') as f:
     version = f.read().strip()
 
+runtime_deps = [
+    'click',
+    'tabulate'
+]
+documentation_deps = [
+    'sphinx',
+    'sphinx_autodoc_typehints',
+    'sphinx_rtd_theme'
+]
+
 setup(
     name='doppel-cli',
     packages=['doppel'],
@@ -16,10 +26,7 @@ setup(
     license='BSD 3-clause',
     maintainer='James Lamb',
     maintainer_email='jaylamb20@gmail.com',
-    install_requires=[
-        'click',
-        'tabulate'
-    ],
+    install_requires=runtime_deps,
     package_data={
         'doppel': ['bin/analyze.R', 'bin/analyze.py']
     },

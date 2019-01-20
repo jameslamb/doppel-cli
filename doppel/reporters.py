@@ -3,6 +3,7 @@ import doppel
 from sys import stdout
 from tabulate import tabulate
 from functools import reduce
+from typing import List
 
 
 class DoppelTestError:
@@ -24,7 +25,7 @@ class OutputTable:
     Ref: https://pypi.org/project/tabulate/#description
     """
 
-    def __init__(self, rows, headers):
+    def __init__(self, rows: list, headers: list):
         self.rows = rows
         self.headers = headers
 
@@ -39,8 +40,20 @@ class SimpleReporter:
     exists_string = 'yes'
     absent_string = 'no'
 
-    def __init__(self, pkgs, errors_allowed):
+    def __init__(self, pkgs: list, errors_allowed: int):
+        """Default object used to manage doppel reporting
 
+        This object implements the interface used by doppel-cli
+        to handle reporting the status of a doppel-test run.
+
+        :param pkgs: List of the package objects to report
+            differences between.
+        :param errors_allowed: Number of errors that are
+            permissible before throwing a non-zero exit
+            code. Set this to a higher value to make doppel-cli
+            more permissive.
+
+        """
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 

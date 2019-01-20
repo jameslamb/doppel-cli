@@ -21,3 +21,7 @@ test_data/*.json
 # misc files
 **/*.DS_Store
 **/*.log
+
+# documentation
+**/_build/
+**/warnings.txt

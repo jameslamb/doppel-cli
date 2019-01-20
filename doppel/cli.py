@@ -16,16 +16,28 @@ class PackageAPI():
     to happen across programming languages.
     """
 
-    def __init__(self, pkg_dict):
+    def __init__(self, pkg_dict: dict):
+        """Python object containing data that describes a package API
+
+        :param pkg_dict: A dictionary representation of a
+            software package, complying with the output format of
+            doppel-describe.
+
+        """
 
         self._validate_pkg(pkg_dict)
         self.pkg_dict = pkg_dict
         pass
 
     @classmethod
-    def from_json(cls, filename):
+    def from_json(cls, filename: str):
         """
         Instantiate a Package object from a file.
+
+        :param filename: Name of the JSON file
+            that contains the description of the
+            target package's API.
+
         """
         _log_info("Creating package from {}".format(filename))
 
@@ -36,7 +48,7 @@ class PackageAPI():
         # validate
         return cls(pkg_dict)
 
-    def _validate_pkg(self, pkg_dict):
+    def _validate_pkg(self, pkg_dict: dict):
 
         assert isinstance(pkg_dict, dict)
         assert pkg_dict['name'] is not None
@@ -75,11 +87,17 @@ class PackageAPI():
     default=0,
     help="Integer number of errors to allow before returning non-zero exit code. Default is 0."
 )
-def main(files, errors_allowed):
+def main(files, errors_allowed: int):
     """
     doppel is a a continuous integration tool for testing
     the continuity of APIs for libraries implemented in
     different languages.
+
+    :param errors_allowed: Number of errors that are
+        permissible before throwing a non-zero exit
+        code. Set this to a higher value to make doppel-cli
+        more permissive.
+
     """
     print("Loading comparison files")
 
