@@ -14,6 +14,7 @@ before_install:
   # Get packages for testing
   - Rscript -e "install.packages('futile.logger', repos = 'http://cran.rstudio.com')"
   - pip install argparse
+  - pip install coverage codecov
 
 # Testing strategy is just "run the code and see if it executes at all"
 script:
