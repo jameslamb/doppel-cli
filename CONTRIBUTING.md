@@ -45,3 +45,4 @@ To actually publish a new version, run:
 4. [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
 5. [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
 6. [networkx: example appveyor setup for python](https://github.com/networkx/networkx/blob/master/.appveyor.yml)
+7. [simple codecov Python example](https://github.com/codecov/example-python/blob/master/.travis.yml)

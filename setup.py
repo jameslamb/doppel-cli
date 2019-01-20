@@ -16,6 +16,9 @@ documentation_deps = [
     'sphinx_autodoc_typehints',
     'sphinx_rtd_theme'
 ]
+testing_deps = [
+    'coverage'
+]
 
 setup(
     name='doppel-cli',
@@ -29,8 +32,9 @@ setup(
     maintainer_email='jaylamb20@gmail.com',
     install_requires=runtime_deps,
     extras_require={
-        'all': runtime_deps + documentation_deps,
-        'docs': documentation_deps
+        'docs': documentation_deps,
+        'testing': testing_deps,
+        'all': runtime_deps + documentation_deps + testing_deps
     },
     package_data={
         'doppel': ['bin/analyze.R', 'bin/analyze.py']
@@ -41,6 +45,7 @@ setup(
             'doppel-test = doppel.cli:main'
         ]
     },
+    test_suite='tests',
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
