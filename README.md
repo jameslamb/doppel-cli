@@ -1,11 +1,9 @@
-# doppel
+# doppel-cli
 
-[![Travis Build Status](https://travis-ci.org/jameslamb/doppel.svg?branch=master)](https://travis-ci.org/jameslamb/doppel)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/doppel?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/doppel)
-[![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
-[![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/gh/jameslamb/doppel-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/jameslamb/doppel-cli)
+[![Travis Build Status](https://travis-ci.org/jameslamb/doppel-cli.svg?branch=master)](https://travis-ci.org/jameslamb/doppel-cli)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/doppel-cli?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/gh/jameslamb/doppel-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/jameslamb/doppel-cli) [![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![downloads](https://img.shields.io/pypi/dm/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![license](https://img.shields.io/pypi/l/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
 
-`doppel` is an integration testing framework for testing API similarity across languages.
+`doppel-cli` is an integration testing framework for testing API similarity across languages.
 
 # What is the value of keeping the same public interface?
 
@@ -26,7 +24,7 @@ For the most up-to-date documentation, please see https://doppel-cli.readthedocs
 
 ## Getting started
 
-`doppel` can be installed from source just like any other python package.
+`doppel-cli` can be installed from source just like any other python package.
 
 ```
 python setup.py install
