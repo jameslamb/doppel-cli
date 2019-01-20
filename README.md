@@ -178,12 +178,3 @@ and
 ```
 doppel-test --help
 ```
-
-# References
-
-1. [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
-2. [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
-3. [Testing on multiple operating systems with Travis](https://docs.travis-ci.com/user/multi-os/)
-4. [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
-5. [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
-6. [networkx: example appveyor setup for python](https://github.com/networkx/networkx/blob/master/.appveyor.yml)
