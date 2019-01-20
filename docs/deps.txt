@@ -1,0 +1,5 @@
+# Packages that need to be pip installed
+# to build docs.
+# See https://docs.readthedocs.io/en/latest/yaml-config.html#requirements-file
+sphinx
+sphinx_autodoc_typehints

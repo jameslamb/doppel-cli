@@ -5,5 +5,4 @@ image:
 python:
   version: 3
   setup_py_install: true
-  extra_requirements:
-    - docs
+  requirements_file: docs/deps.txt
