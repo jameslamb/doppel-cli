@@ -9,11 +9,13 @@ def _log_info(msg):
 
 
 class PackageAPI():
-    """
+    """Package API class
+
     This class is used to hold the interface of a given package
     being analyzed by doppel. It's comparison operators enable comparison
     between interfaces and its standard JSON format allows this comparison
     to happen across programming languages.
+
     """
 
     def __init__(self, pkg_dict: dict):

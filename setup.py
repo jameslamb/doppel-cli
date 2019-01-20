@@ -1,4 +1,5 @@
 from setuptools import setup
+from setuptools import find_packages
 
 with open('README.md', 'r') as f:
     readme = f.read()
@@ -18,7 +19,7 @@ documentation_deps = [
 
 setup(
     name='doppel-cli',
-    packages=['doppel'],
+    packages=find_packages(),
     description='An integration testing framework for testing API similarity of software libraries.',
     long_description=readme,
     version=version,

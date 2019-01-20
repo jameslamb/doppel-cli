@@ -1,5 +1,7 @@
-Documentation for uds-cli package code
-**************************************
+
+Main Interface
+--------------
 
 .. automodule:: doppel
-   :members:
+    :members:
+    :undoc-members:

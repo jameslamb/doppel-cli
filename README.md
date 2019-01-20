@@ -20,6 +20,10 @@ Why is this valuable?
     * no need to re-learn the API when switching languages
     * form better expectations when switching languages
 
+## Documentation
+
+For the most up-to-date documentation, please see https://doppel-cli.readthedocs.io/en/latest/.
+
 ## Getting started
 
 `doppel` can be installed from source just like any other python package.
