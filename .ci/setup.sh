@@ -24,6 +24,7 @@ conda install -c r \
 # Get packages for testing
 Rscript -e "install.packages('futile.logger', repos = '${CRAN_MIRROR}')"
 pip install \
+    --user \
     argparse \
     coverage \
     codecov \
