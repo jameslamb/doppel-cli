@@ -1,4 +1,8 @@
 
+# We never need more than the most recent commit
+git:
+  depth: 1
+
 # Stuff shared by all builds
 before_install:
   - .ci/setup.sh

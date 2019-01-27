@@ -7,6 +7,8 @@ TEST_DATA_DIR=$(pwd)/test_data
 MIN_TEST_COVERAGE=20
 INTEGRATION_TEST_PACKAGE=argparse
 
+# Make sure we're living in conda land
+export PATH="$HOME/miniconda/bin:$PATH"
 
 echo "Checking code for style problems..."
 
