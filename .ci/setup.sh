@@ -27,4 +27,6 @@ pip install \
     argparse \
     coverage \
     codecov \
-    pycodestyle
+    pycodestyle \
+    sphinx \
+    sphinx_autodoc_typehints
