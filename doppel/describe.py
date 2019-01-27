@@ -32,7 +32,7 @@ def main(language, pkg_name: str, data_dir: str):
 
     try:
         analysis_script = pkg_resources.resource_filename(
-                'doppel', 'bin/{}'.format(files[language])
+            'doppel', 'bin/{}'.format(files[language])
         )
     except KeyError:
         raise KeyError("doppel does not know how to test {} packages".format(language))
