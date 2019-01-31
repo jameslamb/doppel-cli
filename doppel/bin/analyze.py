@@ -43,7 +43,6 @@ out = {
     "classes": {}
 }
 
-
 # lil helper
 def _log_info(msg):
     print(msg)
@@ -55,13 +54,10 @@ def _get_arg_names(f, kwargs_string):
     """
     f_dict = inspect.getfullargspec(f)._asdict()
     args = f_dict['args']
-
     # deal with people passing "**kwargs"
     if f_dict['varkw'] is not None:
         args.append(kwargs_string)
-
     return(args)
-
 
 modules_to_parse = [top_level_env]
 
@@ -101,7 +97,28 @@ while len(modules_to_parse) > 0:
                 is_in_package = bool(re.search(regex, str(obj)))
 
                 if is_in_package:
-                    out['classes'][obj_name] = []
+
+                    out['classes'][obj_name] = {}
+                    out['classes'][obj_name]['public_methods'] = {}
+
+                    for f in dir(obj):
+                        func = getattr(obj, f)
+                        print(f)
+                        print(str(func))
+                        if callable(func) and not f.startswith("_"):
+
+                            # Deal with decorators
+                            try:
+                                method_args = _get_arg_names(func, KWARGS_STRING)
+                            except TypeError:
+                                method_args = _get_arg_names(
+                                    func.__wrapped__,
+                                    KWARGS_STRING
+                                )
+
+                            out['classes'][obj_name]['public_methods'][f] = {
+                                "args": method_args
+                            }
             next
 
         elif isinstance(obj, types.ModuleType):

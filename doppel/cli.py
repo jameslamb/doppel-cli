@@ -77,6 +77,9 @@ class PackageAPI():
     def class_names(self):
         return(list(self.pkg_dict['classes'].keys()))
 
+    def public_methods(self, class_name):
+        return(list(self.pkg_dict['classes'][class_name]['public_methods'].keys()))
+
 
 @click.command()
 @click.option(

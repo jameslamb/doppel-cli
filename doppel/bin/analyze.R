@@ -29,6 +29,10 @@ PKG_NAME <- args[["pkg"]]
 OUT_DIR <- args[["output_dir"]]
 KWARGS_STRING <- args[["kwargs_string"]]
 LANGUAGE <- 'r'
+R6_SPECIAL_METHODS <- c(
+    'initialize',
+    'clone'
+)
 
 # lil helper
 .log_info <- function(msg){
@@ -54,6 +58,7 @@ out <- list(
 )
 
 for (obj_name in export_names){
+
     obj <- get(obj_name, envir = pkg_env)
 
     if (is.function(obj)){
@@ -68,12 +73,35 @@ for (obj_name in export_names){
     }
 
     if (R6::is.R6Class(obj)){
-        out[["classes"]][[obj_name]] <- list()
+        out[["classes"]][[obj_name]] <- c()
+        out[["classes"]][[obj_name]][["public_methods"]] <- c()
+
+        public_methods <- base::setdiff(
+            names(obj$public_methods)
+            , R6_SPECIAL_METHODS
+        )
+
+        for (pm in public_methods){
+
+            # Grab ordered list of arguments
+            method_args <- suppressWarnings({
+                names(formals(obj[["public_methods"]][[pm]]))
+            })
+
+            if (is.null(method_args)){
+                method_args <- list()
+            }
+
+            out[["classes"]][[obj_name]][["public_methods"]][[pm]] <- list(
+                "args" = method_args
+            )
+        }
+
         next
     }
 }
 
-# jsonlite treates mpty, unnamed lists as arrays, we want to write empty dicts
+# jsonlite treates empty, unnamed lists as arrays, we want to write empty dicts
 for (obj_type in c("functions", "classes")){
     if (identical(out[[obj_type]], list())){
         lst <- list()
