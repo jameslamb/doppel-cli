@@ -29,4 +29,5 @@ pip install \
     codecov \
     pycodestyle \
     sphinx \
-    sphinx_autodoc_typehints
+    sphinx_autodoc_typehints \
+    sphinx_rtd_theme
