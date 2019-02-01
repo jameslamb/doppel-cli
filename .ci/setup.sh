@@ -28,9 +28,12 @@ ${CONDA_DIR}/bin/conda install -c r \
 Rscript -e "install.packages('futile.logger', repos = '${CRAN_MIRROR}')"
 pip install \
     argparse \
+    click \
     coverage \
     codecov \
     pycodestyle \
     sphinx \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme
+    sphinx_rtd_theme \
+    tabulate
