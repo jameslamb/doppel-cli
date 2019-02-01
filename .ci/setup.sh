@@ -4,18 +4,21 @@ set -e
 
 # Set up environment variables
 CRAN_MIRROR=http://cran.rstudio.com
+CONDA_DIR=$HOME/miniconda
 
 # Install conda
 wget ${MINICONDA_INSTALLER} -O miniconda.sh;
-bash miniconda.sh -b -p $HOME/miniconda
-export PATH="$HOME/miniconda/bin:$PATH"
+bash miniconda.sh -b -p ${CONDA_DIR}
+export PATH="${CONDA_DIR}/bin:$PATH"
+
+alias conda=${CONDA_DIR}/bin/conda
 hash -r
 conda config --set always_yes yes --set changeps1 no
 conda update -q conda
 conda info -a
 
 # Set up R (gulp)
-conda install -c r \
+${CONDA_DIR}/bin/conda install -c r \
     r \
     r-argparse \
     r-jsonlite \
@@ -29,4 +32,5 @@ pip install \
     codecov \
     pycodestyle \
     sphinx \
-    sphinx_autodoc_typehints
+    sphinx_autodoc_typehints \
+    sphinx_rtd_theme
