@@ -8,7 +8,6 @@ export CRAN_MIRROR=http://cran.rstudio.com
 # Install conda
 wget ${MINICONDA_INSTALLER} -O miniconda.sh;
 bash miniconda.sh -b -p ${CONDA_DIR}
-export PATH="${CONDA_DIR}/bin:$PATH"
 echo "export PATH=${CONDA_DIR}/bin:$PATH" >> ${HOME}/.bashrc
 
 hash -r

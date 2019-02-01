@@ -6,6 +6,8 @@ git:
 # Stuff shared by all builds
 before_install:
   - .ci/setup.sh
+  - export PATH=${CONDA_DIR}/bin:$PATH
+  - echo ${PATH}
   - echo ${CONDA_DIR}
   - which conda
   - which Rscript
@@ -31,6 +33,7 @@ matrix:
       python: 3.6
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        - CONDA_DIR=/home/travis/miniconda3
       install:
         - python setup.py install
     
@@ -42,9 +45,9 @@ matrix:
       language: generic
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
-        - CONDA_DIR=/home/travis/miniconda3
+        - CONDA_DIR=/Users/travis/miniconda3
       install:
-        - /home/travis/miniconda3/bin/conda create -q -n testenv python=3.6.1 nose pytest
+        - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6.1 nose pytest
         - source activate testenv
         - pip install argparse
         - python setup.py install
