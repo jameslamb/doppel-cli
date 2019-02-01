@@ -1,6 +1,9 @@
-# Allow coverage to decrease by 1.0%.
+# Allow coverage to decrease by 4.0%.
 coverage:
   status:
     project:
       default:
-        threshold: 1.0%
+        target: '20'
+    patch:
+      default:
+        target: '20'

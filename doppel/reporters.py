@@ -76,6 +76,8 @@ class SimpleReporter:
         self._check_class_count()
         self._check_class_names()
 
+        self._check_class_public_methods()
+
         # Finally
         self._respond()
 
@@ -310,7 +312,7 @@ class SimpleReporter:
             pkg_names.append(pkg_name)
             classes_by_package[pkg_name] = pkg.class_names()
 
-        # Headers are easy moeny
+        # Headers are easy money
         headers = ['class_name'] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
@@ -343,3 +345,49 @@ class SimpleReporter:
 
         # Print output
         stdout.write("\n")
+
+    def _check_class_public_methods(self):
+        """
+        Check for consistency of public method names
+        across different classes. Looking for errors
+        of the form "class X has method y which does
+        not exist on class X"
+        """
+
+        stdout.write("\nClass Public Methods\n")
+        stdout.write("====================\n")
+
+        # Only work on shared classes
+        shared_classes = set(self.pkgs[0].class_names())
+        for pkg in self.pkgs[1:]:
+            shared_classes = shared_classes.intersection(pkg.class_names())
+
+        if len(shared_classes) == 0:
+            stdout.write('No shared classes.\n')
+            return
+
+        # Figure out which methods are not shared across
+        # all packages
+        for class_name in shared_classes:
+            shared_methods = set(
+                self.pkgs[0].public_methods(class_name)
+            )
+            nonshared_methods = set([])
+
+            for pkg in self.pkgs[1:]:
+                methods = pkg.public_methods(class_name)
+                diff = shared_methods.symmetric_difference(
+                    methods
+                )
+
+                shared_methods = shared_methods.intersection(methods)
+                for m in diff:
+                    nonshared_methods.add(m)
+
+            # If anything is in nonshared methods, add an error
+            for method in nonshared_methods:
+                error_txt = "Not all implementations of class '{}' have public method '{}()".format(
+                    class_name,
+                    method
+                )
+                self.errors.append(DoppelTestError(error_txt))
