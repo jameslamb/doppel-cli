@@ -10,7 +10,7 @@ export CONDA_DIR=${HOME}/miniconda3
 wget ${MINICONDA_INSTALLER} -O miniconda.sh;
 bash miniconda.sh -b -p ${CONDA_DIR}
 export PATH="${CONDA_DIR}/bin:$PATH"
-echo "export PATH=${CONDA_DIR}/bin:$PATH" >> ~/.bash_profile
+echo "export PATH=${CONDA_DIR}/bin:$PATH" >> ~/.bashrc
 
 hash -r
 ${CONDA_DIR}/bin/conda config --set always_yes yes --set changeps1 no
