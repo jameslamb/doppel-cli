@@ -23,8 +23,8 @@ ${CONDA_DIR}/bin/conda install -c r \
     r-r6 
 
 # Get packages for testing
-Rscript -e "install.packages('futile.logger', repos = '${CRAN_MIRROR}')"
-pip install \
+${CONDA_DIR}/bin/Rscript -e "install.packages('futile.logger', repos = '${CRAN_MIRROR}')"
+${CONDA_DIR}/bin/pip install \
     --user \
     argparse \
     click \
