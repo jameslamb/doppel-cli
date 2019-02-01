@@ -3,9 +3,7 @@ coverage:
   status:
     project:
       default:
-        enabled: no
         target: '20'
     patch:
       default:
-        enabled: no
         target: '20'
