@@ -19,6 +19,7 @@ matrix:
       python: 3.5
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        - CONDA_DIR=/opt/conda
       install:
         - python setup.py install
 
@@ -38,8 +39,9 @@ matrix:
       language: generic
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
+        - CONDA_DIR=/opt/conda
       install:
-        - conda create -q -n testenv python=3.6.1 nose pytest
+        - ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6.1 nose pytest
         - source activate testenv
         - pip install argparse
         - python setup.py install
