@@ -27,3 +27,6 @@ test_data/*.json
 # documentation
 **/_build/
 **/warnings.txt
+
+# aspell check stuff
+**/*.bak
