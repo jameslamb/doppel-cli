@@ -34,6 +34,5 @@ pip install \
     pycodestyle \
     sphinx \
     sphinx_autodoc_typehints \
-    sphinx_rtd_theme
     sphinx_rtd_theme \
     tabulate
