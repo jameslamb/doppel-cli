@@ -3,7 +3,8 @@
 set -e
 
 # Set up environment variables
-CRAN_MIRROR=http://cran.rstudio.com
+export CRAN_MIRROR=http://cran.rstudio.com
+export CONDA_DIR=${HOME}/miniconda3
 
 # Install conda
 wget ${MINICONDA_INSTALLER} -O miniconda.sh;
