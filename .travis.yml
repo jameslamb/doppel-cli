@@ -1,29 +1,20 @@
 
+# We never need more than the most recent commit
+git:
+  depth: 1
+
 # Stuff shared by all builds
 before_install:
-  # Enable conda
-  - wget ${MINICONDA_INSTALLER} -O miniconda.sh;
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes --set changeps1 no
-  - conda update -q conda
-  - conda info -a
-  # Set up R (gulp)
-  - conda install -c r r r-jsonlite r-r6 r-argparse
-  # Get packages for testing
-  - Rscript -e "install.packages('futile.logger', repos = 'http://cran.rstudio.com')"
-  - pip install argparse
-  - pip install coverage codecov
+  - .ci/setup.sh
+  - export PATH=${CONDA_DIR}/bin:$PATH
+  - echo ${PATH}
+  - echo ${CONDA_DIR}
+  - which conda
+  - which Rscript
 
 # Testing strategy is just "run the code and see if it executes at all"
 script:
-  - echo "unit tests"
-  - coverage run setup.py test
-  - echo "integration tests"
-  - doppel-describe -p argparse --language python --data-dir $(pwd)/test_data
-  - doppel-describe -p argparse --language r --data-dir $(pwd)/test_data
-  - doppel-test --files $(pwd)/test_data/python_argparse.json,$(pwd)/test_data/r_argparse.json --errors-allowed 100
+  - .ci/test.sh
 
 matrix:
   include:
@@ -33,6 +24,7 @@ matrix:
       python: 3.5
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        - CONDA_DIR=/home/travis/miniconda3
       install:
         - python setup.py install
 
@@ -41,6 +33,7 @@ matrix:
       python: 3.6
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        - CONDA_DIR=/home/travis/miniconda3
       install:
         - python setup.py install
     
@@ -52,8 +45,9 @@ matrix:
       language: generic
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
+        - CONDA_DIR=/Users/travis/miniconda3
       install:
-        - conda create -q -n testenv python=3.6.1 nose pytest
+        - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6.1 nose pytest
         - source activate testenv
         - pip install argparse
         - python setup.py install

@@ -14,15 +14,15 @@ parser.add_argument(
     help="Name of the python package to test"
 )
 parser.add_argument(
-   "--output_dir",
-   type=str,
-   default=os.getcwd(),
-   help="Path to write files to"
+    "--output_dir",
+    type=str,
+    default=os.getcwd(),
+    help="Path to write files to"
 )
 parser.add_argument(
-   "--kwargs-string",
-   type=str,
-   help="String value to replace **kwarg"
+    "--kwargs-string",
+    type=str,
+    help="String value to replace **kwarg"
 )
 
 # Grab args (store in constants for easier debugging)
