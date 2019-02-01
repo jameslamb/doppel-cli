@@ -3,4 +3,9 @@ coverage:
   status:
     project:
       default:
-        threshold: 10.0%
+        enabled: no
+        target: '20'
+    patch:
+      default:
+        enabled: no
+        target: '20'
