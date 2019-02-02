@@ -44,6 +44,7 @@ def main(language, pkg_name: str, data_dir: str):
     )
 
     print("Describing package with command:\n {}".format(cmd))
+
     # Invoke the analysis script
     os.system(cmd)
 

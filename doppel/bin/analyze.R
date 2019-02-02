@@ -101,7 +101,7 @@ for (obj_name in export_names){
     }
 }
 
-# jsonlite treates empty, unnamed lists as arrays, we want to write empty dicts
+# jsonlite treats empty, unnamed lists as arrays, we want to write empty dicts
 for (obj_type in c("functions", "classes")){
     if (identical(out[[obj_type]], list())){
         lst <- list()

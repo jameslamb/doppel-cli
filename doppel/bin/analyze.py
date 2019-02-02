@@ -94,7 +94,7 @@ while len(modules_to_parse) > 0:
             if issubclass(obj, Exception):
                 _log_info("{} is an Exception. Skipping.".format(obj_name))
             else:
-                # imoprts like 'from requests.adapter import HTTPAdapter'
+                # imports like 'from requests.adapter import HTTPAdapter'
                 regex = "'" + PKG_NAME + "\\.+.*"
                 is_in_package = bool(re.search(regex, str(obj)))
 
@@ -105,8 +105,6 @@ while len(modules_to_parse) > 0:
 
                     for f in dir(obj):
                         func = getattr(obj, f)
-                        print(f)
-                        print(str(func))
                         if callable(func) and not f.startswith("_"):
 
                             # Deal with decorators

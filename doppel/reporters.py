@@ -8,7 +8,12 @@ from typing import List
 
 class DoppelTestError:
 
-    def __init__(self, msg):
+    def __init__(self, msg: str):
+        """
+        Custom error class used for testing issues.
+
+        :param msg: Error text to print
+        """
         self.msg = msg
 
     def __str__(self):
@@ -30,6 +35,9 @@ class OutputTable:
         self.headers = headers
 
     def write(self):
+        """
+        Write out a table of results to stdout.
+        """
         stdout.write(tabulate(self.rows, self.headers, tablefmt="grid"))
         stdout.write('\n')
 
@@ -149,7 +157,7 @@ class SimpleReporter:
             pkg_names.append(pkg_name)
             functions_by_package[pkg_name] = pkg.function_names()
 
-        # Headers are easy moeny
+        # Headers are easy money
         headers = ['function_name'] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
