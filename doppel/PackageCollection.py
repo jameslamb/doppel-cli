@@ -18,7 +18,7 @@ class PackageCollection:
         out = set([])
         for pkg in self.pkgs:
             out = out.union(pkg.class_names())
-        return(out)
+        return(list(out))
 
     def shared_classes(self) -> List[str]:
         """
@@ -48,7 +48,7 @@ class PackageCollection:
         out = set([])
         for pkg in self.pkgs:
             out = out.union(pkg.function_names())
-        return(out)
+        return(list(out))
 
     def shared_functions(self) -> List[str]:
         """
@@ -81,5 +81,5 @@ class PackageCollection:
             methods = set(self.pkgs[0].public_methods(class_name))
             for pkg in self.pkgs[1:]:
                 methods = methods.intersection(pkg.public_methods(class_name))
-            out[class_name] = methods
+            out[class_name] = list(methods)
         return(out)

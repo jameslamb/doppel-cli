@@ -93,7 +93,7 @@ for (obj_name in export_names){
             }
 
             out[["classes"]][[obj_name]][["public_methods"]][[pm]] <- list(
-                "args" = method_args
+                "args" = as.list(method_args)
             )
         }
 
