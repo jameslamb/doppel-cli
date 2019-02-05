@@ -1,4 +1,5 @@
 from doppel import PackageAPI
+from typing import Dict
 from typing import List
 
 
@@ -68,3 +69,17 @@ class PackageCollection:
         all_funcs = set(self.all_functions())
         shared_funcs = set(self.shared_functions())
         return(list(all_funcs.difference(shared_funcs)))
+
+    def shared_methods_by_class(self) -> Dict[str, List[str]]:
+        """
+        List of public methods in each shared
+        class across all packages
+        """
+        out = {}
+        shared_classes = self.shared_classes()
+        for class_name in shared_classes:
+            methods = set(self.pkgs[0].public_methods(class_name))
+            for pkg in self.pkgs[1:]:
+                methods = methods.intersection(pkg.public_methods(class_name))
+            out[class_name] = methods
+        return(out)

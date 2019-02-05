@@ -80,6 +80,9 @@ class PackageAPI():
     def public_methods(self, class_name):
         return(list(self.pkg_dict['classes'][class_name]['public_methods'].keys()))
 
+    def public_method_args(self, class_name, method_name):
+        return(list(self.pkg_dict['classes'][class_name]['public_methods'][method_name]['args']))
+
 
 @click.command()
 @click.option(
