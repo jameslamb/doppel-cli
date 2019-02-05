@@ -389,23 +389,21 @@ class SimpleReporter:
 
         shared_methods_by_class = self.pkg_collection.shared_methods_by_class()
         for class_name, methods in shared_methods_by_class.items():
-            print(class_name)
             for method_name in methods:
-                print("---- {}".format(method_name))
                 all_args = set(self.pkgs[0].public_method_args(class_name, method_name))
                 shared_args = set(self.pkgs[0].public_method_args(class_name, method_name))
                 for pkg in self.pkgs[1:]:
                     args = pkg.public_method_args(class_name, method_name)
-                    all_args = all_args.union(set(args))
-                    shared_args = shared_args.intersection(set(args))
+                    all_args = all_args.union(args)
+                    shared_args = shared_args.intersection(args)
 
-            # report errors
-            non_shared_args = all_args.difference(shared_args)
-            for arg in non_shared_args:
-                error_txt = "Not all implementations of '{}.{}()' have keyword argument '{}'."
-                error_txt = error_txt.format(
-                    class_name,
-                    method_name,
-                    arg
-                )
-                self.errors.append(DoppelTestError(error_txt))
+                # report errors
+                non_shared_args = all_args.difference(shared_args)
+                for arg in non_shared_args:
+                    error_txt = "Not all implementations of '{}.{}()' have keyword argument '{}'."
+                    error_txt = error_txt.format(
+                        class_name,
+                        method_name,
+                        arg
+                    )
+                    self.errors.append(DoppelTestError(error_txt))
