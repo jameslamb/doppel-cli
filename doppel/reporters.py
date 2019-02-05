@@ -66,6 +66,7 @@ class SimpleReporter:
             assert isinstance(pkg, doppel.PackageAPI)
 
         self.pkgs = pkgs
+        self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
 
     def compare(self):
@@ -85,6 +86,7 @@ class SimpleReporter:
         self._check_class_names()
 
         self._check_class_public_methods()
+        self._check_class_public_method_args()
 
         # Finally
         self._respond()
@@ -161,12 +163,9 @@ class SimpleReporter:
         headers = ['function_name'] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
-        all_functions = set([])
-        for _, v in functions_by_package.items():
-            for name in v:
-                all_functions.add(name)
+        all_functions = self.pkg_collection.all_functions()
+        non_shared_functions = self.pkg_collection.non_shared_functions()
 
-        functions_not_shared_by_all_pkgs = set([])
         rows = []
         for func_name in all_functions:
             row = [func_name]
@@ -175,7 +174,6 @@ class SimpleReporter:
                     row += [self.exists_string]
                 else:
                     row += [self.absent_string]
-                    functions_not_shared_by_all_pkgs.add(func_name)
             rows += [row]
 
         # Report output
@@ -183,8 +181,8 @@ class SimpleReporter:
         out.write()
 
         # Append errors
-        if len(functions_not_shared_by_all_pkgs) > 0:
-            for func_name in functions_not_shared_by_all_pkgs:
+        if len(non_shared_functions) > 0:
+            for func_name in non_shared_functions:
                 error_txt = "Function '{}()' is not exported by all packages".format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
 
@@ -203,21 +201,8 @@ class SimpleReporter:
 
         func_blocks_by_package = {}
         pkg_names = []
-        shared_functions = None
-        all_functions = set([])
-        for pkg in self.pkgs:
-            funcs = pkg.functions_with_args()
-            func_blocks_by_package[pkg.name()] = funcs
-            pkg_names.append(pkg.name())
-            func_names = funcs.keys()
-
-            for func_name in func_names:
-                all_functions.add(func_name)
-
-            if shared_functions is None:
-                shared_functions = set(func_names)
-            else:
-                shared_functions = shared_functions.intersection(set(func_names))
+        shared_functions = self.pkg_collection.shared_functions()
+        all_functions = self.pkg_collection.all_functions()
 
         # If there are no shared functions, skip
         if len(shared_functions) == 0:
@@ -324,12 +309,9 @@ class SimpleReporter:
         headers = ['class_name'] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
-        all_classes = set([])
-        for _, v in classes_by_package.items():
-            for name in v:
-                all_classes.add(name)
+        all_classes = self.pkg_collection.all_classes()
+        non_shared_classes = self.pkg_collection.non_shared_classes()
 
-        classes_not_shared_by_all_pkgs = set([])
         rows = []
         for class_name in all_classes:
             row = [class_name]
@@ -338,7 +320,6 @@ class SimpleReporter:
                     row += [self.exists_string]
                 else:
                     row += [self.absent_string]
-                    classes_not_shared_by_all_pkgs.add(class_name)
             rows += [row]
 
         # Report output
@@ -346,8 +327,8 @@ class SimpleReporter:
         out.write()
 
         # Append errors
-        if len(classes_not_shared_by_all_pkgs) > 0:
-            for class_name in classes_not_shared_by_all_pkgs:
+        if len(non_shared_classes) > 0:
+            for class_name in non_shared_classes:
                 error_txt = "Class '{}' is not exported by all packages".format(class_name)
                 self.errors.append(DoppelTestError(error_txt))
 
@@ -365,10 +346,7 @@ class SimpleReporter:
         stdout.write("\nClass Public Methods\n")
         stdout.write("====================\n")
 
-        # Only work on shared classes
-        shared_classes = set(self.pkgs[0].class_names())
-        for pkg in self.pkgs[1:]:
-            shared_classes = shared_classes.intersection(pkg.class_names())
+        shared_classes = self.pkg_collection.shared_classes()
 
         if len(shared_classes) == 0:
             stdout.write('No shared classes.\n')
@@ -399,3 +377,12 @@ class SimpleReporter:
                     method
                 )
                 self.errors.append(DoppelTestError(error_txt))
+
+    def _check_class_public_method_args(self):
+        """
+        Check for consistency of public method signatures
+        (arguments) for shared public methods in shared
+        classes
+        """
+        shared_classes = self.pkg_collection.shared_classes()
+        pass
