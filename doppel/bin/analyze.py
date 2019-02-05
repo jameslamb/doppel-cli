@@ -32,6 +32,13 @@ OUT_DIR = args.output_dir
 KWARGS_STRING = args.kwargs_string
 LANGUAGE = 'python'
 
+# These are lanaguage-specific
+# conventions we can drop
+SPECIAL_METHOD_ARGS = [
+    'self',
+    'cls'
+]
+
 # Import that module
 top_level_env = __import__(PKG_NAME)
 
@@ -44,7 +51,6 @@ out = {
 }
 
 
-# lil helper
 def _log_info(msg):
     print(msg)
 
@@ -115,6 +121,11 @@ while len(modules_to_parse) > 0:
                                     func.__wrapped__,
                                     KWARGS_STRING
                                 )
+
+                            # Handle Python "self" conventions
+                            method_args = [
+                                a for a in method_args if a not in SPECIAL_METHOD_ARGS
+                            ]
 
                             out['classes'][obj_name]['public_methods'][f] = {
                                 "args": method_args
