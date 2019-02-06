@@ -81,6 +81,15 @@ for (obj_name in export_names){
             , R6_SPECIAL_METHODS
         )
 
+        # Empty classes are a thing. This handles that case.
+        # Using a named empty list so jsonlite::toJSON() will make it
+        # {} not []
+        if (length(public_methods) == 0){
+            empty_dict <- list()
+            names(empty_dict) <- character(0)
+            out[["classes"]][[obj_name]][["public_methods"]] <- empty_dict
+        }
+
         for (pm in public_methods){
 
             # Grab ordered list of arguments
