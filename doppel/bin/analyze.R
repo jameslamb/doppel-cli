@@ -33,6 +33,18 @@ R6_SPECIAL_METHODS <- c(
     'initialize',
     'clone'
 )
+R6_CLASS_METHODS <- c(
+    'clone_method',
+    'debug',
+    'get_inherit',
+    'has_private',
+    'is_locked',
+    'lock',
+    'new',
+    'set',
+    'undebug',
+    'unlock'
+)
 
 # lil helper
 .log_info <- function(msg){
@@ -106,6 +118,41 @@ for (obj_name in export_names){
             )
         }
 
+        # Check for class methods. For now, these are just treated as
+        # "public methods"
+        class_methods <- Filter(
+            f = function(o){is.function(o)}
+            , x = eapply(obj, function(x){x})
+        )
+
+        # Drop class methods that ship with R6
+        non_default_class_methods <- base::setdiff(
+            names(class_methods)
+            , R6_CLASS_METHODS
+        )
+
+        if (length(non_default_class_methods) == 0){
+            .log_info(sprintf(
+                "No class methods found in class '%s'"
+                , obj_name
+            ))
+        } else {
+
+            for (method in non_default_class_methods){
+                # Grab ordered list of arguments
+                method_args <- suppressWarnings({
+                    names(formals(get(method, obj)))
+                })
+
+                if (is.null(method_args)){
+                    method_args <- list()
+                }
+
+                out[["classes"]][[obj_name]][["public_methods"]][[method]] <- list(
+                    "args" = as.list(method_args)
+                )
+            }
+        }
         next
     }
 }
