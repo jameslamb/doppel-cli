@@ -22,17 +22,23 @@ parser$add_argument(
    , type = "character"
    , help = "String value to replace **kwarg"
 )
+parser$add_argument(
+   "--constructor-string"
+   , type = "character"
+   , help = "String value to replace the constructor in the list of class public methods"
+)
 
 # Grab args (store in constants for easier debugging)
 args <- parser$parse_args()
 PKG_NAME <- args[["pkg"]]
 OUT_DIR <- args[["output_dir"]]
 KWARGS_STRING <- args[["kwargs_string"]]
+CONSTRUCTOR_STRING <- args[["constructor_string"]]
 LANGUAGE <- 'r'
-R6_SPECIAL_METHODS <- c(
-    'initialize',
+R6_SPECIAL_METHODS_TO_EXCLUDE <- c(
     'clone'
 )
+R6_CONSTRUCTOR_NAME <- 'initialize'
 R6_CLASS_METHODS <- c(
     'clone_method',
     'debug',
@@ -118,9 +124,16 @@ for (obj_name in export_names){
         # Drop R6-specific public methods like "clone"
         methods_to_keep <- base::setdiff(
             names(public_methods)
-            , R6_SPECIAL_METHODS
+            , R6_SPECIAL_METHODS_TO_EXCLUDE
         )
         public_methods <- public_methods[methods_to_keep]
+
+        # If the R6 constructor ('initialize') isn't defined, an empty
+        # one won't show up in the list of public methods. Need to
+        # add it here to be explicit
+        if (! R6_CONSTRUCTOR_NAME %in% names(public_methods)){
+            public_methods[[R6_CONSTRUCTOR_NAME]] <- function(){NULL}
+        }
 
         # Empty classes are a thing. This handles that case.
         # Using a named empty list so jsonlite::toJSON() will make it
@@ -134,6 +147,9 @@ for (obj_name in export_names){
 
                 pm <- public_methods[[i]]
                 method_name <- names(public_methods)[[i]]
+                if (method_name == R6_CONSTRUCTOR_NAME){
+                    method_name <- CONSTRUCTOR_STRING
+                }
 
                 # Grab ordered list of arguments
                 method_args <- suppressWarnings({

@@ -24,12 +24,18 @@ parser.add_argument(
     type=str,
     help="String value to replace **kwarg"
 )
+parser.add_argument(
+    "--constructor-string",
+    type=str,
+    help="String value to replace the constructor in the list of class public methods"
+)
 
 # Grab args (store in constants for easier debugging)
 args = parser.parse_args()
 PKG_NAME = args.pkg
 OUT_DIR = args.output_dir
 KWARGS_STRING = args.kwargs_string
+CONSTRUCTOR_STRING = args.constructor_string
 LANGUAGE = 'python'
 
 # These are lanaguage-specific
@@ -75,7 +81,10 @@ while len(modules_to_parse) > 0:
     pkg_env = modules_to_parse.pop()
 
     # Get the exported stuff
-    export_names = list(filter(lambda x: not x.startswith('_'), dir(pkg_env)))
+    export_names = list(filter(
+        lambda x: not x.startswith('_'),
+        dir(pkg_env)
+    ))
 
     for obj_name in export_names:
 
@@ -111,7 +120,11 @@ while len(modules_to_parse) > 0:
 
                     for f in dir(obj):
                         func = getattr(obj, f)
-                        if callable(func) and not f.startswith("_"):
+
+                        is_callable = callable(func)
+                        is_public = not f.startswith("_")
+                        is_constructor = f == '__init__'
+                        if is_callable and (is_public or is_constructor):
 
                             # Deal with decorators
                             try:
@@ -126,6 +139,11 @@ while len(modules_to_parse) > 0:
                             method_args = [
                                 a for a in method_args if a not in SPECIAL_METHOD_ARGS
                             ]
+
+                            # If we're dealing with the class constructor, use the
+                            # passed-in replacement value
+                            if f == '__init__':
+                                f = CONSTRUCTOR_STRING
 
                             out['classes'][obj_name]['public_methods'][f] = {
                                 "args": method_args
