@@ -52,6 +52,30 @@ R6_CLASS_METHODS <- c(
     return(invisible(NULL))
 }
 
+
+# Get all public methods (handling inheritance)
+.get_r6_public_methods <- function(obj){
+    if (is.null(obj)){
+        return(list())
+    }
+
+    # Be sure the children can override their parents!
+    # Looping like this means we'll REPLACE keys (since R
+    # lists don't guarantee key uniqueness)
+    public_methods <- .get_r6_public_methods(
+        obj$get_inherit()
+    )
+
+    these_methods <- obj$public_methods
+    inherited_method_names <- names(public_methods)
+    for (method_name in names(these_methods)){
+        public_methods[[method_name]] <- these_methods[[method_name]]
+    }
+
+    return(public_methods)
+}
+
+
 # grab just the exported objects
 .log_info(sprintf("Loading up namespace for package %s", PKG_NAME))
 pkg_env <- loadNamespace(PKG_NAME)
@@ -85,13 +109,18 @@ for (obj_name in export_names){
     }
 
     if (R6::is.R6Class(obj)){
+
         out[["classes"]][[obj_name]] <- c()
         out[["classes"]][[obj_name]][["public_methods"]] <- c()
 
-        public_methods <- base::setdiff(
-            names(obj$public_methods)
+        public_methods <- .get_r6_public_methods(obj)
+
+        # Drop R6-specific public methods like "clone"
+        methods_to_keep <- base::setdiff(
+            names(public_methods)
             , R6_SPECIAL_METHODS
         )
+        public_methods <- public_methods[methods_to_keep]
 
         # Empty classes are a thing. This handles that case.
         # Using a named empty list so jsonlite::toJSON() will make it
@@ -100,22 +129,25 @@ for (obj_name in export_names){
             empty_dict <- list()
             names(empty_dict) <- character(0)
             out[["classes"]][[obj_name]][["public_methods"]] <- empty_dict
-        }
+        } else {
+            for (i in 1:length(public_methods)){
 
-        for (pm in public_methods){
+                pm <- public_methods[[i]]
+                method_name <- names(public_methods)[[i]]
 
-            # Grab ordered list of arguments
-            method_args <- suppressWarnings({
-                names(formals(obj[["public_methods"]][[pm]]))
-            })
+                # Grab ordered list of arguments
+                method_args <- suppressWarnings({
+                    names(formals(pm))
+                })
 
-            if (is.null(method_args)){
-                method_args <- list()
+                if (is.null(method_args)){
+                    method_args <- list()
+                }
+
+                out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
+                    "args" = as.list(method_args)
+                )
             }
-
-            out[["classes"]][[obj_name]][["public_methods"]][[pm]] <- list(
-                "args" = as.list(method_args)
-            )
         }
 
         # Check for class methods. For now, these are just treated as
