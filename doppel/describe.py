@@ -39,7 +39,7 @@ def main(language, pkg_name: str, data_dir: str):
 
     print(analysis_script)
 
-    cmd = '{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~'.format(
+    cmd = '{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~ --constructor-string ~~CONSTRUCTOR~~'.format(
         analysis_script, pkg_name, data_dir
     )
 
