@@ -97,6 +97,7 @@ while len(modules_to_parse) > 0:
             # Handle special cases where someone did
             # "from <pkg> import <whatever>" in a module.
             if obj_name.startswith(PKG_NAME):
+                _log_info("'{}' is a function in this package, adding it".format(obj_name))
                 out["functions"][obj_name] = {
                     "args": _get_arg_names(obj, kwargs_string=KWARGS_STRING)
                 }
@@ -114,7 +115,7 @@ while len(modules_to_parse) > 0:
                 is_in_package = bool(re.search(regex, str(obj)))
 
                 if is_in_package:
-
+                    _log_info("'{}' is a class in this package, adding it".format(obj_name))
                     out['classes'][obj_name] = {}
                     out['classes'][obj_name]['public_methods'] = {}
 
@@ -155,10 +156,20 @@ while len(modules_to_parse) > 0:
 
             # If the module isn't defined inside this package, ignore it.
             # Otherwise, it must be a sub-package we need to explore
-            regex = '.*[/]' + PKG_NAME + '[/]+.*'
-            is_in_package = bool(re.search(regex, str(obj)))
+            exact_match = obj.__package__ == PKG_NAME
+            looks_like_submodule = obj.__package__.startswith(PKG_NAME + '.')
+
+            is_in_package = exact_match or looks_like_submodule
             if is_in_package:
-                modules_to_parse.append(obj)
+
+                # Some importing strategies can make it seem like the package
+                # has a sub-module exactly named the same as the package, which
+                # can cause an infinite recursion problem. Skip it when that happens
+                if obj.__name__ == PKG_NAME:
+                    _log_info("Skipping module '{}'".format(obj.__name__))
+                else:
+                    _log_info("Module '{}' is in this package, adding it.".format(obj.__name__))
+                    modules_to_parse.append(obj)
         else:
             _log_info("Could not figure out what {} is".format(obj_name))
 
