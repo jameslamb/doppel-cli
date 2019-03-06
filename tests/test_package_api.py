@@ -42,7 +42,7 @@ class TestPackageAPI(unittest.TestCase):
         )
         self.assertEqual(pkg.num_classes(), 1)
         self.assertEqual(pkg.class_names(), ["LupeFiasco"])
-        self.assertEqual(pkg.public_methods("LupeFiasco"), ["~~CONSTRUCTOR~~", "coast"])
+        self.assertEqual(pkg.public_methods("LupeFiasco"), ["coast", "~~CONSTRUCTOR~~"])
         self.assertEqual(
             pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"),
             ["kick", "push"]
@@ -74,7 +74,7 @@ class TestPackageAPI(unittest.TestCase):
         )
         self.assertEqual(pkg.num_classes(), 1)
         self.assertEqual(pkg.class_names(), ["LupeFiasco"])
-        self.assertEqual(pkg.public_methods("LupeFiasco"), ["~~CONSTRUCTOR~~", "coast", "words"])
+        self.assertEqual(pkg.public_methods("LupeFiasco"), ["coast", "words", "~~CONSTRUCTOR~~"])
         self.assertEqual(
             pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"),
             ["kick", "push"]
