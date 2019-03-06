@@ -63,7 +63,7 @@ class PackageAPI():
         return(len(self.function_names()))
 
     def function_names(self):
-        return(list(self.pkg_dict['functions'].keys()))
+        return(sorted(list(self.pkg_dict['functions'].keys())))
 
     def functions_with_args(self):
         return(self.pkg_dict['functions'])
@@ -72,10 +72,10 @@ class PackageAPI():
         return(len(self.class_names()))
 
     def class_names(self):
-        return(list(self.pkg_dict['classes'].keys()))
+        return(sorted(list(self.pkg_dict['classes'].keys())))
 
     def public_methods(self, class_name):
-        return(list(self.pkg_dict['classes'][class_name]['public_methods'].keys()))
+        return(sorted(list(self.pkg_dict['classes'][class_name]['public_methods'].keys())))
 
     def public_method_args(self, class_name, method_name):
         return(list(self.pkg_dict['classes'][class_name]['public_methods'][method_name]['args']))
