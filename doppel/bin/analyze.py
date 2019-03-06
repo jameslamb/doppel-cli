@@ -157,7 +157,7 @@ while len(modules_to_parse) > 0:
             # If the module isn't defined inside this package, ignore it.
             # Otherwise, it must be a sub-package we need to explore
             exact_match = obj.__package__ == PKG_NAME
-            looks_like_submodule = obj.__package__.startswith(PKG_NAME + '.')
+            looks_like_submodule = obj.__name__.startswith(PKG_NAME + '.')
 
             is_in_package = exact_match or looks_like_submodule
             if is_in_package:
