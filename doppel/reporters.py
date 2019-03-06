@@ -4,23 +4,10 @@ from sys import stdout
 from tabulate import tabulate
 from functools import reduce
 from typing import List
+from doppel.DoppelTestError import DoppelTestError
 
 
-class DoppelTestError:
-
-    def __init__(self, msg: str):
-        """
-        Custom error class used for testing issues.
-
-        :param msg: Error text to print
-        """
-        self.msg = msg
-
-    def __str__(self):
-        return("{}\n".format(self.msg))
-
-
-class OutputTable:
+class _OutputTable:
     """
     Many checks will write tabular output. Wrapping
     this in a class so the choice of format from
@@ -128,7 +115,7 @@ class SimpleReporter:
             counts.append(pkg.num_functions())
 
         # Report output
-        out = OutputTable(headers=pkg_names, rows=[counts])
+        out = _OutputTable(headers=pkg_names, rows=[counts])
         out.write()
 
         # Append errors
@@ -177,7 +164,7 @@ class SimpleReporter:
             rows += [row]
 
         # Report output
-        out = OutputTable(headers=headers, rows=rows)
+        out = _OutputTable(headers=headers, rows=rows)
         out.write()
 
         # Append errors
@@ -252,7 +239,7 @@ class SimpleReporter:
             len(all_functions)
         ))
 
-        out = OutputTable(headers=headers, rows=rows)
+        out = _OutputTable(headers=headers, rows=rows)
         out.write()
 
         # Print output
@@ -274,7 +261,7 @@ class SimpleReporter:
             counts.append(pkg.num_classes())
 
         # Report output
-        out = OutputTable(headers=names, rows=[counts])
+        out = _OutputTable(headers=names, rows=[counts])
         out.write()
 
         # Append errors
@@ -323,7 +310,7 @@ class SimpleReporter:
             rows += [row]
 
         # Report output
-        out = OutputTable(headers=headers, rows=rows)
+        out = _OutputTable(headers=headers, rows=rows)
         out.write()
 
         # Append errors
