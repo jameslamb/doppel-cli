@@ -2,6 +2,7 @@
 import click
 import pkg_resources
 import os
+import sys
 
 
 @click.command()
@@ -46,7 +47,11 @@ def main(language, pkg_name: str, data_dir: str):
     print("Describing package with command:\n {}".format(cmd))
 
     # Invoke the analysis script
-    os.system(cmd)
+    exit_code = os.system(cmd)
+
+    if exit_code != 0:
+        msg = "doppel-describe exited with non-zero exit code: {}"
+        raise RuntimeError(msg.format(exit_code))
 
     return
 
