@@ -1,4 +1,4 @@
-from doppel import PackageAPI
+from doppel.PackageAPI import PackageAPI
 from typing import Dict
 from typing import List
 

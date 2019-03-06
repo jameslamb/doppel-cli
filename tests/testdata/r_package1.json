@@ -1,0 +1,33 @@
+{
+  "name": "boombap [r]",
+  "language": "r",
+  "functions": {
+    "playback": {
+      "args": [
+        "bpm",
+        "bass"
+      ]
+    }
+  },
+  "classes": {
+    "LupeFiasco": {
+      "public_methods": {
+        "~~CONSTRUCTOR~~": {
+          "args": [
+            "kick",
+            "push"
+          ]
+        },
+        "coast": {
+          "args": []
+        },
+        "words": {
+          "args": [
+            "i_said",
+            "i_never_said"
+          ]
+        }
+      }
+    }
+  }
+}

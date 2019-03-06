@@ -1,0 +1,27 @@
+{
+  "name": "boombap [python]",
+  "language": "python",
+  "functions": {
+    "playback": {
+      "args": [
+        "bpm",
+        "bass"
+      ]
+    }
+  },
+  "classes": {
+    "LupeFiasco": {
+      "public_methods": {
+        "~~CONSTRUCTOR~~": {
+          "args": [
+            "kick",
+            "push"
+          ]
+        },
+        "coast": {
+          "args": []
+        }
+      }
+    }
+  }
+}

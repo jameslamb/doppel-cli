@@ -3,6 +3,8 @@
 # failure is a natural part of life
 set -e
 
+mkdir -p $(pwd)/test_data
+
 for pkg in uptasticsearch; do
 
     # The R package
