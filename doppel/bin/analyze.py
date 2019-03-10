@@ -120,19 +120,22 @@ while len(modules_to_parse) > 0:
                     out['classes'][obj_name]['public_methods'] = {}
 
                     for f in dir(obj):
-                        func = getattr(obj, f)
+                        class_member = getattr(obj, f)
 
-                        is_callable = callable(func)
+                        is_function = isinstance(class_member, types.FunctionType)
                         is_public = not f.startswith("_")
                         is_constructor = f == '__init__'
-                        if is_callable and (is_public or is_constructor):
+                        if is_function and (is_public or is_constructor):
 
                             # Deal with decorators
                             try:
-                                method_args = _get_arg_names(func, KWARGS_STRING)
+                                method_args = _get_arg_names(
+                                    class_member,
+                                    KWARGS_STRING
+                                )
                             except TypeError:
                                 method_args = _get_arg_names(
-                                    func.__wrapped__,
+                                    class_member.__wrapped__,
                                     KWARGS_STRING
                                 )
 
