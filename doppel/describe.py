@@ -2,7 +2,6 @@
 import click
 import pkg_resources
 import os
-import sys
 
 
 @click.command()
