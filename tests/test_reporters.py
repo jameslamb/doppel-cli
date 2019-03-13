@@ -47,6 +47,13 @@ PACKAGE_SUPER_DIFFERENT = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_SUPER_DIFFERENT['name'] = 'pkg2'
 PACKAGE_SUPER_DIFFERENT['functions']['playback']['args'] = ['stuff', 'things', 'bass']
 
+PACKAGE_EMPTY = {
+    "name": "empty_pkg",
+    "language": "python",
+    "functions": {},
+    "classes": {}
+}
+
 
 class TestSimpleReporter(unittest.TestCase):
 
@@ -138,3 +145,30 @@ class TestSimpleReporter(unittest.TestCase):
         self.assertTrue(
             errors[0].msg.startswith("Function 'playback()' exists in all packages but with differing number of arguments")
         )
+
+    def test_identical_functions(self):
+        """
+        SimpleReporter should not create any errors
+        if the shared function is the same in both packages.
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(BASE_PACKAGE)],
+            errors_allowed=0
+        )
+        reporter._check_function_args()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 0,
+        )
+
+    def test_totally_empty(self):
+        """
+        SimpleReporter should be fine if two packages
+        are totally empty.
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY)],
+            errors_allowed=0
+        )
+        reporter._check_function_args()
+        self.assertTrue(reporter.errors == [])
