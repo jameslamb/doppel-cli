@@ -43,6 +43,10 @@ PACKAGE_WITH_DIFFERENT_ARG_ORDER = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_WITH_DIFFERENT_ARG_ORDER['name'] = 'pkg2'
 PACKAGE_WITH_DIFFERENT_ARG_ORDER['functions']['playback']['args'] = ['bass', 'bpm']
 
+PACKAGE_SUPER_DIFFERENT = copy.deepcopy(BASE_PACKAGE)
+PACKAGE_SUPER_DIFFERENT['name'] = 'pkg2'
+PACKAGE_SUPER_DIFFERENT['functions']['playback']['args'] = ['stuff', 'things', 'bass']
+
 
 class TestSimpleReporter(unittest.TestCase):
 
@@ -111,4 +115,26 @@ class TestSimpleReporter(unittest.TestCase):
         )
         self.assertTrue(
             errors[0].msg == "Function 'playback()' exists in all packages but with differing order of keyword arguments."
+        )
+
+    def test_function_all_wrong(self):
+        """
+        SimpleReporter should only throw a single error
+        if one package has a function with different args, more args
+        and different order.
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            errors_allowed=100
+        )
+        reporter._check_function_args()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 1,
+        )
+        self.assertTrue(
+            all([isinstance(x, DoppelTestError) for x in errors])
+        )
+        self.assertTrue(
+            errors[0].msg.startswith("Function 'playback()' exists in all packages but with differing number of arguments")
         )
