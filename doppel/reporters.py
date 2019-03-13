@@ -31,10 +31,6 @@ class _OutputTable:
 
 class SimpleReporter:
 
-    errors = []
-    exists_string = 'yes'
-    absent_string = 'no'
-
     def __init__(self, pkgs: list, errors_allowed: int):
         """Default object used to manage doppel reporting
 
@@ -52,6 +48,10 @@ class SimpleReporter:
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
+        self.errors = []
+        self.exists_string = 'yes'
+        self.absent_string = 'no'
+
         self.pkgs = pkgs
         self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
@@ -67,7 +67,7 @@ class SimpleReporter:
         # Checks (these print output as they're run)
         self._check_function_count()
         self._check_function_names()
-        self._check_function_arg_names()
+        self._check_function_args()
 
         self._check_class_count()
         self._check_class_names()
@@ -176,7 +176,7 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_function_arg_names(self):
+    def _check_function_args(self):
         """
         For each function that is in both packages, check
         whether the arguments to the functions differ.

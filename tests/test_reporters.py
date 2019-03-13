@@ -1,5 +1,4 @@
 import unittest
-import os
 import copy
 from doppel import SimpleReporter
 from doppel import PackageAPI
@@ -57,7 +56,7 @@ class TestSimpleReporter(unittest.TestCase):
             pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)],
             errors_allowed=100
         )
-        reporter._check_function_arg_names()
+        reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
             len(errors) == 1,
@@ -80,7 +79,7 @@ class TestSimpleReporter(unittest.TestCase):
             pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARGS)],
             errors_allowed=100
         )
-        reporter._check_function_arg_names()
+        reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
             len(errors) == 1,
@@ -102,7 +101,7 @@ class TestSimpleReporter(unittest.TestCase):
             pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER)],
             errors_allowed=100
         )
-        reporter._check_function_arg_names()
+        reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
             len(errors) == 1,
