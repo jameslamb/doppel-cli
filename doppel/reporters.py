@@ -31,10 +31,6 @@ class _OutputTable:
 
 class SimpleReporter:
 
-    errors = []
-    exists_string = 'yes'
-    absent_string = 'no'
-
     def __init__(self, pkgs: list, errors_allowed: int):
         """Default object used to manage doppel reporting
 
@@ -52,6 +48,10 @@ class SimpleReporter:
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
+        self.errors = []
+        self.exists_string = 'yes'
+        self.absent_string = 'no'
+
         self.pkgs = pkgs
         self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
@@ -67,7 +67,7 @@ class SimpleReporter:
         # Checks (these print output as they're run)
         self._check_function_count()
         self._check_function_names()
-        self._check_function_arg_names()
+        self._check_function_args()
 
         self._check_class_count()
         self._check_class_names()
@@ -176,18 +176,19 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_function_arg_names(self):
+    def _check_function_args(self):
         """
         For each function that is in both packages, check
         whether the arguments to the functions differ.
-
-        This method does not consider argument order.
         """
         stdout.write("\nFunction Argument Names\n")
         stdout.write("=======================\n")
 
-        func_blocks_by_package = {}
-        pkg_names = []
+        func_blocks_by_package = {
+            pkg.name(): pkg.pkg_dict['functions']
+            for pkg in self.pkgs
+        }
+        pkg_names = self.pkg_collection.package_names()
         shared_functions = self.pkg_collection.shared_functions()
         all_functions = self.pkg_collection.all_functions()
 
@@ -217,7 +218,8 @@ class SimpleReporter:
             # check 2: same set of arguments
             same_args = reduce(lambda a, b: sorted(a) == sorted(b), args)
             if not same_args:
-                error_txt = "Function '{}()' exists in all packages but with differing set of keyword arguments."
+                error_txt = "Function '{}()' exists in all packages but some arguments are not shared in all implementations."
+                error_txt = error_txt.format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
                 rows.append([func_name, 'no'])
                 continue
@@ -226,6 +228,7 @@ class SimpleReporter:
             same_order = reduce(lambda a, b: a == b, args)
             if not same_order:
                 error_txt = "Function '{}()' exists in all packages but with differing order of keyword arguments."
+                error_txt = error_txt.format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
                 rows.append([func_name, 'no'])
                 continue
@@ -234,7 +237,7 @@ class SimpleReporter:
             rows.append([func_name, 'yes'])
 
         # Report output
-        stdout.write('\n{} or the {} functions shared across all packages have identical signatures\n\n'.format(
+        stdout.write('\n{} of the {} functions shared across all packages have identical signatures\n\n'.format(
             len([r for r in filter(lambda x: x[1] == 'yes', rows)]),
             len(all_functions)
         ))

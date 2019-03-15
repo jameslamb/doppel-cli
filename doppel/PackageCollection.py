@@ -10,6 +10,9 @@ class PackageCollection:
             assert isinstance(pkg, PackageAPI)
         self.pkgs = packages
 
+    def package_names(self) -> List[str]:
+        return([p.name() for p in self.pkgs])
+
     def all_classes(self) -> List[str]:
         """
         List of all classes that exist in at least
