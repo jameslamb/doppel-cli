@@ -73,7 +73,6 @@ R6_CLASS_METHODS <- c(
     )
 
     these_methods <- obj$public_methods
-    inherited_method_names <- names(public_methods)
     for (method_name in names(these_methods)){
         public_methods[[method_name]] <- these_methods[[method_name]]
     }

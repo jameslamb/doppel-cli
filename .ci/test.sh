@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Failure is a natural part of life
 set -e
@@ -10,13 +11,20 @@ INTEGRATION_TEST_PACKAGE=argparse
 # Make sure we're living in conda land
 export PATH="$HOME/miniconda/bin:$PATH"
 
-echo "Checking code for style problems..."
+echo "Checking code for python style problems..."
 
     pycodestyle \
         --show-pep8 \
         --show-source \
         --verbose \
         $(pwd)
+
+echo "Done checking code for style problems."
+
+echo "Checking code for R style problems..."
+
+    Rscript $(pwd)/.ci/lint_r_code.R \
+        --file $(pwd)/doppel/bin/analyze.R
 
 echo "Done checking code for style problems."
 
@@ -41,7 +49,7 @@ echo "Running unit tests"
 echo "Done running unit tests"
 
 echo "Running integration tests"
-    
+
     mkdir -p ${TEST_DATA_DIR}
     doppel-describe \
         -p ${INTEGRATION_TEST_PACKAGE} \
