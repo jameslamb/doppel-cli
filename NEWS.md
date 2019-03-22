@@ -1,5 +1,9 @@
 # doppel-cli
 
+## 0.1.7.9999
+
+* Added linting on `analyze.R` and removed dead code
+
 ## 0.1.7
 
 * Added constructors to list of public methods for both python and R ([#65](https://github.com/jameslamb/doppel-cli/pull/65))

@@ -20,6 +20,7 @@ ${CONDA_DIR}/bin/conda install -c r \
     r \
     r-argparse \
     r-jsonlite \
+    r-lintr \
     r-r6 
 
 # Get packages for testing
