@@ -36,7 +36,8 @@ KWARGS_STRING <- args[["kwargs_string"]]
 CONSTRUCTOR_STRING <- args[["constructor_string"]]
 LANGUAGE <- 'r'
 R6_SPECIAL_METHODS_TO_EXCLUDE <- c(
-    'clone'
+    'clone',
+    'print'
 )
 R6_CONSTRUCTOR_NAME <- 'initialize'
 R6_CLASS_METHODS <- c(

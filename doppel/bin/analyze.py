@@ -122,22 +122,33 @@ while len(modules_to_parse) > 0:
                     for f in dir(obj):
                         class_member = getattr(obj, f)
 
+                        # Fight through decorator
+                        if hasattr(class_member, '__wrapped__'):
+                            msg = "'{}' is a decorator, grabbing the method it decorates"
+                            _log_info(msg.format(f))
+                            class_member = class_member.__wrapped__
+
                         is_function = isinstance(class_member, types.FunctionType)
                         is_public = not f.startswith("_")
                         is_constructor = f == '__init__'
-                        if is_function and (is_public or is_constructor):
 
-                            # Deal with decorators
+                        # Class methods are technically classes, types.FunctionType()
+                        # yields false. But we want to treat them as public methods of
+                        # a parent class here
+                        # h/t https://stackoverflow.com/a/31843829 on the solution
+                        is_class_method = False
+                        if is_public and not is_function:
                             try:
-                                method_args = _get_arg_names(
-                                    class_member,
-                                    KWARGS_STRING
-                                )
-                            except TypeError:
-                                method_args = _get_arg_names(
-                                    class_member.__wrapped__,
-                                    KWARGS_STRING
-                                )
+                                is_class_method = str(obj) == str(class_member.__self__)
+                            except AttributeError:
+                                pass
+
+                        if (is_public or is_constructor) and (is_function or is_class_method):
+
+                            method_args = _get_arg_names(
+                                class_member,
+                                KWARGS_STRING
+                            )
 
                             # Handle Python "self" conventions
                             method_args = [
