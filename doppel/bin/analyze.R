@@ -157,7 +157,13 @@ for (obj_name in export_names){
                 }
 
                 out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
-                    "args" = as.list(method_args)
+                    "args" = as.list(
+                        gsub(
+                            "\\.\\.\\."
+                            , KWARGS_STRING
+                            , method_args
+                        )
+                    )
                 )
             }
         }
