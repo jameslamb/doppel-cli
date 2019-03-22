@@ -88,9 +88,6 @@ export_names <- names(pkg_env[[".__NAMESPACE__."]][["exports"]])
 .log_info(sprintf("Found %i exported objects", length(export_names)))
 
 # Set up skeleton thing
-# TODO: handle stuff that isn't just functions or R6 classes
-# TODO: figure out how to handle S3Methods
-# TODO: figure out and document how to handle Python magic methods
 out <- list(
     "name" = paste0(PKG_NAME, ' [r]')
     , "language" = 'r'
