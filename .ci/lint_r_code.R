@@ -16,9 +16,7 @@ LINTERS_TO_USE <-list(
     "unused" = lintr::object_usage_linter
     , "open_curly" = lintr::open_curly_linter
     , "closed_curly" = lintr::closed_curly_linter
-    , "T_F" = lintr::T_and_F_symbol_linter
     , "tabz" = lintr::no_tab_linter
-    , "paths" = lintr::nonportable_path_linter
     , "spaces" = lintr::infix_spaces_linter
     , "trailing_blank" = lintr::trailing_blank_lines_linter
     , "trailing_white" = lintr::trailing_whitespace_linter
