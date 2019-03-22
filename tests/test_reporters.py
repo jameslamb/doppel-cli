@@ -55,6 +55,24 @@ PACKAGE_EMPTY = {
 }
 
 
+PACKAGE_BEEFY = copy.deepcopy(BASE_PACKAGE)
+for i in range(5):
+    func_name = "function_" + str(i)
+    PACKAGE_BEEFY['functions'][func_name] = {
+        "args": ["x", "y", "z"]
+    }
+
+    class_name = "class_" + str(i)
+    PACKAGE_BEEFY['classes'][class_name] = {
+        'public_methods': {
+            k: {
+                "args": ["thing", "stuff", "ok"]
+            }
+            for k in ["get", "push", "delete"]
+        }
+    }
+
+
 class TestSimpleReporter(unittest.TestCase):
 
     def test_function_arg_number(self):
@@ -172,3 +190,41 @@ class TestSimpleReporter(unittest.TestCase):
         )
         reporter._check_function_args()
         self.assertTrue(reporter.errors == [])
+
+    def test_smoke_test(self):
+        """
+        SimpleReporter should run end-to-end without error
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            errors_allowed=100
+        )
+
+        # SimpleReporter has a sys.exit() in it. Mock that out
+        def f():
+            pass
+        reporter._respond = f
+
+        # check packages
+        reporter.compare()
+        self.assertTrue(True)
+
+    def test_other_smoke_test(self):
+        """
+        SimpleReporter should run end-to-end without error. This test
+        compares a package to itself (to get basic coverage of code that works
+        on shared classes and functions)
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY)],
+            errors_allowed=100
+        )
+
+        # SimpleReporter has a sys.exit() in it. Mock that out
+        def f():
+            pass
+        reporter._respond = f
+
+        # check packages
+        reporter.compare()
+        self.assertTrue(True)
