@@ -118,40 +118,45 @@ while len(modules_to_parse) > 0:
                     _log_info("'{}' is a class in this package, adding it".format(obj_name))
                     out['classes'][obj_name] = {}
                     out['classes'][obj_name]['public_methods'] = {}
+                    out['classes'][obj_name]['public_fields'] = {}
 
                     for f in dir(obj):
                         class_member = getattr(obj, f)
 
-                        is_function = isinstance(class_member, types.FunctionType)
                         is_public = not f.startswith("_")
                         is_constructor = f == '__init__'
-                        if is_function and (is_public or is_constructor):
+                        if is_public or is_constructor:
 
-                            # Deal with decorators
-                            try:
-                                method_args = _get_arg_names(
-                                    class_member,
-                                    KWARGS_STRING
-                                )
-                            except TypeError:
-                                method_args = _get_arg_names(
-                                    class_member.__wrapped__,
-                                    KWARGS_STRING
-                                )
+                            is_function = isinstance(class_member, types.FunctionType)
+                            if is_function:
+                                # Deal with decorators
+                                try:
+                                    method_args = _get_arg_names(
+                                        class_member,
+                                        KWARGS_STRING
+                                    )
+                                except TypeError:
+                                    method_args = _get_arg_names(
+                                        class_member.__wrapped__,
+                                        KWARGS_STRING
+                                    )
 
-                            # Handle Python "self" conventions
-                            method_args = [
-                                a for a in method_args if a not in SPECIAL_METHOD_ARGS
-                            ]
+                                # Handle Python "self" conventions
+                                method_args = [
+                                    a for a in method_args if a not in SPECIAL_METHOD_ARGS
+                                ]
 
-                            # If we're dealing with the class constructor, use the
-                            # passed-in replacement value
-                            if f == '__init__':
-                                f = CONSTRUCTOR_STRING
+                                # If we're dealing with the class constructor, use the
+                                # passed-in replacement value
+                                if f == '__init__':
+                                    f = CONSTRUCTOR_STRING
 
-                            out['classes'][obj_name]['public_methods'][f] = {
-                                "args": method_args
-                            }
+                                out['classes'][obj_name]['public_methods'][f] = {
+                                    "args": method_args
+                                }
+
+                            else:
+                                out['classes'][obj_name]['public_fields'][f] = {}
             next
 
         elif isinstance(obj, types.ModuleType):

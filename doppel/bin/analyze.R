@@ -52,6 +52,11 @@ R6_CLASS_METHODS <- c(
     'unlock'
 )
 
+# Need to add an empty vector of names to get
+# jsonlite::toJSON() to recognize this is {} not []
+EMPTY_DICT <- list()
+names(EMPTY_DICT) <- character(0)
+
 # lil helper
 .log_info <- function(msg){
     futile.logger::flog.info(msg)
@@ -94,8 +99,8 @@ export_names <- names(pkg_env[[".__NAMESPACE__."]][["exports"]])
 out <- list(
     "name" = paste0(PKG_NAME, ' [r]')
     , "language" = 'r'
-    , "functions" = list()
-    , "classes" = list()
+    , "functions" = EMPTY_DICT
+    , "classes" = EMPTY_DICT
 )
 
 for (obj_name in export_names){
@@ -137,32 +142,26 @@ for (obj_name in export_names){
         # Empty classes are a thing. This handles that case.
         # Using a named empty list so jsonlite::toJSON() will make it
         # {} not []
-        if (length(public_methods) == 0){
-            empty_dict <- list()
-            names(empty_dict) <- character(0)
-            out[["classes"]][[obj_name]][["public_methods"]] <- empty_dict
-        } else {
-            for (i in 1:length(public_methods)){
+        for (i in 1:length(public_methods)){
 
-                pm <- public_methods[[i]]
-                method_name <- names(public_methods)[[i]]
-                if (method_name == R6_CONSTRUCTOR_NAME){
-                    method_name <- CONSTRUCTOR_STRING
-                }
-
-                # Grab ordered list of arguments
-                method_args <- suppressWarnings({
-                    names(formals(pm))
-                })
-
-                if (is.null(method_args)){
-                    method_args <- list()
-                }
-
-                out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
-                    "args" = as.list(method_args)
-                )
+            pm <- public_methods[[i]]
+            method_name <- names(public_methods)[[i]]
+            if (method_name == R6_CONSTRUCTOR_NAME){
+                method_name <- CONSTRUCTOR_STRING
             }
+
+            # Grab ordered list of arguments
+            method_args <- suppressWarnings({
+                names(formals(pm))
+            })
+
+            if (is.null(method_args)){
+                method_args <- list()
+            }
+
+            out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
+                "args" = as.list(method_args)
+            )
         }
 
         # Check for class methods. For now, these are just treated as
@@ -200,6 +199,20 @@ for (obj_name in export_names){
                 )
             }
         }
+
+        # Deal with public attributes. Putting these in a dict like
+        # {"attributes": {"attribute_name": {}}} to allow for
+        # more fine-grained characterization of these in the future
+        # (in a backwards-compatible way)
+        public_field_names <- c(
+            names(obj[["public_fields"]])
+            , names(obj[["active"]])
+        )
+
+        for (field_name in public_field_names){
+            out[["classes"]][[obj_name]][["public_fields"]][[field_name]] <- EMPTY_DICT
+        }
+
         next
     }
 }
