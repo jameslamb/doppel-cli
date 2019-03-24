@@ -73,6 +73,20 @@ def _get_arg_names(f, kwargs_string):
     return(args)
 
 
+def _remove_decorators(thing):
+    """
+    Given a python object instrumented with one
+    or more decorators, keep removing decorators
+    until you get to the base object
+    """
+    if not hasattr(thing, '__wrapped__'):
+        return(thing)
+    else:
+        msg = "'{}' is decorated, grabbing the underlying object"
+        _log_info(msg.format(f))
+        return(_remove_decorators(thing.__wrapped__))
+
+
 modules_to_parse = [top_level_env]
 
 while len(modules_to_parse) > 0:
@@ -90,13 +104,21 @@ while len(modules_to_parse) > 0:
 
         # Grab the object
         obj = getattr(pkg_env, obj_name)
+        obj = _remove_decorators(obj)
 
         # Is it a function?
         if isinstance(obj, types.FunctionType):
 
             # Handle special cases where someone did
             # "from <pkg> import <whatever>" in a module.
-            if obj_name.startswith(PKG_NAME):
+            #
+            # So, for example, "from requests import get"
+            # would make it look like an object "get" is in
+            # the namespace of your package. However, get.__module__
+            # holds the fully-qualified name that tells you it's from
+            # requests
+            #
+            if obj.__module__.startswith(PKG_NAME):
                 _log_info("'{}' is a function in this package, adding it".format(obj_name))
                 out["functions"][obj_name] = {
                     "args": _get_arg_names(obj, kwargs_string=KWARGS_STRING)
@@ -121,12 +143,7 @@ while len(modules_to_parse) > 0:
 
                     for f in dir(obj):
                         class_member = getattr(obj, f)
-
-                        # Fight through decorator
-                        if hasattr(class_member, '__wrapped__'):
-                            msg = "'{}' is a decorator, grabbing the method it decorates"
-                            _log_info(msg.format(f))
-                            class_member = class_member.__wrapped__
+                        class_member = _remove_decorators(class_member)
 
                         is_function = isinstance(class_member, types.FunctionType)
                         is_public = not f.startswith("_")

@@ -8,3 +8,4 @@ omit =
     *tests/*
     *.eggs/*
     *.local/*
+    *bin/doppel-describe

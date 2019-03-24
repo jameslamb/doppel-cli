@@ -1,18 +1,31 @@
 
+# Lint all R files in
+# a directory and all it's sub-directories
+
 library(argparse)
 library(lintr)
 
 parser <- argparse::ArgumentParser()
 parser$add_argument(
-    "--file"
+    "--source-dir"
     , type = "character"
-    , help = "Single .R file to lint"
+    , help = "Fully-qualified directory to search for R files"
 )
 args <- parser$parse_args()
 
-FILE_TO_LINT <- args[["file"]]
+SOURCE_DIR <- args[["source_dir"]]
 
-LINTERS_TO_USE <-list(
+FILES_TO_LINT <- list.files(
+    path = SOURCE_DIR
+    , pattern = "\\.r$"
+    , all.files = TRUE
+    , ignore.case = TRUE
+    , full.names = TRUE
+    , recursive = TRUE
+    , include.dirs = FALSE
+)
+
+LINTERS_TO_USE <- list(
     "unused" = lintr::object_usage_linter
     , "open_curly" = lintr::open_curly_linter
     , "closed_curly" = lintr::closed_curly_linter
@@ -22,21 +35,33 @@ LINTERS_TO_USE <-list(
     , "trailing_white" = lintr::trailing_whitespace_linter
 )
 
-result <- lintr::lint(
-    filename = FILE_TO_LINT
-    , linters = LINTERS_TO_USE
-    , cache = FALSE
-)
+cat(sprintf("Found %i R files to lint\n", length(FILES_TO_LINT)))
 
-cat(sprintf(
-    "Found %i linting errors in %s\n"
-    , length(result)
-    , FILE_TO_LINT
-))
+results <- c()
 
-if (length(result) > 0){
-    cat("\n")
-    print(result)
+for (r_file in FILES_TO_LINT){
+
+    this_result <- lintr::lint(
+        filename = r_file
+        , linters = LINTERS_TO_USE
+        , cache = FALSE
+    )
+
+    cat(sprintf(
+        "Found %i linting errors in %s\n"
+        , length(this_result)
+        , r_file
+    ))
+
+    results <- c(results, this_result)
+
 }
 
-quit(save = "no", status = length(result))
+issues_found <- length(results)
+
+if (issues_found > 0){
+    cat("\n")
+    print(results)
+}
+
+quit(save = "no", status = issues_found)

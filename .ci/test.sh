@@ -4,66 +4,20 @@
 set -e
 
 # Set up environment variables
-TEST_DATA_DIR=$(pwd)/test_data
-MIN_TEST_COVERAGE=20
-INTEGRATION_TEST_PACKAGE=argparse
+CI_TOOLS=$(pwd)/.ci
+MIN_TEST_COVERAGE=95
 
 # Make sure we're living in conda land
 export PATH="$HOME/miniconda/bin:$PATH"
 
-echo "Checking code for python style problems..."
+${CI_TOOLS}/lint_py.sh $(pwd)
+${CI_TOOLS}/lint_r.sh $(pwd)
+${CI_TOOLS}/check_docs.sh $(pwd)/docs
+${CI_TOOLS}/run_unit_tests.sh ${MIN_TEST_COVERAGE}
+${CI_TOOLS}/run_smoke_tests.sh $(pwd)/test_data
 
-    pycodestyle \
-        --show-pep8 \
-        --show-source \
-        --verbose \
-        $(pwd)
-
-echo "Done checking code for style problems."
-
-echo "Checking code for R style problems..."
-
-    Rscript $(pwd)/.ci/lint_r_code.R \
-        --file $(pwd)/doppel/bin/analyze.R
-
-echo "Done checking code for style problems."
-
-echo "Checking docs for problems"
-
-    pushd $(pwd)/docs
-    make html
-    NUM_WARNINGS=$(cat warnings.txt | wc -l)
-    if [[ ${NUM_WARNINGS} -ne 0 ]]; then
-        echo "Found ${NUM_WARNINGS} issues in Sphinx docs in the docs/ folder";
-        exit ${NUM_WARNINGS};
-    fi
-    popd
-
-echo "Done checking docs"
-
-echo "Running unit tests"
-
-    coverage run setup.py test
-    coverage report -m --fail-under=${MIN_TEST_COVERAGE}
-
-echo "Done running unit tests"
-
-echo "Running integration tests"
-
-    mkdir -p ${TEST_DATA_DIR}
-    doppel-describe \
-        -p ${INTEGRATION_TEST_PACKAGE} \
-        --language python \
-        --data-dir ${TEST_DATA_DIR}
-    doppel-describe \
-        -p ${INTEGRATION_TEST_PACKAGE} \
-        --language r \
-        --data-dir ${TEST_DATA_DIR}
-    doppel-test \
-        --files ${TEST_DATA_DIR}/python_argparse.json,${TEST_DATA_DIR}/r_argparse.json \
-        --errors-allowed 100
-
-echo "Done running integration tests"
+${CI_TOOLS}/install_test_packages.sh
+${CI_TOOLS}/run_integration_tests.sh
 
 # If all is good, we did it!
 exit 0
