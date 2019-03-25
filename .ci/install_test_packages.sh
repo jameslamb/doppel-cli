@@ -17,7 +17,11 @@ for pkg in $(ls ${R_TEST_PKG_DIR}); do
     echo ""
     pushd ${R_TEST_PKG_DIR}/${pkg}
         Rscript -e "roxygen2::roxygenize()"
-        R CMD install .
+        R CMD INSTALL \
+            --no-docs \
+            --no-multiarch \
+            --clean \
+            .
     popd
     echo ""
     echo "Done"
