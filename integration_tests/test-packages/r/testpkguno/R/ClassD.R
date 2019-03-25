@@ -18,3 +18,9 @@ ClassD <- R6::R6Class(
         }
     )
 )
+
+# You can't do inheritance of class methods in R6, so
+# have to do this here (it's inherited in the Python package)
+ClassD$from_string <- function(the_string){
+    return(ClassD$new(the_string))
+}

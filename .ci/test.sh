@@ -17,7 +17,7 @@ ${CI_TOOLS}/run_unit_tests.sh ${MIN_TEST_COVERAGE}
 ${CI_TOOLS}/run_smoke_tests.sh $(pwd)/test_data
 
 ${CI_TOOLS}/install_test_packages.sh
-${CI_TOOLS}/run_integration_tests.sh
+${CI_TOOLS}/run_integration_tests.sh $(pwd)/test_data
 
 # If all is good, we did it!
 exit 0

@@ -308,7 +308,7 @@ test_that(txt, {
 test_that("analyze.R should ignore R6-specific public methods like print()", {
     expect_named(
         RESULT_JSON[["classes"]][["ClassD"]][["public_methods"]]
-        , c("~~CONSTRUCTOR~~")
+        , c("~~CONSTRUCTOR~~", "from_string")
         , ignore.order = TRUE
         , ignore.case = FALSE
     )

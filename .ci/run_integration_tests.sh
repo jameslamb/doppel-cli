@@ -16,6 +16,8 @@ export TEST_PACKAGE_NAME="testpkguno"
 # failure is a natural part of life
 set -e
 
+mkdir -p ${TEST_DATA_DIR}
+
 echo ""
 echo "Running python integration tests"
 echo ""
@@ -40,4 +42,20 @@ echo ""
 
 echo ""
 echo "Done running R integration tests"
+echo ""
+
+
+# These tests are predicated on the fact that the APIs
+# in the two packages are actually identical. Run doppel-test
+# here to be sure that that's true
+echo ""
+echo "Checking API similarity with doppel-test"
+echo ""
+
+    doppel-test \
+        --files "${TEST_DATA_DIR}/r_${TEST_PACKAGE_NAME}.json,${TEST_DATA_DIR}/python_${TEST_PACKAGE_NAME}.json" \
+        --errors-allowed 0
+
+echo ""
+echo "Done checking similarity"
 echo ""
