@@ -15,11 +15,14 @@ for pkg in $(ls ${R_TEST_PKG_DIR}); do
     echo ""
     echo "Installing package '${pkg}'"
     echo ""
-    R CMD install \
-        --no-docs \
-        --clean \
-        --no-multiarch \
-        ${R_TEST_PKG_DIR}/${pkg}
+    pushd ${R_TEST_PKG_DIR}/${pkg}
+        Rscript -e "devtools::document()"
+        R CMD install \
+            --no-docs \
+            --clean \
+            --no-multiarch \
+            .
+    popd
     echo ""
     echo "Done"
     echo ""

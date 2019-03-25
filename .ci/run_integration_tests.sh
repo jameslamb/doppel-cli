@@ -17,14 +17,8 @@ export TEST_PACKAGE_NAME="testpkguno"
 set -e
 
 echo ""
-echo "Running integration tests"
+echo "Running python integration tests"
 echo ""
-    
-    DOPPEL_LOC=$(
-      dirname $(
-          python3 -c 'import doppel; print(doppel.__file__)' \
-      )
-    )
 
     pushd $(pwd)/integration_tests/python_tests
         pytest \
@@ -32,5 +26,18 @@ echo ""
     popd
 
 echo ""
-echo "Done running integration tests"
+echo "Done running python integration tests"
+echo ""
+
+echo ""
+echo "Running R integration tests"
+echo ""
+    
+    export DOPPEL_DESCRIBE_LOC=$(which doppel-describe)
+    pushd $(pwd)/integration_tests/r_tests
+        Rscript -e "testthat::test_dir('.')"
+    popd
+
+echo ""
+echo "Done running R integration tests"
 echo ""
