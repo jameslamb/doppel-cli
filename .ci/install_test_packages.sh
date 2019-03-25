@@ -16,7 +16,7 @@ for pkg in $(ls ${R_TEST_PKG_DIR}); do
     echo "Installing package '${pkg}'"
     echo ""
     pushd ${R_TEST_PKG_DIR}/${pkg}
-        Rscript -e "devtools::document()"
+        Rscript -e "roxygen2::roxygenize()"
         R CMD install \
             --no-docs \
             --clean \
