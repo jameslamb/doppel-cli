@@ -1,0 +1,16 @@
+Package: testpkguno
+Type: Package
+Title: testpkguno
+Version: 0.0.1
+Author: c(
+    person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
+    )
+Maintainer: James Lamb <jaylamb20@gmail.com>
+Description: First package for testing doppel-cli
+Depends:
+    R
+Imports:
+    R6
+License: file LICENSE
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1

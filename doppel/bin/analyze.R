@@ -102,10 +102,12 @@ for (obj_name in export_names){
 
     if (is.function(obj)){
         out[["functions"]][[obj_name]] <- list(
-            "args" = gsub(
-                "\\.\\.\\."
-                , KWARGS_STRING
-                , names(formals(obj))
+            "args" = as.list(
+                gsub(
+                    "\\.\\.\\."
+                    , KWARGS_STRING
+                    , names(formals(obj))
+                )
             )
         )
         next

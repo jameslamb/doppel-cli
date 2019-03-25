@@ -2,8 +2,8 @@
 # Python caches and build artifacts
 **/__pycache__/
 **/*.egg-info/
-build/
-dist/
+**/build/
+**/dist/
 
 # Python files
 **/*.ipynb_checkpoints/
@@ -19,6 +19,8 @@ dist/
 test_data/*.json
 **/.coverage
 **/htmlcov/
+**/man/
+**/.pytest_cache/
 
 # misc files
 **/*.DS_Store
@@ -30,3 +32,12 @@ test_data/*.json
 
 # aspell check stuff
 **/*.bak
+
+# data files
+**/*.xls
+**/*.xlsx
+**/*.tar.gz
+**/*.rar
+**/*.7z
+**/*.bz2
+**/*.zip
