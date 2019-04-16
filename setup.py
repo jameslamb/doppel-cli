@@ -25,6 +25,7 @@ setup(
     packages=find_packages(),
     description='An integration testing framework for testing API similarity of software libraries.',
     long_description=readme,
+    long_description_content_type="text/markdown",
     version=version,
     url='http://github.com/jameslamb/doppel',
     license='BSD 3-clause',
