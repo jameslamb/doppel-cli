@@ -27,7 +27,7 @@ setup(
     long_description=readme,
     long_description_content_type="text/markdown",
     version=version,
-    url='http://github.com/jameslamb/doppel',
+    url='http://github.com/jameslamb/doppel-cli',
     license='BSD 3-clause',
     maintainer='James Lamb',
     maintainer_email='jaylamb20@gmail.com',

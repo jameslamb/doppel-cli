@@ -30,7 +30,7 @@ For the most up-to-date documentation, please see https://doppel-cli.readthedocs
 python setup.py install
 ```
 
-You can also install from PyPi, the official package manage for Python. To avoid conflicts with the existing `doppel` project on that repository, it is distributed as `doppel-cli`.
+You can also install from PyPi, the official package manager for Python. To avoid conflicts with the existing `doppel` project on that repository, it is distributed as `doppel-cli`.
 
 ```
 pip install doppel-cli
