@@ -142,25 +142,41 @@ while len(modules_to_parse) > 0:
                     out['classes'][obj_name]['public_methods'] = {}
 
                     for f in dir(obj):
+
+                        # If attribute is internal, move on.
+                        # This short-circuiting is nice to also avoid having to deal
+                        # with custom stuff like read-only descriptors
+                        # e.g. https://stackoverflow.com/a/24914634
+                        is_private = f.startswith("_")
+                        is_constructor = f == '__init__'
+                        if is_private and not is_constructor:
+                            continue
+
+                        # Check characteristics of this attribute
                         class_member = getattr(obj, f)
                         class_member = _remove_decorators(class_member)
-
                         is_function = isinstance(class_member, types.FunctionType)
-                        is_public = not f.startswith("_")
-                        is_constructor = f == '__init__'
 
                         # Class methods are technically classes, types.FunctionType()
                         # yields false. But we want to treat them as public methods of
                         # a parent class here
                         # h/t https://stackoverflow.com/a/31843829 on the solution
                         is_class_method = False
-                        if is_public and not is_function:
+                        if not is_function:
+                            _log_info(f"Checking if '{f}' is a class method")
                             try:
                                 is_class_method = str(obj) == str(class_member.__self__)
+                                _log_info(f"'{f}' is a class method")
                             except AttributeError:
                                 pass
 
-                        if (is_public or is_constructor) and (is_function or is_class_method):
+                        # If ClassA has a class ClassB as a public member,
+                        # that is basically being used as a class method. Treat it
+                        # like that and grab the arguments of its constructor
+                        if is_class_method and inspect.isclass(class_member):
+                            class_member = class_member.__init__
+
+                        if is_function or is_class_method:
 
                             method_args = _get_arg_names(
                                 class_member,
@@ -174,7 +190,7 @@ while len(modules_to_parse) > 0:
 
                             # If we're dealing with the class constructor, use the
                             # passed-in replacement value
-                            if f == '__init__':
+                            if is_constructor:
                                 f = CONSTRUCTOR_STRING
 
                             out['classes'][obj_name]['public_methods'][f] = {
