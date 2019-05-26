@@ -29,12 +29,14 @@ To test whether the current state of publishing `doppel` plays nicely with PyPi,
 
 ```
 ./publish.sh testpypi
+open https://test.pypi.org/project/doppel-cli/
 ```
 
 To actually publish a new version, run:
 
 ```
 ./publish.sh pypi
+open https://pypi.org/project/doppel-cli/
 ```
 
 ## References for Developers <a name="references"></a>
