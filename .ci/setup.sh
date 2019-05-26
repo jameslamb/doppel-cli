@@ -17,7 +17,7 @@ ${CONDA_DIR}/bin/conda info -a
 
 # Set up R (gulp)
 ${CONDA_DIR}/bin/conda install -c r \
-    r \
+    r-base \
     r-argparse \
     r-jsonlite \
     r-lintr \
