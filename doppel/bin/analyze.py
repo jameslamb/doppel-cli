@@ -166,14 +166,14 @@ while len(modules_to_parse) > 0:
                             _log_info(f"Checking if '{f}' is a class method")
                             try:
                                 is_class_method = str(obj) == str(class_member.__self__)
+                                _log_info(f"'{f}' is a class method")
                             except AttributeError:
                                 pass
 
                         # If ClassA has a class ClassB as a public member,
                         # that is basically being used as a class method. Treat it
                         # like that and grab the arguments of its constructor
-                        if is_class_method:
-                            _log_info(f"'{f}' is a class method")
+                        if is_class_method and inspect.isclass(class_member):
                             class_member = class_member.__init__
 
                         if is_function or is_class_method:
