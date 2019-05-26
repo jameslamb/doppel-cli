@@ -391,7 +391,10 @@ class SimpleReporter:
         for class_name, methods in shared_methods_by_class.items():
             for method_name in methods:
 
-                display_name = f"{class_name}.{method_name}()"
+                display_name = "{}.{}()".format(
+                    class_name,
+                    method_name
+                )
 
                 # Generate a list of lists of args
                 args = [
