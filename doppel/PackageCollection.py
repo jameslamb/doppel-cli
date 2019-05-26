@@ -8,6 +8,12 @@ class PackageCollection:
     def __init__(self, packages):
         for pkg in packages:
             assert isinstance(pkg, PackageAPI)
+
+        pkg_names = [pkg.name() for pkg in packages]
+        if (len(set(pkg_names)) < len(packages)):
+            msg = "All packages provided to PackageCollection must have unique names"
+            raise ValueError(msg)
+
         self.pkgs = packages
 
     def package_names(self) -> List[str]:

@@ -31,6 +31,9 @@ BASE_PACKAGE = {
     "classes": {}
 }
 
+BASE_PACKAGE2 = copy.deepcopy(BASE_PACKAGE)
+BASE_PACKAGE2['name'] = 'pkg2'
+
 # testing different function stuff
 PACKAGE_WITH_DIFFERENT_ARG_NUMBER = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_WITH_DIFFERENT_ARG_NUMBER['name'] = 'pkg2'
@@ -89,6 +92,8 @@ PACKAGE_EMPTY = {
     "functions": {},
     "classes": {}
 }
+PACKAGE_EMPTY2 = copy.deepcopy(PACKAGE_EMPTY)
+PACKAGE_EMPTY2['name'] = 'pkg2'
 
 
 PACKAGE_BEEFY = copy.deepcopy(BASE_PACKAGE)
@@ -107,6 +112,9 @@ for i in range(5):
             for k in ["get", "push", "delete"]
         }
     }
+
+PACKAGE_BEEFY2 = copy.deepcopy(PACKAGE_BEEFY)
+PACKAGE_BEEFY2['name'] = 'pkg2'
 
 
 class TestSimpleReporter(unittest.TestCase):
@@ -206,7 +214,7 @@ class TestSimpleReporter(unittest.TestCase):
         if the shared function is the same in both packages.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(BASE_PACKAGE)],
+            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(BASE_PACKAGE2)],
             errors_allowed=0
         )
         reporter._check_function_args()
@@ -288,7 +296,7 @@ class TestSimpleReporter(unittest.TestCase):
         are totally empty.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY)],
+            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY2)],
             errors_allowed=0
         )
         reporter._check_function_args()
@@ -319,7 +327,7 @@ class TestSimpleReporter(unittest.TestCase):
         on shared classes and functions)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY)],
+            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY2)],
             errors_allowed=100
         )
 

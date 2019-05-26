@@ -97,3 +97,19 @@ class TestPackageAPI(unittest.TestCase):
             sorted(shared["LupeFiasco"]),
             sorted(["~~CONSTRUCTOR~~", "coast"])
         )
+
+    def test_same_names(self):
+        """
+        PackageCollection should reject attempts
+        to add two packages with the same name
+        """
+        self.assertRaisesRegex(
+            ValueError,
+            "All packages provided to PackageCollection must have unique names",
+            lambda: PackageCollection(
+                packages=[
+                    PackageAPI.from_json(self.py_pkg_file),
+                    PackageAPI.from_json(self.py_pkg_file)
+                ]
+            )
+        )
