@@ -1,5 +1,7 @@
 # doppel-cli
 
+## development version
+
 ## 0.2.0
 
 * `PackageCollection` will now reject lists of `packages` which have duplicated `name`s. This prevents some forms of silent failure. ([#110](https://github.com/jameslamb/doppel-cli/pull/110))
