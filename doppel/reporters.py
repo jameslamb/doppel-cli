@@ -378,6 +378,11 @@ class SimpleReporter:
         stdout.write("\nArguments in Class Public Methods\n")
         stdout.write("=================================\n")
 
+        shared_classes = self.pkg_collection.shared_classes()
+        if len(shared_classes) == 0:
+            stdout.write('No shared classes.\n')
+            return
+
         # Initialize the table
         headers = ['class.method', 'identical api?']
         rows = []
