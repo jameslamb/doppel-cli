@@ -31,6 +31,7 @@ BASE_PACKAGE = {
     "classes": {}
 }
 
+# testing different function stuff
 PACKAGE_WITH_DIFFERENT_ARG_NUMBER = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_WITH_DIFFERENT_ARG_NUMBER['name'] = 'pkg2'
 PACKAGE_WITH_DIFFERENT_ARG_NUMBER['functions']['playback']['args'].append('other')
@@ -43,6 +44,41 @@ PACKAGE_WITH_DIFFERENT_ARG_ORDER = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_WITH_DIFFERENT_ARG_ORDER['name'] = 'pkg2'
 PACKAGE_WITH_DIFFERENT_ARG_ORDER['functions']['playback']['args'] = ['bass', 'bpm']
 
+# testing different public method stuff
+BASE_PACKAGE_WITH_CLASSES = copy.deepcopy(BASE_PACKAGE)
+BASE_PACKAGE_WITH_CLASSES['classes'] = {
+    'WaleFolarin': {
+        'public_methods': {
+            '~~CONSTRUCTOR~~': {
+                'args': [
+                    'x',
+                    'y',
+                    'z'
+                ]
+            },
+            'no_days_off': {
+                'args': [
+                    'days_to_take',
+                    'songs_to_record'
+                ]
+            }
+        }
+    }
+}
+
+PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
+PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER['name'] = 'pkg2'
+PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER['classes']['WaleFolarin']['public_methods']['no_days_off']['args'].append('about_nothing')
+
+PACKAGE_WITH_DIFFERENT_PM_ARGS = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
+PACKAGE_WITH_DIFFERENT_PM_ARGS['name'] = 'pkg2'
+PACKAGE_WITH_DIFFERENT_PM_ARGS['classes']['WaleFolarin']['public_methods']['no_days_off']['args'] = ['days_to_take', 'outchyea']
+
+PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
+PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER['name'] = 'pkg2'
+PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER['classes']['WaleFolarin']['public_methods']['no_days_off']['args'] = ['songs_to_record', 'days_to_take']
+
+# super different
 PACKAGE_SUPER_DIFFERENT = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_SUPER_DIFFERENT['name'] = 'pkg2'
 PACKAGE_SUPER_DIFFERENT['functions']['playback']['args'] = ['stuff', 'things', 'bass']
@@ -177,6 +213,73 @@ class TestSimpleReporter(unittest.TestCase):
         errors = reporter.errors
         self.assertTrue(
             len(errors) == 0,
+        )
+
+    def test_public_method_arg_number(self):
+        """
+        SimpleReporter should catch the condition where
+        public method implementations (same method, same class)
+        in two packages have different number of keyword arguments
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)],
+            errors_allowed=100
+        )
+        reporter._check_class_public_method_args()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 1,
+        )
+        self.assertTrue(
+            all([isinstance(x, DoppelTestError) for x in errors])
+        )
+        self.assertTrue(
+            errors[0].msg == "Public method 'no_days_off()' on class 'WaleFolarin' exists in all packages but with differing number of arguments (2,3)."
+        )
+
+    def test_public_method_args(self):
+        """
+        SimpleReporter should catch the condition where
+        public method implementations (same method, same class)
+        in two packages have different different arguments (even if
+        they have the same number of arguments)
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARGS)],
+            errors_allowed=100
+        )
+        reporter._check_class_public_method_args()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 1,
+        )
+        self.assertTrue(
+            all([isinstance(x, DoppelTestError) for x in errors])
+        )
+        self.assertTrue(
+            errors[0].msg == "Public method 'no_days_off()' on class 'WaleFolarin' exists in all packages but some arguments are not shared in all implementations."
+        )
+
+    def test_public_method_arg_order(self):
+        """
+        SimpleReporter should catch errors of the form
+        'this function has the same keyword args in
+        both packages but they are in different orders'
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER)],
+            errors_allowed=100
+        )
+        reporter._check_class_public_method_args()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 1,
+        )
+        self.assertTrue(
+            all([isinstance(x, DoppelTestError) for x in errors])
+        )
+        self.assertTrue(
+            errors[0].msg == "Public method 'no_days_off()' on class 'WaleFolarin' exists in all packages but with differing order of keyword arguments."
         )
 
     def test_totally_empty(self):

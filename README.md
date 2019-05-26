@@ -73,7 +73,7 @@ Cool! Let's do some testing! `doppel-test` can be used to compare multiple packa
 doppel-test \
     --files $(pwd)/test_data/python_${PACKAGE}.json,$(pwd)/test_data/r_${PACKAGE}.json \
     | tee out.log \
-    cat
+    | cat
 ```
 
 This will yield something like this:
@@ -84,7 +84,7 @@ Function Count
 +---------------------+----------------+
 |   argparse [python] |   argparse [r] |
 +=====================+================+
-|                   1 |              1 |
+|                   0 |              1 |
 +---------------------+----------------+
 
 
@@ -93,10 +93,12 @@ Function Names
 +-----------------+---------------------+----------------+
 | function_name   | argparse [python]   | argparse [r]   |
 +=================+=====================+================+
-| ngettext        | yes                 | no             |
-+-----------------+---------------------+----------------+
 | ArgumentParser  | no                  | yes            |
 +-----------------+---------------------+----------------+
+
+Function Argument Names
+=======================
+No shared functions.
 
 Class Count
 ===========
@@ -112,25 +114,33 @@ Class Names
 +-------------------------------+---------------------+----------------+
 | class_name                    | argparse [python]   | argparse [r]   |
 +===============================+=====================+================+
-| HelpFormatter                 | yes                 | no             |
-+-------------------------------+---------------------+----------------+
-| Namespace                     | yes                 | no             |
-+-------------------------------+---------------------+----------------+
-| RawDescriptionHelpFormatter   | yes                 | no             |
+| MetavarTypeHelpFormatter      | yes                 | no             |
 +-------------------------------+---------------------+----------------+
 | ArgumentParser                | yes                 | no             |
 +-------------------------------+---------------------+----------------+
-| MetavarTypeHelpFormatter      | yes                 | no             |
+| FileType                      | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| HelpFormatter                 | yes                 | no             |
++-------------------------------+---------------------+----------------+
+| RawDescriptionHelpFormatter   | yes                 | no             |
 +-------------------------------+---------------------+----------------+
 | Action                        | yes                 | no             |
 +-------------------------------+---------------------+----------------+
 | ArgumentDefaultsHelpFormatter | yes                 | no             |
 +-------------------------------+---------------------+----------------+
-| FileType                      | yes                 | no             |
+| Namespace                     | yes                 | no             |
 +-------------------------------+---------------------+----------------+
 | RawTextHelpFormatter          | yes                 | no             |
 +-------------------------------+---------------------+----------------+
 
+
+Class Public Methods
+====================
+No shared classes.
+
+Arguments in Class Public Methods
+=================================
+No shared classes.
 
 Test Failures (12)
 ===================
