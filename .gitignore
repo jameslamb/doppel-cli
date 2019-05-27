@@ -16,15 +16,18 @@
 **/*.Rdata
 
 # testing stuff
-test_data/*.json
+**/test_data/*.json
 **/.coverage
 **/htmlcov/
 **/man/
 **/.pytest_cache/
+smoke_tests/test_data/successful_*.txt
+smoke_tests/test_data/results.txt
 
 # misc files
 **/*.DS_Store
 **/*.log
+run.sh
 
 # documentation
 **/_build/

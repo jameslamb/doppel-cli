@@ -61,6 +61,10 @@ def _log_info(msg):
     print(msg)
 
 
+def _log_warn(msg):
+    print("[WARN] " + msg)
+
+
 def _get_arg_names(f, kwargs_string):
     """
     Given a function object, get it's argument names.
@@ -163,10 +167,9 @@ while len(modules_to_parse) > 0:
                         # h/t https://stackoverflow.com/a/31843829 on the solution
                         is_class_method = False
                         if not is_function:
-                            _log_info(f"Checking if '{f}' is a class method")
                             try:
                                 is_class_method = str(obj) == str(class_member.__self__)
-                                _log_info(f"'{f}' is a class method")
+                                _log_info("'" + f + "' is a class method")
                             except AttributeError:
                                 pass
 
@@ -178,10 +181,21 @@ while len(modules_to_parse) > 0:
 
                         if is_function or is_class_method:
 
-                            method_args = _get_arg_names(
-                                class_member,
-                                KWARGS_STRING
-                            )
+                            # Try figuring out the actual signature, to see if
+                            # we hit the "no signature found for built-in" error
+                            # details: https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object
+                            try:
+                                res = inspect.signature(class_member)
+                                method_args = _get_arg_names(
+                                    class_member,
+                                    KWARGS_STRING
+                                )
+                            except ValueError:
+                                msg = "Could not figure out signature of builtin {}".format(
+                                    class_member.__qualname__
+                                )
+                                _log_warn(msg)
+                                method_args = []
 
                             # Handle Python "self" conventions
                             method_args = [

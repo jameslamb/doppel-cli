@@ -186,3 +186,9 @@ and
 ```
 doppel-test --help
 ```
+
+## Contributing
+
+Bug reports, questions, and feature requests should be directed to [the issues page](https://github.com/jameslamb/doppel-cli/issues).
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on how to contribute.

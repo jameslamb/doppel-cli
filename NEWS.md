@@ -2,6 +2,8 @@
 
 ## development version
 
+* Fixed bug which could cause a `ValueError` in `doppel-describe` when a Python package used CPython and had builtins that could not be inspected. This showed up in popular packages such as `pandas` and `numpy`.
+
 ## 0.2.0
 
 * `PackageCollection` will now reject lists of `packages` which have duplicated `name`s. This prevents some forms of silent failure. ([#110](https://github.com/jameslamb/doppel-cli/pull/110))
