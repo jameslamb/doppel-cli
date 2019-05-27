@@ -8,7 +8,7 @@ PYTHON_PACKAGES="$(cat $(pwd)/smoke_tests/python_packages)"
 R_PACKAGES="$(cat $(pwd)/smoke_tests/r_packages)"
 
 SUMMARY_FILE=${OUT_DIR}/results.txt
-echo "" > SUMMARY_FILE
+echo "" > ${SUMMARY_FILE}
 
 # Function to run doppel-describe
 # [usage]
