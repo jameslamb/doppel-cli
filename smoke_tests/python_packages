@@ -1,0 +1,12 @@
+argparse
+attr
+cattr
+matplotlib
+networkx
+numpy
+pandas
+pytest
+scipy
+shapely
+sphinxcontrib
+uptasticsearch
