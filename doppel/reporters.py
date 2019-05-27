@@ -177,7 +177,7 @@ class SimpleReporter:
 
     def _check_function_args(self):
         """
-        For each function that is in both packages, check
+        For each function that is in all packages, check
         whether the arguments to the functions differ.
         """
         stdout.write("\nFunction Argument Names\n")
@@ -199,13 +199,19 @@ class SimpleReporter:
         rows = []
 
         for func_name in shared_functions:
+
+            identical_api = 'yes'
+
             args = [
                 func_blocks_by_package[p][func_name]['args']
                 for p in pkg_names
             ]
 
             # check 1: same number of arguments?
-            same_length = reduce(lambda a, b: len(a) == len(b), args)
+            same_length = all([
+                len(func_arg_list) == len(args[0])
+                for func_arg_list in args
+            ])
             if not same_length:
                 error_txt = "Function '{}()' exists in all packages but with differing number of arguments ({})."
                 error_txt = error_txt.format(
@@ -213,29 +219,32 @@ class SimpleReporter:
                     ",".join([str(len(a)) for a in args])
                 )
                 self.errors.append(DoppelTestError(error_txt))
-                rows.append([func_name, 'no'])
-                continue
+                identical_api = 'no'
 
             # check 2: same set of arguments
-            same_args = reduce(lambda a, b: sorted(a) == sorted(b), args)
+            same_args = all([
+                sorted(func_arg_list) == sorted(args[0])
+                for func_arg_list in args
+            ])
             if not same_args:
                 error_txt = "Function '{}()' exists in all packages but some arguments are not shared in all implementations."
                 error_txt = error_txt.format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
-                rows.append([func_name, 'no'])
-                continue
+                identical_api = 'no'
 
-            # check 3: same set or arguments and same order
-            same_order = reduce(lambda a, b: a == b, args)
+            # check 3: same set of arguments and same order
+            same_order = all([
+                len(func_arg_list) == len(args[0]) and func_arg_list == args[0]
+                for func_arg_list in args
+            ])
             if not same_order:
                 error_txt = "Function '{}()' exists in all packages but with differing order of keyword arguments."
                 error_txt = error_txt.format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
-                rows.append([func_name, 'no'])
-                continue
+                identical_api = 'no'
 
             # if you get here, we're gucci
-            rows.append([func_name, 'yes'])
+            rows.append([func_name, identical_api])
 
         # Report output
         stdout.write('\n{} of the {} functions shared across all packages have identical signatures\n\n'.format(
@@ -391,6 +400,8 @@ class SimpleReporter:
         for class_name, methods in shared_methods_by_class.items():
             for method_name in methods:
 
+                identical_api = 'yes'
+
                 display_name = "{}.{}()".format(
                     class_name,
                     method_name
@@ -403,7 +414,10 @@ class SimpleReporter:
                 ]
 
                 # check 1: same number of arguments?
-                same_length = reduce(lambda a, b: len(a) == len(b), args)
+                same_length = all([
+                    len(func_arg_list) == len(args[0])
+                    for func_arg_list in args
+                ])
                 if not same_length:
                     error_txt = "Public method '{}()' on class '{}' exists in all packages but with differing number of arguments ({})."
                     error_txt = error_txt.format(
@@ -412,11 +426,13 @@ class SimpleReporter:
                         ",".join([str(len(a)) for a in args])
                     )
                     self.errors.append(DoppelTestError(error_txt))
-                    rows.append([display_name, 'no'])
-                    continue
+                    identical_api = 'no'
 
                 # check 2: same set of arguments
-                same_args = reduce(lambda a, b: sorted(a) == sorted(b), args)
+                same_args = all([
+                    sorted(func_arg_list) == sorted(args[0])
+                    for func_arg_list in args
+                ])
                 if not same_args:
                     error_txt = "Public method '{}()' on class '{}' exists in all packages but some arguments are not shared in all implementations."
                     error_txt = error_txt.format(
@@ -424,11 +440,13 @@ class SimpleReporter:
                         class_name
                     )
                     self.errors.append(DoppelTestError(error_txt))
-                    rows.append([display_name, 'no'])
-                    continue
+                    identical_api = 'no'
 
                 # check 3: same set or arguments and same order
-                same_order = reduce(lambda a, b: a == b, args)
+                same_order = all([
+                    func_arg_list == args[0]
+                    for func_arg_list in args
+                ])
                 if not same_order:
                     error_txt = "Public method '{}()' on class '{}' exists in all packages but with differing order of keyword arguments."
                     error_txt = error_txt.format(
@@ -436,11 +454,10 @@ class SimpleReporter:
                         class_name
                     )
                     self.errors.append(DoppelTestError(error_txt))
-                    rows.append([display_name, 'no'])
-                    continue
+                    identical_api = 'no'
 
                 # if you get here, we're gucci
-                rows.append([display_name, 'yes'])
+                rows.append([display_name, identical_api])
 
         # Report output
         out = _OutputTable(headers=headers, rows=rows)

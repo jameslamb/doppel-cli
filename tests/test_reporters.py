@@ -1,5 +1,6 @@
 import unittest
 import copy
+import re
 from doppel import SimpleReporter
 from doppel import PackageAPI
 from doppel import DoppelTestError
@@ -74,11 +75,11 @@ PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER['name'] = 'pkg2'
 PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER['classes']['WaleFolarin']['public_methods']['no_days_off']['args'].append('about_nothing')
 
 PACKAGE_WITH_DIFFERENT_PM_ARGS = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
-PACKAGE_WITH_DIFFERENT_PM_ARGS['name'] = 'pkg2'
+PACKAGE_WITH_DIFFERENT_PM_ARGS['name'] = 'pkg3'
 PACKAGE_WITH_DIFFERENT_PM_ARGS['classes']['WaleFolarin']['public_methods']['no_days_off']['args'] = ['days_to_take', 'outchyea']
 
 PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
-PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER['name'] = 'pkg2'
+PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER['name'] = 'pkg4'
 PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER['classes']['WaleFolarin']['public_methods']['no_days_off']['args'] = ['songs_to_record', 'days_to_take']
 
 # super different
@@ -123,7 +124,7 @@ class TestSimpleReporter(unittest.TestCase):
         """
         SimpleReporter should catch the condition where
         function implementations in two packages have different
-        number of keyword arguments
+        number of keyword arguments.
         """
         reporter = SimpleReporter(
             pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)],
@@ -132,7 +133,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 3,
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -155,7 +156,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 2,
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -188,7 +189,7 @@ class TestSimpleReporter(unittest.TestCase):
 
     def test_function_all_wrong(self):
         """
-        SimpleReporter should only throw a single error
+        SimpleReporter should throw 3 errors
         if one package has a function with different args, more args
         and different order.
         """
@@ -199,7 +200,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 3,
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -236,7 +237,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 3,
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -259,7 +260,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 2,
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -339,3 +340,131 @@ class TestSimpleReporter(unittest.TestCase):
         # check packages
         reporter.compare()
         self.assertTrue(True)
+
+    def test_works_with_one_package(self):
+        """
+        SimpleReporter should not return any errors if you
+        only use a single package
+        """
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)],
+            errors_allowed=0
+        )
+
+        # SimpleReporter has a sys.exit() in it. Mock that out
+        def f():
+            pass
+        reporter._respond = f
+
+        # check packages
+        reporter.compare()
+        self.assertTrue(len(reporter.pkgs) == 1)
+        self.assertTrue(reporter.errors == [])
+
+    def test_works_with_three_packages(self):
+        """
+        SimpleReporter should work correctly if you have
+        three packages
+        """
+        reporter = SimpleReporter(
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)
+            ],
+            errors_allowed=100
+        )
+
+        # SimpleReporter has a sys.exit() in it. Mock that out
+        def f():
+            pass
+        reporter._respond = f
+
+        # check packages
+        reporter.compare()
+
+        # This check (exactly 3 errors) is important. To be sure
+        # that other problems aren't getting silenced by short-circuiting
+        self.assertTrue(len(reporter.errors) == 3)
+        self.assertTrue(len(reporter.pkgs) == 3)
+
+        # at least one should be the number-of-arguments error
+        self.assertTrue(
+            any([
+                bool(re.search('differing number of arguments', err.msg))
+                for err in reporter.errors
+            ])
+        )
+
+        # at least one should be the some-args-not-shared
+        self.assertTrue(
+            any([
+                bool(re.search('some arguments are not shared', err.msg))
+                for err in reporter.errors
+            ])
+        )
+
+        # at least one should be the different-order one
+        self.assertTrue(
+            any([
+                bool(re.search('differing order of keyword arguments', err.msg))
+                for err in reporter.errors
+            ])
+        )
+
+    def test_works_with_ten_packages(self):
+        """
+        SimpleReporter should work correctly if you have
+        ten packages (yes I know this is extreme)
+        """
+        pkgs = [
+            PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+            PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER),
+            PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)
+        ]
+        for i in range(7):
+            new_pkg = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
+            new_pkg['name'] = 'test_package_' + str(i)
+            pkgs.append(PackageAPI(new_pkg))
+
+        reporter = SimpleReporter(
+            pkgs=pkgs,
+            errors_allowed=100
+        )
+
+        # SimpleReporter has a sys.exit() in it. Mock that out
+        def f():
+            pass
+        reporter._respond = f
+
+        # check packages
+        reporter.compare()
+
+        # This check (exactly 3 errors) is important. To be sure
+        # that other problems aren't getting silenced by short-circuiting
+        self.assertTrue(len(reporter.errors) == 3)
+        self.assertTrue(len(reporter.pkgs) == 10)
+
+        # at least one should be the number-of-arguments error
+        self.assertTrue(
+            any([
+                bool(re.search('differing number of arguments', err.msg))
+                for err in reporter.errors
+            ])
+        )
+
+        # at least one should be the some-args-not-shared
+        self.assertTrue(
+            any([
+                bool(re.search('some arguments are not shared', err.msg))
+                for err in reporter.errors
+            ])
+        )
+
+        # at least one should be the different-order one
+        self.assertTrue(
+            any([
+                bool(re.search('differing order of keyword arguments', err.msg))
+                for err in reporter.errors
+            ])
+        )
