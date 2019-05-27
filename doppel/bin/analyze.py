@@ -92,11 +92,15 @@ def _remove_decorators(thing):
 
 
 modules_to_parse = [top_level_env]
+names_of_parsed_modules = set([])
 
 while len(modules_to_parse) > 0:
 
     # Grab the next module
     pkg_env = modules_to_parse.pop()
+
+    # Add it to the list of "modules we've already seen"
+    names_of_parsed_modules.add(pkg_env.__name__)
 
     # Get the exported stuff
     export_names = list(filter(
@@ -229,8 +233,11 @@ while len(modules_to_parse) > 0:
                 if obj.__name__ == PKG_NAME:
                     _log_info("Skipping module '{}'".format(obj.__name__))
                 else:
-                    _log_info("Module '{}' is in this package, adding it.".format(obj.__name__))
-                    modules_to_parse.append(obj)
+                    if obj.__name__ in names_of_parsed_modules:
+                        _log_info("Module '{}' is in this package but has already been parsed.".format(obj.__name__))
+                    else:
+                        _log_info("Module '{}' is in this package, adding it.".format(obj.__name__))
+                        modules_to_parse.append(obj)
         else:
             _log_info("Could not figure out what {} is".format(obj_name))
 
