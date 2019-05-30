@@ -2,6 +2,7 @@
 
 ## development version
 
+* Restructured the internals used by `doppel-describe` to describe R packages, so that code coverage of that section can be measured. ([#122](https://github.com/jameslamb/doppel-cli/pull/122))
 * All errors comparing public methods or functions are now reported. Previously, if two issues existed (such as "different number of keyword args" and "different order of keyword args"), only one would be reported. ([#121](https://github.com/jameslamb/doppel-cli/pull/121))
 * Fixed bug which could cause `doppel-describe` to run endlessly in the presence of cyclic imports between submodules (e.g. in `pandas`). ([#120](https://github.com/jameslamb/doppel-cli/pull/120))
 * Fixed bug which could cause a `ValueError` in `doppel-describe` when a Python package used CPython and had builtins that could not be inspected. This showed up in popular packages such as `pandas` and `numpy`. ([#94](https://github.com/jameslamb/doppel-cli/pull/94))
