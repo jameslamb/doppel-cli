@@ -8,7 +8,7 @@ Author: c(
 Maintainer: James Lamb <jaylamb20@gmail.com>
 Description: First package for testing doppel-cli
 Depends:
-    R
+    R (>= 3.5)
 Imports:
     R6
 License: file LICENSE
