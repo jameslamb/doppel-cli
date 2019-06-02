@@ -30,197 +30,209 @@ parser$add_argument(
 
 # Grab args (store in constants for easier debugging)
 args <- parser$parse_args()
-PKG_NAME <- args[["pkg"]]
-OUT_DIR <- args[["output_dir"]]
-KWARGS_STRING <- args[["kwargs_string"]]
-CONSTRUCTOR_STRING <- args[["constructor_string"]]
-LANGUAGE <- 'r'
-R6_SPECIAL_METHODS_TO_EXCLUDE <- c(
-    'clone',
-    'print'
-)
-R6_CONSTRUCTOR_NAME <- 'initialize'
-R6_CLASS_METHODS <- c(
-    'clone_method',
-    'debug',
-    'get_inherit',
-    'has_private',
-    'is_locked',
-    'lock',
-    'new',
-    'set',
-    'undebug',
-    'unlock'
-)
 
-# lil helper
-.log_info <- function(msg){
-    futile.logger::flog.info(msg)
-    return(invisible(NULL))
-}
+# Wrap the entire pipeline in a function so it can be tested
+.analyze <- function(args){
 
+    PKG_NAME <- args[["pkg"]]
+    OUT_DIR <- args[["output_dir"]]
+    KWARGS_STRING <- args[["kwargs_string"]]
+    CONSTRUCTOR_STRING <- args[["constructor_string"]]
 
-# Get all public methods (handling inheritance)
-.get_r6_public_methods <- function(obj){
-    if (is.null(obj)){
-        return(list())
-    }
-
-    # Be sure the children can override their parents!
-    # Looping like this means we'll REPLACE keys (since R
-    # lists don't guarantee key uniqueness)
-    public_methods <- .get_r6_public_methods(
-        obj$get_inherit()
+    LANGUAGE <- 'r'
+    R6_SPECIAL_METHODS_TO_EXCLUDE <- c(
+        'clone',
+        'print'
+    )
+    R6_CONSTRUCTOR_NAME <- 'initialize'
+    R6_CLASS_METHODS <- c(
+        'clone_method',
+        'debug',
+        'get_inherit',
+        'has_private',
+        'is_locked',
+        'lock',
+        'new',
+        'set',
+        'undebug',
+        'unlock'
     )
 
-    these_methods <- obj$public_methods
-    for (method_name in names(these_methods)){
-        public_methods[[method_name]] <- these_methods[[method_name]]
+    # lil helper
+    .log_info <- function(msg){
+        futile.logger::flog.info(msg)
+        return(invisible(NULL))
     }
 
-    return(public_methods)
-}
 
+    # Get all public methods (handling inheritance)
+    .get_r6_public_methods <- function(obj){
 
-# grab just the exported objects
-.log_info(sprintf("Loading up namespace for package %s", PKG_NAME))
-pkg_env <- loadNamespace(PKG_NAME)
-export_names <- names(pkg_env[[".__NAMESPACE__."]][["exports"]])
-.log_info(sprintf("Found %i exported objects", length(export_names)))
-
-# Set up skeleton thing
-out <- list(
-    "name" = paste0(PKG_NAME, ' [r]')
-    , "language" = 'r'
-    , "functions" = list()
-    , "classes" = list()
-)
-
-for (obj_name in export_names){
-
-    obj <- get(obj_name, envir = pkg_env)
-
-    if (is.function(obj)){
-        out[["functions"]][[obj_name]] <- list(
-            "args" = as.list(
-                gsub(
-                    "\\.\\.\\."
-                    , KWARGS_STRING
-                    , names(formals(obj))
-                )
-            )
-        )
-        next
-    }
-
-    if (R6::is.R6Class(obj)){
-
-        out[["classes"]][[obj_name]] <- c()
-        out[["classes"]][[obj_name]][["public_methods"]] <- c()
-
-        public_methods <- .get_r6_public_methods(obj)
-
-        # Drop R6-specific public methods like "clone"
-        methods_to_keep <- base::setdiff(
-            names(public_methods)
-            , R6_SPECIAL_METHODS_TO_EXCLUDE
-        )
-        public_methods <- public_methods[methods_to_keep]
-
-        # If the R6 constructor ('initialize') isn't defined, an empty
-        # one won't show up in the list of public methods. Need to
-        # add it here to be explicit
-        if (! R6_CONSTRUCTOR_NAME %in% names(public_methods)){
-            public_methods[[R6_CONSTRUCTOR_NAME]] <- function(){NULL}
+        if (is.null(obj)){
+            return(list())
         }
 
-        # Empty classes are a thing. This handles that case.
-        # Using a named empty list so jsonlite::toJSON() will make it
-        # {} not []
-        if (length(public_methods) == 0){
-            empty_dict <- list()
-            names(empty_dict) <- character(0)
-            out[["classes"]][[obj_name]][["public_methods"]] <- empty_dict
-        } else {
-            for (i in 1:length(public_methods)){
+        # Be sure the children can override their parents!
+        # Looping like this means we'll REPLACE keys (since R
+        # lists don't guarantee key uniqueness)
+        public_methods <- .get_r6_public_methods(
+            obj$get_inherit()
+        )
 
-                pm <- public_methods[[i]]
-                method_name <- names(public_methods)[[i]]
-                if (method_name == R6_CONSTRUCTOR_NAME){
-                    method_name <- CONSTRUCTOR_STRING
-                }
+        these_methods <- obj$public_methods
+        for (method_name in names(these_methods)){
+            public_methods[[method_name]] <- these_methods[[method_name]]
+        }
 
-                # Grab ordered list of arguments
-                method_args <- suppressWarnings({
-                    names(formals(pm))
-                })
+        return(public_methods)
+    }
 
-                if (is.null(method_args)){
-                    method_args <- list()
-                }
+    # grab just the exported objects
+    .log_info(sprintf("Loading up namespace for package %s", PKG_NAME))
+    pkg_env <- loadNamespace(PKG_NAME)
+    export_names <- names(pkg_env[[".__NAMESPACE__."]][["exports"]])
+    .log_info(sprintf("Found %i exported objects", length(export_names)))
 
-                out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
-                    "args" = as.list(
-                        gsub(
-                            "\\.\\.\\."
-                            , KWARGS_STRING
-                            , method_args
-                        )
+    # Set up skeleton thing
+    out <- list(
+        "name" = paste0(PKG_NAME, ' [r]')
+        , "language" = 'r'
+        , "functions" = list()
+        , "classes" = list()
+    )
+
+    for (obj_name in export_names){
+
+        obj <- get(obj_name, envir = pkg_env)
+
+        if (is.function(obj)){
+            out[["functions"]][[obj_name]] <- list(
+                "args" = as.list(
+                    gsub(
+                        "\\.\\.\\."
+                        , KWARGS_STRING
+                        , names(formals(obj))
                     )
                 )
-            }
+            )
+            next
         }
 
-        # Check for class methods. For now, these are just treated as
-        # "public methods"
-        class_methods <- Filter(
-            f = function(o){is.function(o)}
-            , x = eapply(obj, function(x){x})
-        )
+        if (R6::is.R6Class(obj)){
 
-        # Drop class methods that ship with R6
-        non_default_class_methods <- base::setdiff(
-            names(class_methods)
-            , R6_CLASS_METHODS
-        )
+            out[["classes"]][[obj_name]] <- c()
+            out[["classes"]][[obj_name]][["public_methods"]] <- c()
 
-        if (length(non_default_class_methods) == 0){
-            .log_info(sprintf(
-                "No class methods found in class '%s'"
-                , obj_name
-            ))
-        } else {
+            public_methods <- .get_r6_public_methods(obj)
 
-            for (method in non_default_class_methods){
-                # Grab ordered list of arguments
-                method_args <- suppressWarnings({
-                    names(formals(get(method, obj)))
-                })
+            # Drop R6-specific public methods like "clone"
+            methods_to_keep <- base::setdiff(
+                names(public_methods)
+                , R6_SPECIAL_METHODS_TO_EXCLUDE
+            )
+            public_methods <- public_methods[methods_to_keep]
 
-                if (is.null(method_args)){
-                    method_args <- list()
+            # If the R6 constructor ('initialize') isn't defined, an empty
+            # one won't show up in the list of public methods. Need to
+            # add it here to be explicit
+            if (! R6_CONSTRUCTOR_NAME %in% names(public_methods)){
+                public_methods[[R6_CONSTRUCTOR_NAME]] <- function(){NULL}
+            }
+
+            # Empty classes are a thing. This handles that case.
+            # Using a named empty list so jsonlite::toJSON() will make it
+            # {} not []
+            if (length(public_methods) == 0){
+                empty_dict <- list()
+                names(empty_dict) <- character(0)
+                out[["classes"]][[obj_name]][["public_methods"]] <- empty_dict
+            } else {
+                for (i in 1:length(public_methods)){
+
+                    pm <- public_methods[[i]]
+                    method_name <- names(public_methods)[[i]]
+                    if (method_name == R6_CONSTRUCTOR_NAME){
+                        method_name <- CONSTRUCTOR_STRING
+                    }
+
+                    # Grab ordered list of arguments
+                    method_args <- suppressWarnings({
+                        names(formals(pm))
+                    })
+
+                    if (is.null(method_args)){
+                        method_args <- list()
+                    }
+
+                    out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
+                        "args" = as.list(
+                            gsub(
+                                "\\.\\.\\."
+                                , KWARGS_STRING
+                                , method_args
+                            )
+                        )
+                    )
                 }
-
-                out[["classes"]][[obj_name]][["public_methods"]][[method]] <- list(
-                    "args" = as.list(method_args)
-                )
             }
+
+            # Check for class methods. For now, these are just treated as
+            # "public methods"
+            class_methods <- Filter(
+                f = function(o){is.function(o)}
+                , x = eapply(obj, function(x){x})
+            )
+
+            # Drop class methods that ship with R6
+            non_default_class_methods <- base::setdiff(
+                names(class_methods)
+                , R6_CLASS_METHODS
+            )
+
+            if (length(non_default_class_methods) == 0){
+                .log_info(sprintf(
+                    "No class methods found in class '%s'"
+                    , obj_name
+                ))
+            } else {
+
+                for (method in non_default_class_methods){
+                    # Grab ordered list of arguments
+                    method_args <- suppressWarnings({
+                        names(formals(get(method, obj)))
+                    })
+
+                    if (is.null(method_args)){
+                        method_args <- list()
+                    }
+
+                    out[["classes"]][[obj_name]][["public_methods"]][[method]] <- list(
+                        "args" = as.list(method_args)
+                    )
+                }
+            }
+            next
         }
-        next
     }
+
+    # jsonlite treats empty, unnamed lists as arrays, we want to write empty dicts
+    for (obj_type in c("functions", "classes")){
+        if (identical(out[[obj_type]], list())){
+            lst <- list()
+            names(lst) <- character(0)
+            out[[obj_type]] <- lst
+        }
+    }
+
+    # write it out
+    out_file <- file.path(OUT_DIR, sprintf("%s_%s.json", LANGUAGE, PKG_NAME))
+    .log_info(sprintf("Writing output to %s", out_file))
+    write(
+        x = jsonlite::toJSON(out, auto_unbox = TRUE)
+        , file = out_file
+        , append = FALSE
+    )
+    .log_info("Done analyzing this package.")
 }
 
-# jsonlite treats empty, unnamed lists as arrays, we want to write empty dicts
-for (obj_type in c("functions", "classes")){
-    if (identical(out[[obj_type]], list())){
-        lst <- list()
-        names(lst) <- character(0)
-        out[[obj_type]] <- lst
-    }
-}
-
-# write it out
-out_file <- file.path(OUT_DIR, sprintf("%s_%s.json", LANGUAGE, PKG_NAME))
-.log_info(sprintf("Writing output to %s", out_file))
-write(x = jsonlite::toJSON(out, auto_unbox = TRUE), file = out_file, append = FALSE)
-.log_info("Done analyzing this package.")
+.analyze(args)
