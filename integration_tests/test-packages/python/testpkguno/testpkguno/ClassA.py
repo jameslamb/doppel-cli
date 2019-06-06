@@ -7,7 +7,7 @@ class ClassA:
     story3 = "hello"
     _secret1 = True
 
-    def __init__(self, x, y, z):
+    def __init__(self, x, y, *, z):
         pass
 
     def anarchy(**kwargs):

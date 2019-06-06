@@ -67,10 +67,10 @@ def _log_warn(msg):
 
 def _get_arg_names(f, kwargs_string):
     """
-    Given a function object, get it's argument names.
+    Given a function object, get its argument names.
     """
     f_dict = inspect.getfullargspec(f)._asdict()
-    args = f_dict['args']
+    args = f_dict['args'] + f_dict['kwonlyargs']
     # deal with people passing "**kwargs"
     if f_dict['varkw'] is not None:
         args.append(kwargs_string)
