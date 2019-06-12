@@ -1,7 +1,8 @@
 # doppel-cli
 
-## development version
+## 0.2.1
 
+* Fixed a bug in handling of functions with [keyword-only arguments]() in `doppel-describe --language python`. Thanks to [@austin3dickey](https://github.com/austin3dickey) for the help! ([#126](https://github.com/jameslamb/doppel-cli/pull/126))
 * Restructured the internals used by `doppel-describe` to describe R packages, so that code coverage of that section can be measured. ([#122](https://github.com/jameslamb/doppel-cli/pull/122))
 * All errors comparing public methods or functions are now reported. Previously, if two issues existed (such as "different number of keyword args" and "different order of keyword args"), only one would be reported. ([#121](https://github.com/jameslamb/doppel-cli/pull/121))
 * Fixed bug which could cause `doppel-describe` to run endlessly in the presence of cyclic imports between submodules (e.g. in `pandas`). ([#120](https://github.com/jameslamb/doppel-cli/pull/120))
