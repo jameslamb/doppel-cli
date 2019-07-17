@@ -47,7 +47,7 @@ matrix:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
         - CONDA_DIR=/Users/travis/miniconda3
       install:
-        - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6.1 nose pytest
+        - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6 nose pytest
         - source activate testenv
         - pip install argparse
         - python setup.py install
