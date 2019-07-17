@@ -1,0 +1,49 @@
+{% set name = "doppel-cli" %}
+{% set version = "0.2.1" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  sha256: "283677d4e318029b15b9e328e069a58f0972ad8d3b954fd34175e0e68380d344"
+
+build:
+  number: 0
+  entry_points:
+    - doppel-describe = doppel.describe:main
+    - doppel-test = doppel.cli:main
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv "
+
+requirements:
+  host:
+    - click
+    - pip
+    - python
+    - tabulate
+  run:
+    - click
+    - python
+    - tabulate
+
+test:
+  imports:
+    - doppel
+    - tests
+  commands:
+    - doppel-describe --help
+    - doppel-test --help
+
+about:
+  home: "http://github.com/jameslamb/doppel-cli"
+  license: "BSD"
+  license_family: "BSD"
+  license_file: ""
+  summary: "An integration testing framework for testing API similarity of software libraries."
+  doc_url: ""
+  dev_url: ""
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here

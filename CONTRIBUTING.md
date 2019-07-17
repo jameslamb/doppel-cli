@@ -13,6 +13,8 @@ This document contains information for maintainers and contributing developers. 
 * [Testing](#testing)
 * [Documentation](#docs)
 * [Releases](#releases)
+    * [releasing to PyPi](#pypi)
+    * [releasing to Anaconda Cloud](#conda)
 * [References for Developers](#references)
 
 ## Integrations <a name="integrations"></a>
@@ -71,9 +73,9 @@ If anything breaks, [create an issue](https://github.com/jameslamb/doppel-cli/is
 
 ## Releases <a name="releases"></a>
 
-### Testing releases: test PyPi
+### Releasing to PyPi <a name="pypi"></a>
 
-PyPi is the official package manage used for distributing Python packages. A "test" version is provided for side effect free integration testing.
+PyPi is the official package manager used for distributing Python packages. A "test" version is provided for side effect free integration testing.
 
 To test whether the current state of publishing `doppel` plays nicely with PyPi, maintainers may from time to time run the following:
 
@@ -89,14 +91,33 @@ To actually publish a new version, run:
 open https://pypi.org/project/doppel-cli/
 ```
 
+### Releasing to Anaconda Cloud <a name="conda"></a>
+
+This package is released to Anaconda Cloud for all major Platforms and all minor versions of Python `3.5.0` and greater.
+
+The recipe for building the package can be found in `conda-recipe/`, and was created using [this tutorial](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
+
+To build packages for upload, you will need `conda-build`. It can be installed with
+
+```
+conda install -y conda-build
+```
+
+To build for all platforms, run
+
+```
+
+```
+
 ## References for Developers <a name="references"></a>
 
-1. [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
-2. [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
-3. [Testing on multiple operating systems with Travis](https://docs.travis-ci.com/user/multi-os/)
-4. [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
-5. [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
-6. [networkx: example appveyor setup for python](https://github.com/networkx/networkx/blob/master/.appveyor.yml)
-7. [simple codecov Python example](https://github.com/codecov/example-python/blob/master/.travis.yml)
-8. [pytest fixtures](https://docs.pytest.org/en/latest/fixture.html)
-9. [inspecting builtins](https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object)
+* [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
+* [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
+* [Testing on multiple operating systems with Travis](https://docs.travis-ci.com/user/multi-os/)
+* [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
+* [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
+* [networkx: example appveyor setup for python](https://github.com/networkx/networkx/blob/master/.appveyor.yml)
+* [simple codecov Python example](https://github.com/codecov/example-python/blob/master/.travis.yml)
+* [pytest fixtures](https://docs.pytest.org/en/latest/fixture.html)
+* [inspecting builtins](https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object)
+* [putting stuff on conda](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html)
