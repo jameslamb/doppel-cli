@@ -18,6 +18,10 @@ Why is this valuable?
     * no need to re-learn the API when switching languages
     * form better expectations when switching languages
 
+For more on this, click the link below to see this talk from the **satRdays Chicago 2019** conference:
+
+[![satRdays Chicago](https://img.youtube.com/vi/quFhQvizBE8/0.jpg)](https://www.youtube.com/watch?v=quFhQvizBE8&t=2h24m30s)
+
 ## Documentation
 
 For the most up-to-date documentation, please see https://doppel-cli.readthedocs.io/en/latest/.
