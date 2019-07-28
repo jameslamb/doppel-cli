@@ -18,7 +18,7 @@ Why is this valuable?
     * no need to re-learn the API when switching languages
     * form better expectations when switching languages
 
-For more on this, see this talk from the **satRdays Chicago 2019** conference: 
+For more on this, click the link below to see this talk from the **satRdays Chicago 2019** conference:
 
 [![satRdays Chicago](https://img.youtube.com/vi/quFhQvizBE8/0.jpg)](https://www.youtube.com/watch?v=quFhQvizBE8&t=2h24m30s)
 
