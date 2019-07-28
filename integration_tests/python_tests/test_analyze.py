@@ -186,7 +186,9 @@ class TestClassStuff:
             'ClassA',
             'ClassB',
             'ClassC',
-            'ClassD'
+            'ClassD',
+            'ClassE',
+            'ClassF'
         ]
 
         for c in expected_classes:
@@ -254,3 +256,33 @@ class TestClassStuff:
         alongside other public methods in a class
         """
         assert rundescribe['classes']['ClassD']['public_methods'].get('from_string', False)
+
+    def test_empty_constructors(self, rundescribe):
+        """
+        Classes with constructors that have no keyword args
+        should be serialized correctly
+        """
+        class_dict = rundescribe['classes']
+        expected_methods = [
+            '~~CONSTRUCTOR~~',
+            'from_string'
+        ]
+
+        for e in expected_methods:
+            assert class_dict['ClassE']['public_methods'].get(e, False)
+
+        # test that things with no kwargs produce "args": [], not "args": {}
+        # expect_true(isTRUE(
+        #    grepl('.+"ClassE".+~~CONSTRUCTOR~~.+"args"\\:\\[\\]', RESULTS[["testpkguno"]][["raw"]])
+        # ))
+        # expect_true(isTRUE(
+        #     grepl('.+"from_string".+~~CONSTRUCTOR~~.+"args"\\:\\[\\]', RESULTS[["testpkguno"]][["raw"]])
+        # ))
+
+    def test_empty_classes(self, rundescribe):
+        """
+        Totally empty classes should still have their
+        constructors documented
+        """
+        assert list(rundescribe['classes']['ClassF']['public_methods'].keys()) == ['~~CONSTRUCTOR~~']
+        assert rundescribe['classes']['ClassF']['public_methods']['~~CONSTRUCTOR~~'] == {'args': []}

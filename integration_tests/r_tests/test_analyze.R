@@ -4,6 +4,10 @@
 library(jsonlite)
 library(testthat)
 
+# details that will always be true of doppel-describe output
+TOP_LEVEL_KEYS <- c("name", "language", "functions", "classes")
+NUM_TOP_LEVEL_KEYS <- length(TOP_LEVEL_KEYS)
+
 # Set up test data
 TEST_PACKAGES <- c(
     'testpkguno'
@@ -85,22 +89,17 @@ for (pkg_name in TEST_PACKAGES){
 # true.
 context("Basic contract")
 
-# Doing this for every package covers the special
-# cases of functions-only packages (testpkgdos) and
-# classes-only packages (testpkgtres)
-for (pkg_name in TEST_PACKAGES){
-    test_that("The JSON file produce by doppel-describe should have only the expected top-level dictionary keys", {
+test_that("The JSON file produce by doppel-describe should have only the expected top-level dictionary keys", {
 
-        expect_named(
-            RESULTS[[pkg_name]][["parsed"]]
-            , c("name", "language", "functions", "classes")
-            , ignore.order = TRUE
-            , ignore.case = FALSE
-        )
-        expect_equal(length(RESULTS[["testpkguno"]][["parsed"]]), 4)
+    expect_named(
+        RESULTS[["testpkguno"]][["parsed"]]
+        , EXPECTED_TOP_LEVEL_KEYS
+        , ignore.order = TRUE
+        , ignore.case = FALSE
+    )
+    expect_equal(length(RESULTS[["testpkguno"]][["parsed"]]), NUM_TOP_LEVEL_KEYS)
 
-    })
-}
+})
 
 test_that("'name' should be a string", {
     expect_is(RESULTS[["testpkguno"]][["parsed"]][["name"]], "character")
@@ -371,4 +370,24 @@ test_that("Totally empty classes should still have their constructors documented
         , ignore.order = TRUE
         , ignore.case = FALSE
     )
+    expect_named(
+        RESULTS[["testpkguno"]][["parsed"]][["classes"]][["ClassF"]][["public_methods"]][["~~CONSTRUCTOR~~"]]
+        , c("args")
+        , ignore.order = TRUE
+        , ignore.case = FALSE
+    )
+})
+
+context("function-only packages")
+
+test_that("The JSON file produce by doppel-describe should have only the expected top-level dictionary keys", {
+
+    expect_named(
+        RESULTS[["testpkgdos"]][["parsed"]]
+        , EXPECTED_TOP_LEVEL_KEYS
+        , ignore.order = TRUE
+        , ignore.case = FALSE
+    )
+    expect_equal(length(RESULTS[["testpkguno"]][["parsed"]]), NUM_TOP_LEVEL_KEYS)
+
 })
