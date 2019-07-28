@@ -1,53 +1,60 @@
 
+library(argparse)
 library(assertthat)
 library(R6)
 
 # test package stored in integration_tests/test-packages
-TEST_PACKAGE <- "testpkguno"
+TEST_PACKAGES <- c(
+    "testpkguno"
+    , "testpkgdos"
+)
 TESTING_DIR <- tempdir()
 ANALYZE_SCRIPT <- file.path(
     getwd(), "doppel", "bin", "analyze.R"
 )
 
-TEST_VALUES <- list(
-    "pkg" = TEST_PACKAGE,
-    "output_dir" = TESTING_DIR,
-    "kwargs_string" = "~~KWARGS~~",
-    "constructor_string" = "~~CONSTRUCTOR~~"
-)
+for (TEST_PACKAGE in TEST_PACKAGES){
 
-# override argparse:::Parser
-MockParser <- R6::R6Class(
-    "MockParser",
-    public = list(
-        initialize = function(...){
-            return(invisible(NULL))
-        },
-        parse_args = function(...){
-            print("returning mocked values")
-            return(TEST_VALUES)
-        },
-        add_argument = function(...){
-            return(invisible(NULL))
-        }
+    TEST_VALUES <- list(
+        "pkg" = TEST_PACKAGE,
+        "output_dir" = TESTING_DIR,
+        "kwargs_string" = "~~KWARGS~~",
+        "constructor_string" = "~~CONSTRUCTOR~~"
     )
-)
 
-utils::assignInNamespace(
-    x = "Parser"
-    , value = MockParser
-    , ns = "argparse"
-)
+    # override argparse:::Parser
+    MockParser <- R6::R6Class(
+        "MockParser",
+        public = list(
+            initialize = function(...){
+                return(invisible(NULL))
+            },
+            parse_args = function(...){
+                print("returning mocked values")
+                return(TEST_VALUES)
+            },
+            add_argument = function(...){
+                return(invisible(NULL))
+            }
+        )
+    )
 
-x <- tryCatch({
-   sys.source(
-       ANALYZE_SCRIPT
-       , envir = .GlobalEnv
-   )
-}, error = function(e){
-    return(NULL)
-})
+    utils::assignInNamespace(
+        x = "Parser"
+        , value = MockParser
+        , ns = "argparse"
+    )
 
-.analyze(
-    args = argparse::ArgumentParser()$parse_args()
-)
+    x <- tryCatch({
+       sys.source(
+           ANALYZE_SCRIPT
+           , envir = .GlobalEnv
+       )
+    }, error = function(e){
+        return(NULL)
+    })
+
+    .analyze(
+        args = argparse::ArgumentParser()$parse_args()
+    )
+}

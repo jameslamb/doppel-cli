@@ -1,5 +1,9 @@
 # doppel-cli
 
+## development version
+
+* Fixed bug which could cause `deoppl-describe --language python` to fail to document the constructor for empty classes (classes which do not implement `__init__()`). ([#133](https://github.com/jameslamb/doppel-cli/pull/133))
+
 ## 0.2.1
 
 * Fixed a bug in handling of functions with [keyword-only arguments]() in `doppel-describe --language python`. Thanks to [@austin3dickey](https://github.com/austin3dickey) for the help! ([#126](https://github.com/jameslamb/doppel-cli/pull/126))

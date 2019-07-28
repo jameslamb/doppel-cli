@@ -4,7 +4,7 @@
 #     Check sphinx docs for issues. Return
 #     non-zero exit code if any warnings show up
 # [usage]
-#     ./check_docs.sh $(pwd)/docs
+#     ./.ci/check_docs.sh $(pwd)/docs
 
 SOURCE_DIR=${1}
 

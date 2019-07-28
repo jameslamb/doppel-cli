@@ -23,6 +23,8 @@
 **/.pytest_cache/
 smoke_tests/test_data/successful_*.txt
 smoke_tests/test_data/results.txt
+**/coverage.html
+lib/
 
 # misc files
 **/*.DS_Store

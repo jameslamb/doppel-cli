@@ -1,16 +1,16 @@
-Package: testpkguno
+Package: testpkgdos
 Type: Package
-Title: testpkguno
-Version: 0.0.2
+Title: testpkgdos
+Version: 0.0.1
 Author: c(
     person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
     )
 Maintainer: James Lamb <jaylamb20@gmail.com>
-Description: First package for testing doppel-cli
+Description: Second package for testing doppel-cli. This
+    is used to test the behavior of doppel-cli on
+    a functions-only package.
 Depends:
     R (>= 3.5)
-Imports:
-    R6
 License: file LICENSE
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1

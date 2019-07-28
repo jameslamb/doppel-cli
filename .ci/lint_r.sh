@@ -4,7 +4,7 @@
 #     Lint R code in a directory for style
 #     problems
 # [usage]
-#     ./lint_r.sh $(pwd)/doppel/bin/
+#     ./.ci/lint_r.sh $(pwd)/doppel/bin/
 
 SOURCE_DIR=${1}
 

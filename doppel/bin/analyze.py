@@ -45,6 +45,11 @@ SPECIAL_METHOD_ARGS = [
     'cls'
 ]
 
+# value to use for an empty function
+EMPTY_FUNCTION_DICT = {
+    "args": []
+}
+
 # Import that module
 top_level_env = __import__(PKG_NAME)
 
@@ -214,6 +219,14 @@ while len(modules_to_parse) > 0:
                             out['classes'][obj_name]['public_methods'][f] = {
                                 "args": method_args
                             }
+
+                # classes that don't implement a constructor
+                # still have one!
+                if not out['classes'][obj_name]['public_methods'].get(CONSTRUCTOR_STRING, None):
+                    msg = "Class '{}' did not implement __init__. Adding it".format(obj_name)
+                    _log_info(msg)
+
+                    out['classes'][obj_name]['public_methods'][CONSTRUCTOR_STRING] = EMPTY_FUNCTION_DICT
             next
 
         elif isinstance(obj, types.ModuleType):
