@@ -1,0 +1,22 @@
+
+# prevent CRLFs from being checked into the code
+* text=auto
+
+# explicitly tell git about file types
+# so it doesn't have to guess (and doesn't
+# guess wrong)
+docs/Makefile text
+.github/CODEOWNERS text
+.coveragerc text
+*.ini text
+*.json text
+**/LICENSE text
+MANIFEST.in text
+*.md text
+*.py text
+*.R text
+*.rst
+*.sh text
+*.txt text
+**/VERSION text
+*.yml text
