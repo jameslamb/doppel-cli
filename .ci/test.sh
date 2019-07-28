@@ -31,5 +31,13 @@ Rscript ${CI_TOOLS}/test-analyze-r-coverage.R \
     --source-dir $(pwd) \
     --fail-under ${MIN_ANALYZE_R_TEST_COVERAGE}
 
+INTEGRATION_TEST_DIR=$(pwd)/analyze_py_tests
+pushd ${INTEGRATION_TEST_DIR}
+    pytest --cov=$(../doppel/bin/analyze.py)
+    coverage report \
+        -m \
+        --fail-under=0
+popd
+
 # If all is good, we did it!
 exit 0
