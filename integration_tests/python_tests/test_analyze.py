@@ -8,6 +8,15 @@ import json
 import os
 import pytest
 
+# details that will always be true of doppel-describe output
+EXPECTED_TOP_LEVEL_KEYS = set([
+    "name",
+    "language",
+    "functions",
+    "classes"
+])
+NUM_TOP_LEVEL_KEYS = len(EXPECTED_TOP_LEVEL_KEYS)
+
 
 @pytest.fixture()
 def rundescribe():
@@ -17,31 +26,39 @@ def rundescribe():
     # there isn't a clean way to pass in
     # command-line args to test scripts, so
     # using environment variables
-    package_name = os.environ['TEST_PACKAGE_NAME']
+    test_packages = [
+        'testpkguno',
+        'testpkgdos'
+    ]
 
     # Added this abomination because something about
     # os.getenv('TEST_PACKAGE_DIR') # was resulting in a None
     test_data_dir = os.path.abspath('../../test_data')
 
-    cmd = "doppel-describe --language python -p {} --data-dir {}".format(
-        package_name,
-        test_data_dir
-    )
+    results = {}
 
-    exit_code = os.system(cmd)
-    if exit_code != 0:
-        msg = "doppel-describe exited with non-zero exit code: {}"
-        raise RuntimeError(msg.format(exit_code))
+    for package_name in test_packages:
+        cmd = "doppel-describe --language python -p {} --data-dir {}".format(
+            package_name,
+            test_data_dir
+        )
 
-    output_file = "python_{}.json".format(package_name)
-    path_to_output_file = os.path.join(
-        test_data_dir,
-        output_file
-    )
-    with open(path_to_output_file, 'r') as f:
-        result_json = json.loads(f.read())
+        exit_code = os.system(cmd)
+        if exit_code != 0:
+            msg = "doppel-describe exited with non-zero exit code: {}"
+            raise RuntimeError(msg.format(exit_code))
 
-    return(result_json)
+        output_file = "python_{}.json".format(package_name)
+        path_to_output_file = os.path.join(
+            test_data_dir,
+            output_file
+        )
+        with open(path_to_output_file, 'r') as f:
+            result_json = json.loads(f.read())
+
+        results[package_name] = result_json
+
+    return results
 
 
 class TestBasicContract:
@@ -56,25 +73,23 @@ class TestBasicContract:
         The JSON file produced by doppel-describe should have
         only the expected top-level dictionary keys
         """
-        result_json = rundescribe
+        result_json = rundescribe['testpkguno']
 
-        assert result_json.get("name", False)
-        assert result_json.get("language", False)
-        assert result_json.get("functions", False)
-        assert result_json.get("classes", False)
-        assert len(result_json.keys()) == 4
+        for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
+            assert result_json.get(top_level_key, False)
+        assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS
 
     def test_name(self, rundescribe):
         """
         'name' should be a string
         """
-        assert isinstance(rundescribe['name'], str)
+        assert isinstance(rundescribe['testpkguno']['name'], str)
 
     def test_language(self, rundescribe):
         """
         'language' should be 'python'
         """
-        assert rundescribe['language'] == 'python'
+        assert rundescribe['testpkguno']['language'] == 'python'
 
     def test_functions_block(self, rundescribe):
         """
@@ -85,7 +100,7 @@ class TestBasicContract:
         Nothing other than 'args' should be included in the
         function interface.
         """
-        for func_name, func_interface in rundescribe['functions'].items():
+        for func_name, func_interface in rundescribe['testpkguno']['functions'].items():
             args = func_interface['args']
             assert isinstance(args, list)
             assert len(func_interface.keys()) == 1
@@ -104,7 +119,7 @@ class TestBasicContract:
         method interface and nothing other than 'public_methods'
         should be included in the class interface.
         """
-        for class_name, class_interface in rundescribe['classes'].items():
+        for class_name, class_interface in rundescribe['testpkguno']['classes'].items():
 
             assert len(class_interface.keys()) == 1
 
@@ -129,7 +144,7 @@ class TestFunctionStuff:
 
         No other stuff should end up in "functions".
         """
-        func_dict = rundescribe['functions']
+        func_dict = rundescribe['testpkguno']['functions']
 
         expected_functions = [
             'function_a',
@@ -147,7 +162,7 @@ class TestFunctionStuff:
         Functions without any arguments should get an
         'args' dictionary with an empty list.
         """
-        assert rundescribe['functions']['function_a']['args'] == []
+        assert rundescribe['testpkguno']['functions']['function_a']['args'] == []
 
     def test_regular_function(self, rundescribe):
         """
@@ -157,7 +172,7 @@ class TestFunctionStuff:
         expected = {
             "args": ['x', 'y', '~~KWARGS~~']
         }
-        assert rundescribe['functions']['function_b'] == expected
+        assert rundescribe['testpkguno']['functions']['function_b'] == expected
 
     def test_kwargs_only_function(self, rundescribe):
         """
@@ -167,7 +182,7 @@ class TestFunctionStuff:
         expected = {
             "args": ['~~KWARGS~~']
         }
-        assert rundescribe['functions']['function_c'] == expected
+        assert rundescribe['testpkguno']['functions']['function_c'] == expected
 
 
 class TestClassStuff:
@@ -180,7 +195,7 @@ class TestClassStuff:
         """
         Exported classes should all be found.
         """
-        class_dict = rundescribe['classes']
+        class_dict = rundescribe['testpkguno']['classes']
 
         expected_classes = [
             'ClassA',
@@ -204,7 +219,7 @@ class TestClassStuff:
         No other stuff should end up underneath classes
         within "classes".
         """
-        class_dict = rundescribe['classes']
+        class_dict = rundescribe['testpkguno']['classes']
         expected_methods = [
             '~~CONSTRUCTOR~~',
             'anarchy',
@@ -227,7 +242,7 @@ class TestClassStuff:
         No other stuff should end up underneath classes
         within "classes".
         """
-        class_dict = rundescribe['classes']
+        class_dict = rundescribe['testpkguno']['classes']
         expected_methods = [
             '~~CONSTRUCTOR~~',
             'anarchy',
@@ -247,7 +262,7 @@ class TestClassStuff:
         documented alongside other public methods in
         a class
         """
-        assert rundescribe['classes']['ClassC']['public_methods'].get('from_string', False)
+        assert rundescribe['testpkguno']['classes']['ClassC']['public_methods'].get('from_string', False)
 
     def test_inherited_classmethods_found(self, rundescribe):
         """
@@ -255,14 +270,14 @@ class TestClassStuff:
         should be correctly found and documented
         alongside other public methods in a class
         """
-        assert rundescribe['classes']['ClassD']['public_methods'].get('from_string', False)
+        assert rundescribe['testpkguno']['classes']['ClassD']['public_methods'].get('from_string', False)
 
     def test_empty_constructors(self, rundescribe):
         """
         Classes with constructors that have no keyword args
         should be serialized correctly
         """
-        class_dict = rundescribe['classes']
+        class_dict = rundescribe['testpkguno']['classes']
         expected_methods = [
             '~~CONSTRUCTOR~~',
             'from_string'
@@ -284,5 +299,23 @@ class TestClassStuff:
         Totally empty classes should still have their
         constructors documented
         """
-        assert list(rundescribe['classes']['ClassF']['public_methods'].keys()) == ['~~CONSTRUCTOR~~']
-        assert rundescribe['classes']['ClassF']['public_methods']['~~CONSTRUCTOR~~'] == {'args': []}
+        assert list(rundescribe['testpkguno']['classes']['ClassF']['public_methods'].keys()) == ['~~CONSTRUCTOR~~']
+        assert rundescribe['testpkguno']['classes']['ClassF']['public_methods']['~~CONSTRUCTOR~~'] == {'args': []}
+
+
+class TestFunctionOnly:
+    """
+    Test the behavior of analyze.py for packages
+    which have functions but not classes
+    """
+
+    def test_top_level_keys(self, rundescribe):
+        """
+        The JSON file produce by doppel-describe
+        should have only the expected top-level dictionary keys
+        """
+        result_json = rundescribe['testpkgdos']
+
+        for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
+            assert result_json.get(top_level_key, None) is not None
+        assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS

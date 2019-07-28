@@ -4,10 +4,6 @@
 library(jsonlite)
 library(testthat)
 
-# details that will always be true of doppel-describe output
-TOP_LEVEL_KEYS <- c("name", "language", "functions", "classes")
-NUM_TOP_LEVEL_KEYS <- length(TOP_LEVEL_KEYS)
-
 # Set up test data
 TEST_PACKAGES <- c(
     'testpkguno'
@@ -83,6 +79,10 @@ for (pkg_name in TEST_PACKAGES){
     txt <- trimws(txt)
     return(txt)
 }
+
+# details that will always be true of doppel-describe output
+EXPECTED_TOP_LEVEL_KEYS <- c("name", "language", "functions", "classes")
+NUM_TOP_LEVEL_KEYS <- length(EXPECTED_TOP_LEVEL_KEYS)
 
 # Tests that check that basic truths about the
 # JSON file produced by doppel-describe remain
