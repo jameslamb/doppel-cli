@@ -28,7 +28,8 @@ def rundescribe():
     # using environment variables
     test_packages = [
         'testpkguno',
-        'testpkgdos'
+        'testpkgdos',
+        'testpkgtres'
     ]
 
     # Added this abomination because something about
@@ -315,6 +316,24 @@ class TestFunctionOnly:
         should have only the expected top-level dictionary keys
         """
         result_json = rundescribe['testpkgdos']
+
+        for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
+            assert result_json.get(top_level_key, None) is not None
+        assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS
+
+
+class TestClassOnly:
+    """
+    Test the behavior of analyze.py for packages
+    which have classes but not functions
+    """
+
+    def test_top_level_keys(self, rundescribe):
+        """
+        The JSON file produce by doppel-describe
+        should have only the expected top-level dictionary keys
+        """
+        result_json = rundescribe['testpkgtres']
 
         for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
             assert result_json.get(top_level_key, None) is not None

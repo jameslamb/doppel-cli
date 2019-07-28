@@ -1,16 +1,18 @@
-Package: testpkgdos
+Package: testpkgtres
 Type: Package
-Title: testpkgdos
+Title: testpkgtres
 Version: 0.0.1
 Author: c(
     person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
     )
 Maintainer: James Lamb <jaylamb20@gmail.com>
-Description: Second package for testing doppel-cli. This
+Description: Third package for testing doppel-cli. This
     is used to test the behavior of doppel-cli on
-    a functions-only package.
+    a classes-only package.
 Depends:
     R (>= 3.5)
+Imports:
+    R6
 License: file LICENSE
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1

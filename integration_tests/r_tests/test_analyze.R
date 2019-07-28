@@ -8,6 +8,7 @@ library(testthat)
 TEST_PACKAGES <- c(
     'testpkguno'
     , 'testpkgdos'
+    , 'testpkgtres'
 )
 TEST_DATA_DIR <- tools::file_path_as_absolute("../../test_data")
 
@@ -380,7 +381,7 @@ test_that("Totally empty classes should still have their constructors documented
 
 context("function-only packages")
 
-test_that("The JSON file produce by doppel-describe should have only the expected top-level dictionary keys", {
+test_that("The JSON file produce by doppel-describe should have the expected top-level dictionary keys for function-only packages", {
 
     expect_named(
         RESULTS[["testpkgdos"]][["parsed"]]
@@ -389,5 +390,19 @@ test_that("The JSON file produce by doppel-describe should have only the expecte
         , ignore.case = FALSE
     )
     expect_equal(length(RESULTS[["testpkguno"]][["parsed"]]), NUM_TOP_LEVEL_KEYS)
+
+})
+
+context("class-only packages")
+
+test_that("The JSON file produce by doppel-describe should have the expected top-level dictionary keys for class-only packages", {
+
+    expect_named(
+        RESULTS[["testpkgtres"]][["parsed"]]
+        , EXPECTED_TOP_LEVEL_KEYS
+        , ignore.order = TRUE
+        , ignore.case = FALSE
+    )
+    expect_equal(length(RESULTS[["testpkgtres"]][["parsed"]]), NUM_TOP_LEVEL_KEYS)
 
 })
