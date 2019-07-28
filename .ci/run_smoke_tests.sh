@@ -12,7 +12,7 @@
 #     but is left to unit tests and integration
 #     tests.
 # [usage]
-#     ./run_smoke_tests.sh $(pwd)/test_data
+#     ./.ci/run_smoke_tests.sh $(pwd)/test_data
 
 TEST_DATA_DIR=${1}
 R_TEST_PACKAGE="argparse"

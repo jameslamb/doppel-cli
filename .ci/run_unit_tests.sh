@@ -4,7 +4,7 @@
 #     Run doppel-cli unit tests using
 #     unittest
 # [usage]
-#     ./run_unit_tests.sh 50
+#     ./.ci/run_unit_tests.sh 50
 
 MIN_TEST_COVERAGE=${1}
 

@@ -1,7 +1,10 @@
 #!/bin/bash
 
-# Install R and Python packages designed just to
-# test doppel-cli
+# [description]
+#     Install R and Python packages designed just to
+#     test doppel-cli
+# [usage]
+#    ./.ci/install_test_packages.sh
 
 TEST_PKG_DIR=$(pwd)/integration_tests/test-packages
 R_TEST_PKG_DIR=${TEST_PKG_DIR}/r

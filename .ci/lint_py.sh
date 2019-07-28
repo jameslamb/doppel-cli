@@ -4,7 +4,7 @@
 #     Lint python code in a directory for style
 #     problems
 # [usage]
-#     ./lint_py.sh $(pwd)
+#     ./.ci/lint_py.sh $(pwd)
 
 SOURCE_DIR=${1}
 

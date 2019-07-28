@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# [description]
+#     Run all of the tests for this repo
+# [usage]
+#     ./.ci/test.sh
+
 # Failure is a natural part of life
 set -e
 
@@ -8,7 +13,7 @@ CI_TOOLS=$(pwd)/.ci
 
 # Test coverage stuff
 MIN_UNIT_TEST_COVERAGE=95
-MIN_ANALYZE_R_TEST_COVERAGE=90
+MIN_ANALYZE_R_TEST_COVERAGE=100
 
 # Make sure we're living in conda land
 export PATH="$HOME/miniconda/bin:$PATH"

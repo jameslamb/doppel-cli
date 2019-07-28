@@ -137,43 +137,38 @@ args <- parser$parse_args()
             # add it here to be explicit
             if (! R6_CONSTRUCTOR_NAME %in% names(public_methods)){
                 public_methods[[R6_CONSTRUCTOR_NAME]] <- function(){NULL}
+
+                # Calling this is an annoying hack to get
+                # covr to treat this if statement as covered
+                public_methods[[R6_CONSTRUCTOR_NAME]]()
             }
 
-            # Empty classes are a thing. This handles that case.
-            # Using a named empty list so jsonlite::toJSON() will make it
-            # {} not []
-            if (length(public_methods) == 0){
-                empty_dict <- list()
-                names(empty_dict) <- character(0)
-                out[["classes"]][[obj_name]][["public_methods"]] <- empty_dict
-            } else {
-                for (i in 1:length(public_methods)){
+            for (i in 1:length(public_methods)){
 
-                    pm <- public_methods[[i]]
-                    method_name <- names(public_methods)[[i]]
-                    if (method_name == R6_CONSTRUCTOR_NAME){
-                        method_name <- CONSTRUCTOR_STRING
-                    }
+                pm <- public_methods[[i]]
+                method_name <- names(public_methods)[[i]]
+                if (method_name == R6_CONSTRUCTOR_NAME){
+                    method_name <- CONSTRUCTOR_STRING
+                }
 
-                    # Grab ordered list of arguments
-                    method_args <- suppressWarnings({
-                        names(formals(pm))
-                    })
+                # Grab ordered list of arguments
+                method_args <- suppressWarnings({
+                    names(formals(pm))
+                })
 
-                    if (is.null(method_args)){
-                        method_args <- list()
-                    }
+                if (is.null(method_args)){
+                    method_args <- list()
+                }
 
-                    out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
-                        "args" = as.list(
-                            gsub(
-                                "\\.\\.\\."
-                                , KWARGS_STRING
-                                , method_args
-                            )
+                out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
+                    "args" = as.list(
+                        gsub(
+                            "\\.\\.\\."
+                            , KWARGS_STRING
+                            , method_args
                         )
                     )
-                }
+                )
             }
 
             # Check for class methods. For now, these are just treated as
