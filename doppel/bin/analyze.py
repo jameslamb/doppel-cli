@@ -51,6 +51,11 @@ def do_everything(parsed_args):
         'cls'
     ]
 
+    # value to use for an empty function
+    EMPTY_FUNCTION_DICT = {
+        "args": []
+    }
+
     # Import that module
     top_level_env = __import__(PKG_NAME)
 
@@ -62,14 +67,11 @@ def do_everything(parsed_args):
         "classes": {}
     }
 
-
     def _log_info(msg):
         print(msg)
 
-
     def _log_warn(msg):
         print("[WARN] " + msg)
-
 
     def _get_arg_names(f, kwargs_string):
         """
@@ -81,7 +83,6 @@ def do_everything(parsed_args):
         if f_dict['varkw'] is not None:
             args.append(kwargs_string)
         return(args)
-
 
     def _remove_decorators(thing):
         """
@@ -95,7 +96,6 @@ def do_everything(parsed_args):
             msg = "'{}' is decorated, grabbing the underlying object"
             _log_info(msg.format(f))
             return(_remove_decorators(thing.__wrapped__))
-
 
     modules_to_parse = [top_level_env]
     names_of_parsed_modules = set([])
