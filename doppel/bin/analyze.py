@@ -37,11 +37,10 @@ def parse_args(args):
 def do_everything(parsed_args):
 
     # Grab args (store in constants for easier debugging)
-    args = parser.parse_args()
-    PKG_NAME = args.pkg
-    OUT_DIR = args.output_dir
-    KWARGS_STRING = args.kwargs_string
-    CONSTRUCTOR_STRING = args.constructor_string
+    PKG_NAME = parsed_args.pkg
+    OUT_DIR = parsed_args.output_dir
+    KWARGS_STRING = parsed_args.kwargs_string
+    CONSTRUCTOR_STRING = parsed_args.constructor_string
     LANGUAGE = 'python'
 
     # These are lanaguage-specific
