@@ -17,7 +17,7 @@ class TestAnalyzePy:
             "testpkgdos",
             "testpkgtres"
         ]
-        output_dir = "/Users/jlamb/repos/doppel-cli/test_data"
+        output_dir = "../../test_data"
         for pkg_name in TEST_PACKAGES:
             args = doppel_analyze.parse_args([
                 "--pkg", pkg_name,

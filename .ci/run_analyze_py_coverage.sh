@@ -11,6 +11,7 @@ MIN_TEST_COVERAGE=${1}
 set -e
 
 INTEGRATION_TEST_DIR=$(pwd)/.ci/analyze_py_tests
+mkdir -p $(pwd)/test_data
 
 # This is a thing ... need to have a copy of the code
 # near the tests so we can use a relative import to
