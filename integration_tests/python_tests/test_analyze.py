@@ -300,6 +300,11 @@ class TestClassStuff:
         Totally empty classes should still have their
         constructors documented
         """
+        print("======================")
+        print("======================")
+        print("======================")
+        print("======================")
+        print(rundescribe['testpkguno']['classes'])
         assert list(rundescribe['testpkguno']['classes']['ClassF']['public_methods'].keys()) == ['~~CONSTRUCTOR~~']
         assert rundescribe['testpkguno']['classes']['ClassF']['public_methods']['~~CONSTRUCTOR~~'] == {'args': []}
 
