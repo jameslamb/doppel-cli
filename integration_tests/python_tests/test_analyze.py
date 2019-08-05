@@ -33,7 +33,7 @@ def rundescribe():
     ]
 
     # Added this abomination because something about
-    # os.getenv('TEST_PACKAGE_DIR') # was resulting in a None
+    # os.getenv('TEST_PACKAGE_DIR') was resulting in a None
     test_data_dir = os.path.abspath('../../test_data')
 
     results = {}
