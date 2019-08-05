@@ -220,6 +220,15 @@ def do_everything(parsed_args):
                                 out['classes'][obj_name]['public_methods'][f] = {
                                     "args": method_args
                                 }
+
+                    # classes that don't implement a constructor
+                    # still have one!
+                    if not out['classes'][obj_name]['public_methods'].get(CONSTRUCTOR_STRING, None):
+                        msg = "Class '{}' did not implement __init__. Adding it".format(obj_name)
+                        _log_info(msg)
+
+                        out['classes'][obj_name]['public_methods'][CONSTRUCTOR_STRING] = EMPTY_FUNCTION_DICT
+
                 next
 
             elif isinstance(obj, types.ModuleType):
