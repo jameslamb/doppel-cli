@@ -28,7 +28,7 @@ ${CONDA_DIR}/bin/conda install -c r \
 export PATH=${PATH}:${CONDA_DIR}/bin
 
 # Get packages for testing
-${CONDA_DIR}/bin/Rscript -e "install.packages(c('argparse', 'covr', 'futile.logger'), repos = '${CRAN_MIRROR}')"
+${CONDA_DIR}/bin/Rscript -e "install.packages(c('argparse', 'covr', 'futile.logger', 'roxygen2'), repos = '${CRAN_MIRROR}')"
 ${CONDA_DIR}/bin/pip install \
     --user \
     argparse \
