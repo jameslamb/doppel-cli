@@ -23,7 +23,8 @@ echo ""
 
     pushd $(pwd)/integration_tests/python_tests
         pytest \
-            --cache-clear
+            --cache-clear \
+            -vv
     popd
 
 echo ""
