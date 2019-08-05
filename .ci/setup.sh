@@ -27,17 +27,28 @@ ${CONDA_DIR}/bin/conda install -c r \
 # gcc bundled with conda
 export PATH=${PATH}:${CONDA_DIR}/bin
 
-# Get packages for testing
+# Get R packages for testing
 ${CONDA_DIR}/bin/Rscript -e "install.packages(c('argparse', 'covr', 'futile.logger', 'roxygen2'), repos = '${CRAN_MIRROR}')"
+
+# Get Python packages for testing
 ${CONDA_DIR}/bin/pip install \
+    --user \
     argparse \
     click \
     coverage \
     codecov \
     pycodestyle \
-    pytest \
-    pytest-cov \
     sphinx \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \
     tabulate
+
+export PIP_INSTALL_OPTS="--no-color"
+if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+    export PIP_INSTALL_OPTS="--no-color --user"
+fi
+
+${CONDA_DIR}/bin/pip install \
+    ${PIP_INSTALL_OPTS} \
+        pytest \
+        pytest-cov
