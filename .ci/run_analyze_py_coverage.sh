@@ -23,7 +23,6 @@ cp ${ANALYZE_PY_SCRIPT} ${ANALYZE_PY_COPY}
 
 pushd ${INTEGRATION_TEST_DIR}
     pytest \
-        -vv \
         --cov
 
     coverage report \
