@@ -36,6 +36,8 @@ ${CONDA_DIR}/bin/pip install \
     coverage \
     codecov \
     pycodestyle \
+    pytest \
+    pytest-cov \
     sphinx \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \
