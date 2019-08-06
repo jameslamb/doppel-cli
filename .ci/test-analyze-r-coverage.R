@@ -1,4 +1,7 @@
 
+library(argparse)
+library(covr)
+
 parser <- argparse::ArgumentParser()
 parser$add_argument(
     "--source-dir"
