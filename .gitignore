@@ -25,7 +25,6 @@ smoke_tests/test_data/successful_*.txt
 smoke_tests/test_data/results.txt
 **/coverage.html
 lib/
-.ci/analyze_py_tests/*analyze.py
 
 # temporary file created by .ci/run_analyze_py_coverage.sh
 .ci/analyze_py_tests/doppel_analyze.py
