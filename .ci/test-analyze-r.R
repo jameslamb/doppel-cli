@@ -1,6 +1,5 @@
 
 library(argparse)
-library(assertthat)
 library(R6)
 
 # test package stored in integration_tests/test-packages
