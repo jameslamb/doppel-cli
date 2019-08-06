@@ -45,7 +45,7 @@ ${CONDA_DIR}/bin/pip install \
 
 export PIP_INSTALL_OPTS="--no-color"
 if [[ $TRAVIS_OS_NAME == "osx" ]]; then
-    export PIP_INSTALL_OPTS="--no-color --user"
+    export PIP_INSTALL_OPTS="--user"
 fi
 
 ${CONDA_DIR}/bin/pip install \
