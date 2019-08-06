@@ -17,13 +17,15 @@ ${CONDA_DIR}/bin/conda info -a
 # Set up R (gulp)
 ${CONDA_DIR}/bin/conda install -c r \
     r-assertthat \
-    r-covr \
-    r-futile.logger \
     r-jsonlite \
     r-lintr \
     r-r6 \
     r-roxygen2 \
     r-testthat
+
+${CONDA_DIR}/bin/conda install -c conda-forge \
+    r-covr \
+    r-futile.logger
 
 # Per https://github.com/ContinuumIO/anaconda-issues/issues/9423#issue-325303442,
 # packages that require compilation may fail to find the
