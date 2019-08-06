@@ -14,6 +14,7 @@ CI_TOOLS=$(pwd)/.ci
 # Test coverage stuff
 MIN_UNIT_TEST_COVERAGE=95
 MIN_ANALYZE_R_TEST_COVERAGE=100
+MIN_ANALYZE_PY_TEST_COVERAGE=80
 
 # Make sure we're living in conda land
 export PATH="$HOME/miniconda/bin:$PATH"
@@ -30,6 +31,8 @@ ${CI_TOOLS}/run_integration_tests.sh $(pwd)/test_data
 Rscript ${CI_TOOLS}/test-analyze-r-coverage.R \
     --source-dir $(pwd) \
     --fail-under ${MIN_ANALYZE_R_TEST_COVERAGE}
+
+${CI_TOOLS}/run_analyze_py_coverage.sh ${MIN_ANALYZE_PY_TEST_COVERAGE}
 
 # If all is good, we did it!
 exit 0

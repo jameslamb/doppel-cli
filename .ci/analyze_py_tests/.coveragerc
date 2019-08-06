@@ -1,0 +1,9 @@
+
+# this is a horrible hack to avoid the
+# module-not-found error you'd get from running
+# tests without this file here
+[run]
+omit =
+    *.local/*
+    *__init__.py*
+    *test_*

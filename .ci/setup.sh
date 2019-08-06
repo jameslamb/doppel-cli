@@ -10,7 +10,6 @@ wget ${MINICONDA_INSTALLER} -O miniconda.sh;
 bash miniconda.sh -b -p ${CONDA_DIR}
 echo "export PATH=${CONDA_DIR}/bin:$PATH" >> ${HOME}/.bashrc
 
-hash -r
 ${CONDA_DIR}/bin/conda config --set always_yes yes --set changeps1 no
 ${CONDA_DIR}/bin/conda update -q conda
 ${CONDA_DIR}/bin/conda info -a
@@ -27,8 +26,10 @@ ${CONDA_DIR}/bin/conda install -c r \
 # gcc bundled with conda
 export PATH=${PATH}:${CONDA_DIR}/bin
 
-# Get packages for testing
-${CONDA_DIR}/bin/Rscript -e "install.packages(c('argparse', 'covr', 'futile.logger'), repos = '${CRAN_MIRROR}')"
+# Get R packages for testing
+${CONDA_DIR}/bin/Rscript -e "install.packages(c('argparse', 'covr', 'futile.logger', 'roxygen2'), repos = '${CRAN_MIRROR}')"
+
+# Get Python packages for testing
 ${CONDA_DIR}/bin/pip install \
     --user \
     argparse \
@@ -40,3 +41,13 @@ ${CONDA_DIR}/bin/pip install \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \
     tabulate
+
+export PIP_INSTALL_OPTS="--no-color"
+if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+    export PIP_INSTALL_OPTS="--user"
+fi
+
+${CONDA_DIR}/bin/pip install \
+    ${PIP_INSTALL_OPTS} \
+        pytest \
+        pytest-cov
