@@ -15,7 +15,8 @@ class TestAnalyzePy:
         TEST_PACKAGES = [
             "testpkguno",
             "testpkgdos",
-            "testpkgtres"
+            "testpkgtres",
+            "pythonspecific"
         ]
         output_dir = "../../test_data"
         for pkg_name in TEST_PACKAGES:
