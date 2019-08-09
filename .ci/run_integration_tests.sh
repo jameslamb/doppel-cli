@@ -37,7 +37,7 @@ echo ""
     
     export DOPPEL_DESCRIBE_LOC=$(which doppel-describe)
     pushd $(pwd)/integration_tests/r_tests
-        Rscript -e "testthat::test_dir('.')"
+        Rscript -e "testthat::test_dir('.', stop_on_failure = TRUE)"
     popd
 
 echo ""
