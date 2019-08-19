@@ -40,6 +40,16 @@ You can also install from PyPi, the official package manager for Python. To avoi
 pip install doppel-cli
 ```
 
+### R requirements
+
+In order to use `doppel` on R packages, you will need the R packages shown in the following installation commands:
+```{shell}
+Rscript -e "install.packages('argparse')"
+Rscript -e "install.packages('futile.logger')"
+Rscript -e "install.packages('jsonlite')"
+Rscript -e "install.packages('R6')"
+```
+
 ## Example: Testing continuity between R and Python implementations
 
 In this example, I'll show how to use `doppel` to test continuity between R and Python implementations of the same API. For this example, I used the `argparse` library.
@@ -57,6 +67,9 @@ First, you need to generate special files that `doppel` uses to store informatio
 
 ```{shell}
 PACKAGE=argparse
+
+# Create temporary directory to store output files
+mkdir $(pwd)/test_data
 
 # The R package
 doppel-describe \
