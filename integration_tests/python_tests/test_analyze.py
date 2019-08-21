@@ -29,7 +29,8 @@ def rundescribe():
     test_packages = [
         'testpkguno',
         'testpkgdos',
-        'testpkgtres'
+        'testpkgtres',
+        'pythonspecific'
     ]
 
     # Added this abomination because something about
@@ -338,3 +339,32 @@ class TestClassOnly:
         for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
             assert result_json.get(top_level_key, None) is not None
         assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS
+
+
+class PythonSpecific:
+    """
+    Test the behavior of analyze.py for packages
+    with some Python-specific features like
+    submodules and custom exceptions
+    """
+
+    def test_top_level_keys(self, rundescribe):
+        """
+        The JSON file produce by doppel-describe
+        should have only the expected top-level dictionary keys
+        """
+        result_json = rundescribe['pythonspecific']
+
+        for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
+            assert result_json.get(top_level_key, None) is not None
+        assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS
+
+    def test_sub_modules(self, rundescribe):
+        """
+        analyze.py should correctly handle python submodules and
+        should ignore package constant.
+        """
+        result_json = rundescribe['pythonspecific']
+
+        assert set(result_json['functions'].keys()) == set(['some_function'])
+        assert set(result_json['classes'].keys()) == set(['SomeClass', 'GreatClass'])

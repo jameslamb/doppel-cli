@@ -1,0 +1,3 @@
+
+class SomeException(Exception):
+    pass
