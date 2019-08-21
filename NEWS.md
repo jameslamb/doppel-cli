@@ -2,7 +2,7 @@
 
 ## development version
 
-* Fixed bug which could cause `deoppl-describe --language python` to fail to document the constructor for empty classes (classes which do not implement `__init__()`). ([#133](https://github.com/jameslamb/doppel-cli/pull/133))
+* Fixed bug which could cause `doppel-describe --language python` to fail to document the constructor for empty classes (classes which do not implement `__init__()`). ([#133](https://github.com/jameslamb/doppel-cli/pull/133), [#143](https://github.com/jameslamb/doppel-cli/pull/143))
 
 ## 0.2.1
 
