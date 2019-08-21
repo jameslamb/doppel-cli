@@ -361,7 +361,8 @@ class PythonSpecific:
 
     def test_sub_modules(self, rundescribe):
         """
-        analyze.py should correctly handle python submodules
+        analyze.py should correctly handle python submodules and
+        should ignore package constant.
         """
         result_json = rundescribe['pythonspecific']
 
