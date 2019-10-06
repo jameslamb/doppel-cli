@@ -1,8 +1,6 @@
 from setuptools import setup
 from setuptools import find_packages
 
-python_requires = '>=3.5'
-
 with open('README.md', 'r') as f:
     readme = f.read()
 
@@ -34,6 +32,7 @@ setup(
     maintainer='James Lamb',
     maintainer_email='jaylamb20@gmail.com',
     install_requires=runtime_deps,
+    python_requires='>=3.5',
     extras_require={
         'docs': documentation_deps,
         'testing': testing_deps,
@@ -59,4 +58,4 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Topic :: Software Development :: Testing'
     ]
-)
+)I
