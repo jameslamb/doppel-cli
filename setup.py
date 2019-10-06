@@ -1,8 +1,6 @@
 from setuptools import setup
 from setuptools import find_packages
 
-python_requires='>=3.5'
-
 with open('README.md', 'r') as f:
     readme = f.read()
 
