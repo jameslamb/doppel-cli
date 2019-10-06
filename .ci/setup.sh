@@ -25,15 +25,14 @@ ${CONDA_DIR}/bin/conda install -c r \
 
 ${CONDA_DIR}/bin/conda install -c conda-forge \
     r-covr \
+    r-argparse \
     r-futile.logger
 
 # Per https://github.com/ContinuumIO/anaconda-issues/issues/9423#issue-325303442,
 # packages that require compilation may fail to find the
 # gcc bundled with conda
-export PATH=${PATH}:${CONDA_DIR}/bin
 
-# Get R packages for testing
-${CONDA_DIR}/bin/Rscript -e "install.packages(c('argparse', 'covr', 'futile.logger', 'roxygen2'), repos = '${CRAN_MIRROR}')"
+export PATH=${PATH}:${CONDA_DIR}/bin
 
 # Get Python packages for testing
 ${CONDA_DIR}/bin/pip install \
