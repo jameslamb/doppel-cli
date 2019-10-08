@@ -32,6 +32,7 @@ setup(
     maintainer='James Lamb',
     maintainer_email='jaylamb20@gmail.com',
     install_requires=runtime_deps,
+    python_requires='>=3.5',
     extras_require={
         'docs': documentation_deps,
         'testing': testing_deps,
