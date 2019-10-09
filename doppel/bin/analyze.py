@@ -184,10 +184,11 @@ def do_everything(parsed_args):
                                     pass
 
                             # If ClassA has a class ClassB as a public member,
-                            # that is basically being used as a class method. Treat it
+                            # ClassB is basically being used like a public method. Treat it
                             # like that and grab the arguments of its constructor
-                            if is_class_method and inspect.isclass(class_member):
+                            if is_class_method or inspect.isclass(class_member):
                                 class_member = class_member.__init__
+                                is_function = True
 
                             if is_function or is_class_method:
 

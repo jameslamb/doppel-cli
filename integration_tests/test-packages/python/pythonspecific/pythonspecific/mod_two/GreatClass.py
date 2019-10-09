@@ -6,3 +6,9 @@ class GreatClass:
 
     def do_stuff(self):
         pass
+
+    class LilGreatClass:
+
+        def __init__(self, things, stuff):
+            self.things = things
+            self.stuff = stuff

@@ -368,3 +368,15 @@ class PythonSpecific:
 
         assert set(result_json['functions'].keys()) == set(['some_function'])
         assert set(result_json['classes'].keys()) == set(['SomeClass', 'GreatClass'])
+
+    def test_inner_classes(self, rundescribe):
+        """
+        analyze.py should correctly handle classes
+        that are included as members of another
+        class
+        """
+        result_json = rundescribe['pythonspecific']
+
+        assert set(result_json['classes']['GreatClass']['public_methods'].keys()) == set(['do_stuff', 'LilGreatClass'])
+        lil_args = result_json['classes']['GreatClass']['public_methods']['LilGreatClass']
+        assert set(lil_args) == ['things', 'stuff']
