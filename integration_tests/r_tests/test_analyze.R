@@ -6,20 +6,20 @@ library(testthat)
 
 # Set up test data
 TEST_PACKAGES <- c(
-    'testpkguno'
-    , 'testpkgdos'
-    , 'testpkgtres'
+    "testpkguno"
+    , "testpkgdos"
+    , "testpkgtres"
 )
 TEST_DATA_DIR <- tools::file_path_as_absolute("../../test_data")
 
 # TL;DR R doesn't care about your bash PATH so finding conda stuff is
 # hard. Passing in the direct path to doppel-describe through the environment
 DOPPEL_DESCRIBE_LOC <- Sys.getenv("DOPPEL_DESCRIBE_LOC")
-if (DOPPEL_DESCRIBE_LOC == ""){
+if (DOPPEL_DESCRIBE_LOC == "") {
     stop("You did not set environment variable DOPPEL_DESCRIBE_LOC")
 }
 
-.run_doppel_describe <- function(package_name, doppel_describe_loc, test_data_dir){
+.run_doppel_describe <- function(package_name, doppel_describe_loc, test_data_dir) {
 
     cmd <- paste0(
         doppel_describe_loc,
@@ -34,7 +34,7 @@ if (DOPPEL_DESCRIBE_LOC == ""){
         , wait = TRUE
     )
 
-    if (exit_code != 0){
+    if (exit_code != 0L) {
         stop("Running doppel-describe failed")
     }
 
@@ -63,7 +63,7 @@ if (DOPPEL_DESCRIBE_LOC == ""){
 }
 
 RESULTS <- list()
-for (pkg_name in TEST_PACKAGES){
+for (pkg_name in TEST_PACKAGES) {
     RESULTS[[pkg_name]] <- .run_doppel_describe(
         package_name = pkg_name
         , doppel_describe_loc = DOPPEL_DESCRIBE_LOC
@@ -74,9 +74,9 @@ for (pkg_name in TEST_PACKAGES){
 # Small function to take a super long string formatted
 # similar to a Python docstring and strip all the whitespace
 # generated
-.docstring <- function(txt){
-    txt <- gsub('\n', '', txt)
-    txt <- gsub('\\s+', ' ', txt)
+.docstring <- function(txt) {
+    txt <- gsub("\n", "", txt)
+    txt <- gsub("\\s+", " ", txt)
     txt <- trimws(txt)
     return(txt)
 }
@@ -111,7 +111,7 @@ test_that("'language' should be 'r'", {
 })
 
 txt <- .docstring(
-    "
+    txt = "
     'functions' should be a dictionary key by function name. Each
     function should have a dictionary keyed by 'args' where 'args'
     holds an array of strings.
@@ -126,7 +126,7 @@ test_that(txt, {
     func_block <- RESULTS[["testpkguno"]][["parsed"]][["functions"]]
 
     func_names <- names(func_block)
-    for (func_name in func_names){
+    for (func_name in func_names) {
         func_interface <- func_block[[func_name]]
 
         expect_named(
@@ -137,7 +137,7 @@ test_that(txt, {
         )
 
         args <- func_interface[["args"]]
-        if (length(args) > 0){
+        if (length(args) > 0L) {
             expect_true(is.character(args))
         }
     }
@@ -159,10 +159,10 @@ txt <- .docstring(
 )
 test_that(txt, {
 
-    class_block <- RESULTS[["testpkguno"]][["parsed"]][['classes']]
+    class_block <- RESULTS[["testpkguno"]][["parsed"]][["classes"]]
 
     class_names <- names(class_block)
-    for (class_name in class_names){
+    for (class_name in class_names) {
         class_interface <- class_block[[class_name]]
 
         expect_named(
@@ -174,10 +174,10 @@ test_that(txt, {
 
         method_names <- names(class_interface[["public_methods"]])
 
-        for (method_name in method_names){
+        for (method_name in method_names) {
             method_interface <- class_interface[["public_methods"]][[method_name]]
             args <- method_interface[["args"]]
-            if (length(args) > 0){
+            if (length(args) > 0L) {
                 expect_true(is.character(args))
             }
         }
@@ -197,7 +197,7 @@ txt <- .docstring(
 )
 test_that(txt, {
 
-    func_block <- RESULTS[["testpkguno"]][["parsed"]][['functions']]
+    func_block <- RESULTS[["testpkguno"]][["parsed"]][["functions"]]
 
     expect_named(
         func_block
@@ -210,30 +210,30 @@ test_that(txt, {
 
 test_that("Functions without arguments should get an 'args' dictionary with an empty list", {
     expect_is(
-        RESULTS[["testpkguno"]][["parsed"]][['functions']][['function_a']][['args']]
-        , 'list'
+        RESULTS[["testpkguno"]][["parsed"]][["functions"]][["function_a"]][["args"]]
+        , "list"
     )
 
     expect_equal(
-        RESULTS[["testpkguno"]][["parsed"]][['functions']][['function_a']][['args']]
+        RESULTS[["testpkguno"]][["parsed"]][["functions"]][["function_a"]][["args"]]
         , list()
     )
 })
 
 test_that("Functions with a mix of actual keyword args and '...' should have correct signature", {
     expect_equal(
-        RESULTS[["testpkguno"]][["parsed"]][['functions']][['function_b']]
+        RESULTS[["testpkguno"]][["parsed"]][["functions"]][["function_b"]]
         , list(
-            'args' = c('x', 'y', '~~KWARGS~~')
+            "args" = c("x", "y", "~~KWARGS~~")
         )
     )
 })
 
 test_that("Functions with only '...' should have the correct signature", {
     expect_equal(
-        RESULTS[["testpkguno"]][["parsed"]][['functions']][['function_c']]
+        RESULTS[["testpkguno"]][["parsed"]][["functions"]][["function_c"]]
         , list(
-            'args' = c('~~KWARGS~~')
+            "args" = "~~KWARGS~~"
         )
     )
 })
@@ -242,8 +242,8 @@ context("class block")
 
 test_that("Exported classes should all be found", {
     expect_named(
-        RESULTS[["testpkguno"]][["parsed"]][['classes']]
-        , c('ClassA', 'ClassB', 'ClassC', 'ClassD', 'ClassE', 'ClassF')
+        RESULTS[["testpkguno"]][["parsed"]][["classes"]]
+        , c("ClassA", "ClassB", "ClassC", "ClassD", "ClassE", "ClassF")
         , ignore.order = TRUE
         , ignore.case = FALSE
     )
@@ -263,10 +263,10 @@ test_that(txt, {
     class_block <- RESULTS[["testpkguno"]][["parsed"]][["classes"]]
 
     expected_methods <- c(
-        '~~CONSTRUCTOR~~',
-        'anarchy',
-        'banarchy',
-        'canarchy'
+        "~~CONSTRUCTOR~~",
+        "anarchy",
+        "banarchy",
+        "canarchy"
     )
 
     expect_named(
@@ -294,11 +294,11 @@ test_that(txt, {
     class_block <- RESULTS[["testpkguno"]][["parsed"]][["classes"]]
 
     expected_methods <- c(
-        '~~CONSTRUCTOR~~',
-        'anarchy',
-        'banarchy',
-        'canarchy',
-        'hello_there'
+        "~~CONSTRUCTOR~~",
+        "anarchy",
+        "banarchy",
+        "canarchy",
+        "hello_there"
     )
 
     expect_named(
@@ -352,8 +352,9 @@ test_that("Classes with constructors that have no keyword args should be seriali
         , ignore.order = TRUE
         , ignore.case = FALSE
     )
-    expect_is(RESULTS[["testpkguno"]][["parsed"]][["classes"]][["ClassE"]][["public_methods"]][["~~CONSTRUCTOR~~"]][["args"]], "list")
-    expect_is(RESULTS[["testpkguno"]][["parsed"]][["classes"]][["ClassE"]][["public_methods"]][["from_string"]][["args"]], "list")
+    pub_methods <- RESULTS[["testpkguno"]][["parsed"]][["classes"]][["ClassE"]][["public_methods"]]
+    expect_is(pub_methods[["~~CONSTRUCTOR~~"]][["args"]], "list")
+    expect_is(pub_methods[["from_string"]][["args"]], "list")
 
     # test that things with no kwargs produce "args": [], not "args": {}
     expect_true(isTRUE(
@@ -367,13 +368,13 @@ test_that("Classes with constructors that have no keyword args should be seriali
 test_that("Totally empty classes should still have their constructors documented", {
     expect_named(
         RESULTS[["testpkguno"]][["parsed"]][["classes"]][["ClassF"]][["public_methods"]]
-        , c("~~CONSTRUCTOR~~")
+        , "~~CONSTRUCTOR~~"
         , ignore.order = TRUE
         , ignore.case = FALSE
     )
     expect_named(
         RESULTS[["testpkguno"]][["parsed"]][["classes"]][["ClassF"]][["public_methods"]][["~~CONSTRUCTOR~~"]]
-        , c("args")
+        , "args"
         , ignore.order = TRUE
         , ignore.case = FALSE
     )
@@ -381,7 +382,13 @@ test_that("Totally empty classes should still have their constructors documented
 
 context("function-only packages")
 
-test_that("The JSON file produce by doppel-describe should have the expected top-level dictionary keys for function-only packages", {
+txt <- .docstring(
+    txt = "
+    The JSON file produce by doppel-describe should have the expected top-level
+    dictionary keys for function-only packages
+    "
+)
+test_that(txt, {
 
     expect_named(
         RESULTS[["testpkgdos"]][["parsed"]]
@@ -395,7 +402,13 @@ test_that("The JSON file produce by doppel-describe should have the expected top
 
 context("class-only packages")
 
-test_that("The JSON file produce by doppel-describe should have the expected top-level dictionary keys for class-only packages", {
+txt <- .docstring(
+    txt = "
+    The JSON file produce by doppel-describe should have the expected
+    top-level dictionary keys for class-only packages
+    "
+)
+test_that(txt, {
 
     expect_named(
         RESULTS[["testpkgtres"]][["parsed"]]

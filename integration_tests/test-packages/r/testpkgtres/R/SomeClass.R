@@ -7,11 +7,11 @@
 SomeClass <- R6::R6Class(
     "SomeClass",
     public = list(
-        initialize = function(){
+        initialize = function() {
             return(invisible(NULL))
         },
-        some_method = function(x){
-            return(x + 5)
+        some_method = function(x) {
+            return(x + 5L)
         }
     )
 )

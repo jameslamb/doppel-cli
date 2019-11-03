@@ -9,11 +9,11 @@ ClassD <- R6::R6Class(
     inherit = ClassC,
     public = list(
         x = NULL,
-        initialize = function(x){
+        initialize = function(x) {
             self[["x"]] <- x
             return(invisible(NULL))
         },
-        print = function(){
+        print = function() {
             return(invisible(NULL))
         }
     )
@@ -21,6 +21,6 @@ ClassD <- R6::R6Class(
 
 # You can't do inheritance of class methods in R6, so
 # have to do this here (it's inherited in the Python package)
-ClassD$from_string <- function(the_string){
+ClassD$from_string <- function(the_string) {
     return(ClassD$new(the_string))
 }

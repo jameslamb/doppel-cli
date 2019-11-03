@@ -9,46 +9,46 @@ ClassA <- R6::R6Class(
     public = list(
 
         story1 = TRUE,
-        story2 = 5,
+        story2 = 5.0,
         story3 = "hello",
 
-        initialize = function(x, y, z){
+        initialize = function(x, y, z) {
             return(invisible(NULL))
         },
 
-        anarchy = function(...){
+        anarchy = function(...) {
             return(invisible(NULL))
         },
 
-        banarchy = function(thing_1, thing_2, yes){
+        banarchy = function(thing_1, thing_2, yes) {
             return(invisible(NULL))
         },
 
-        canarchy = function(x, y, ...){
+        canarchy = function(x, y, ...) {
             return(invisible(NULL))
         }
     ),
 
     active = list(
 
-        number_four = function(){
-            return(4)
+        number_four = function() {
+            return(4L)
         }
 
     ),
 
     private = list(
 
-        acclimate = function(...){
+        acclimate = function(...) {
             return(invisible(NULL))
         },
 
-        backlimate = function(stuff = TRUE, ...){
+        backlimate = function(stuff = TRUE, ...) {
             return(invisible(NULL))
         },
 
         secret1 = TRUE,
-        secret2 = 5,
+        secret2 = 5.0,
         secret3 = "hello"
 
     )

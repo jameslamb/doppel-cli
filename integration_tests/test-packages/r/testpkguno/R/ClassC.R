@@ -7,12 +7,12 @@
 ClassC <- R6::R6Class(
     classname = "ClassC",
     public = list(
-        initialize = function(...){
+        initialize = function(...) {
             return(invisible(NULL))
         }
     )
 )
 
-ClassC$from_string <- function(the_string){
+ClassC$from_string <- function(the_string) {
     return(ClassC$new(the_string))
 }

@@ -20,7 +20,7 @@ MIN_ANALYZE_PY_TEST_COVERAGE=90
 export PATH="$HOME/miniconda/bin:$PATH"
 
 ${CI_TOOLS}/lint_py.sh $(pwd)
-${CI_TOOLS}/lint_r.sh $(pwd)
+Rscript ${CI_TOOLS}/lint_r_code.R $(pwd)
 ${CI_TOOLS}/check_docs.sh $(pwd)/docs
 ${CI_TOOLS}/run_unit_tests.sh ${MIN_UNIT_TEST_COVERAGE}
 ${CI_TOOLS}/run_smoke_tests.sh $(pwd)/test_data

@@ -10,18 +10,18 @@ ClassB <- R6::R6Class(
 
     public = list(
 
-        initialize = function(...){
+        initialize = function(...) {
             return(invisible(NULL))
         },
 
         # Overwriting one method from ClassA to
         # test that ordering of inheritance is
         # respected
-        banarchy = function(nonsense = TRUE){
+        banarchy = function(nonsense = TRUE) {
             return(nonsense)
         },
 
-        hello_there = function(greeting){
+        hello_there = function(greeting) {
             return(invisible(NULL))
         }
 
@@ -34,7 +34,7 @@ ClassB <- R6::R6Class(
     classname = "SomeInternalClass",
     public = list(
         x = NULL,
-        initialize = function(x){
+        initialize = function(x) {
             self[["x"]] <- x
             return(invisible(NULL))
         }
