@@ -12,7 +12,7 @@ ANALYZE_SCRIPT <- file.path(
     getwd(), "doppel", "bin", "analyze.R"
 )
 
-for (TEST_PACKAGE in TEST_PACKAGES){
+for (TEST_PACKAGE in TEST_PACKAGES) {
 
     TEST_VALUES <- list(
         "pkg" = TEST_PACKAGE,
@@ -25,14 +25,14 @@ for (TEST_PACKAGE in TEST_PACKAGES){
     MockParser <- R6::R6Class(
         "MockParser",
         public = list(
-            initialize = function(...){
+            initialize = function(...) {
                 return(invisible(NULL))
             },
-            parse_args = function(...){
+            parse_args = function(...) {
                 print("returning mocked values")
                 return(TEST_VALUES)
             },
-            add_argument = function(...){
+            add_argument = function(...) {
                 return(invisible(NULL))
             }
         )
@@ -49,7 +49,7 @@ for (TEST_PACKAGE in TEST_PACKAGES){
            ANALYZE_SCRIPT
            , envir = .GlobalEnv
        )
-    }, error = function(e){
+    }, error = function(e) {
         return(NULL)
     })
 

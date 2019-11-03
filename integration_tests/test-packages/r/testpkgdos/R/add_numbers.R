@@ -3,6 +3,6 @@
 #' @title add_numbers
 #' @description add_numbers
 #' @export
-add_numbers <- function(x, y){
+add_numbers <- function(x, y) {
     return(x + y)
 }

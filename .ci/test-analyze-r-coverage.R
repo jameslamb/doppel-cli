@@ -43,13 +43,13 @@ coverage <- covr::file_coverage(
 print(coverage)
 
 total_coverage <- covr::percent_coverage(coverage)
-print(paste0("Total coverage: ", round(total_coverage, 2), "%"))
+print(paste0("Total coverage: ", round(total_coverage, 2L), "%"))
 
 # covr::report(coverage, 'coverage.html')
 
-if (total_coverage < FAIL_UNDER){
+if (total_coverage < FAIL_UNDER) {
     print("Coverage below threshold. Failing.")
-    quit(save = "no", status = 1)
+    quit(save = "no", status = 1L)
 }
 
 print("Done testing coverage of analyze.R")

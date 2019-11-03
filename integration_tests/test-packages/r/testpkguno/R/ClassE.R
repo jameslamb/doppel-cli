@@ -9,12 +9,12 @@
 ClassE <- R6::R6Class(
     classname = "ClassE",
     public = list(
-        initialize = function(){
+        initialize = function() {
             return(invisible(NULL))
         }
     )
 )
 
-ClassE$from_string <- function(){
+ClassE$from_string <- function() {
     return(ClassE$new())
 }

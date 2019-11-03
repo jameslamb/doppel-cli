@@ -32,43 +32,43 @@ parser$add_argument(
 args <- parser$parse_args()
 
 # Wrap the entire pipeline in a function so it can be tested
-.analyze <- function(args){
+.analyze <- function(args) {
 
     PKG_NAME <- args[["pkg"]]
     OUT_DIR <- args[["output_dir"]]
     KWARGS_STRING <- args[["kwargs_string"]]
     CONSTRUCTOR_STRING <- args[["constructor_string"]]
 
-    LANGUAGE <- 'r'
+    LANGUAGE <- "r"
     R6_SPECIAL_METHODS_TO_EXCLUDE <- c(
-        'clone',
-        'print'
+        "clone",
+        "print"
     )
-    R6_CONSTRUCTOR_NAME <- 'initialize'
+    R6_CONSTRUCTOR_NAME <- "initialize"
     R6_CLASS_METHODS <- c(
-        'clone_method',
-        'debug',
-        'get_inherit',
-        'has_private',
-        'is_locked',
-        'lock',
-        'new',
-        'set',
-        'undebug',
-        'unlock'
+        "clone_method",
+        "debug",
+        "get_inherit",
+        "has_private",
+        "is_locked",
+        "lock",
+        "new",
+        "set",
+        "undebug",
+        "unlock"
     )
 
     # lil helper
-    .log_info <- function(msg){
+    .log_info <- function(msg) {
         futile.logger::flog.info(msg)
         return(invisible(NULL))
     }
 
 
     # Get all public methods (handling inheritance)
-    .get_r6_public_methods <- function(obj){
+    .get_r6_public_methods <- function(obj) {
 
-        if (is.null(obj)){
+        if (is.null(obj)) {
             return(list())
         }
 
@@ -80,7 +80,7 @@ args <- parser$parse_args()
         )
 
         these_methods <- obj$public_methods
-        for (method_name in names(these_methods)){
+        for (method_name in names(these_methods)) {
             public_methods[[method_name]] <- these_methods[[method_name]]
         }
 
@@ -95,17 +95,17 @@ args <- parser$parse_args()
 
     # Set up skeleton thing
     out <- list(
-        "name" = paste0(PKG_NAME, ' [r]')
-        , "language" = 'r'
+        "name" = paste0(PKG_NAME, " [r]")
+        , "language" = "r"
         , "functions" = list()
         , "classes" = list()
     )
 
-    for (obj_name in export_names){
+    for (obj_name in export_names) {
 
         obj <- get(obj_name, envir = pkg_env)
 
-        if (is.function(obj)){
+        if (is.function(obj)) {
             out[["functions"]][[obj_name]] <- list(
                 "args" = as.list(
                     gsub(
@@ -118,10 +118,10 @@ args <- parser$parse_args()
             next
         }
 
-        if (R6::is.R6Class(obj)){
+        if (R6::is.R6Class(obj)) {
 
-            out[["classes"]][[obj_name]] <- c()
-            out[["classes"]][[obj_name]][["public_methods"]] <- c()
+            out[["classes"]][[obj_name]] <- list()
+            out[["classes"]][[obj_name]][["public_methods"]] <- list()
 
             public_methods <- .get_r6_public_methods(obj)
 
@@ -135,19 +135,19 @@ args <- parser$parse_args()
             # If the R6 constructor ('initialize') isn't defined, an empty
             # one won't show up in the list of public methods. Need to
             # add it here to be explicit
-            if (! R6_CONSTRUCTOR_NAME %in% names(public_methods)){
-                public_methods[[R6_CONSTRUCTOR_NAME]] <- function(){NULL}
+            if (! R6_CONSTRUCTOR_NAME %in% names(public_methods)) {
+                public_methods[[R6_CONSTRUCTOR_NAME]] <- function() {NULL}
 
                 # Calling this is an annoying hack to get
                 # covr to treat this if statement as covered
                 public_methods[[R6_CONSTRUCTOR_NAME]]()
             }
 
-            for (i in 1:length(public_methods)){
+            for (i in seq_len(length(public_methods))) {
 
                 pm <- public_methods[[i]]
                 method_name <- names(public_methods)[[i]]
-                if (method_name == R6_CONSTRUCTOR_NAME){
+                if (method_name == R6_CONSTRUCTOR_NAME) {
                     method_name <- CONSTRUCTOR_STRING
                 }
 
@@ -156,7 +156,7 @@ args <- parser$parse_args()
                     names(formals(pm))
                 })
 
-                if (is.null(method_args)){
+                if (is.null(method_args)) {
                     method_args <- list()
                 }
 
@@ -174,8 +174,8 @@ args <- parser$parse_args()
             # Check for class methods. For now, these are just treated as
             # "public methods"
             class_methods <- Filter(
-                f = function(o){is.function(o)}
-                , x = eapply(obj, function(x){x})
+                f = function(o) {is.function(o)}
+                , x = eapply(obj, function(x) {x})
             )
 
             # Drop class methods that ship with R6
@@ -184,20 +184,20 @@ args <- parser$parse_args()
                 , R6_CLASS_METHODS
             )
 
-            if (length(non_default_class_methods) == 0){
+            if (length(non_default_class_methods) == 0L) {
                 .log_info(sprintf(
                     "No class methods found in class '%s'"
                     , obj_name
                 ))
             } else {
 
-                for (method in non_default_class_methods){
+                for (method in non_default_class_methods) {
                     # Grab ordered list of arguments
                     method_args <- suppressWarnings({
                         names(formals(get(method, obj)))
                     })
 
-                    if (is.null(method_args)){
+                    if (is.null(method_args)) {
                         method_args <- list()
                     }
 
@@ -211,10 +211,10 @@ args <- parser$parse_args()
     }
 
     # jsonlite treats empty, unnamed lists as arrays, we want to write empty dicts
-    for (obj_type in c("functions", "classes")){
-        if (identical(out[[obj_type]], list())){
+    for (obj_type in c("functions", "classes")) {
+        if (identical(out[[obj_type]], list())) {
             lst <- list()
-            names(lst) <- character(0)
+            names(lst) <- character(0L)
             out[[obj_type]] <- lst
         }
     }
