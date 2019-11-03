@@ -18,7 +18,6 @@ ${CONDA_DIR}/bin/conda info -a
 ${CONDA_DIR}/bin/conda install -c r \
     r-assertthat \
     r-jsonlite \
-    r-lintr \
     r-r6 \
     r-roxygen2 \
     r-testthat
@@ -26,7 +25,8 @@ ${CONDA_DIR}/bin/conda install -c r \
 ${CONDA_DIR}/bin/conda install -c conda-forge \
     r-covr \
     r-argparse \
-    r-futile.logger
+    r-futile.logger \
+    r-lintr>=2.0.0
 
 # Per https://github.com/ContinuumIO/anaconda-issues/issues/9423#issue-325303442,
 # packages that require compilation may fail to find the
