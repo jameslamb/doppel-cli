@@ -19,21 +19,21 @@ MIN_ANALYZE_PY_TEST_COVERAGE=90
 # Make sure we're living in conda land
 export PATH="$HOME/miniconda/bin:$PATH"
 
-${CI_TOOLS}/lint_py.sh $(pwd)
-Rscript ${CI_TOOLS}/lint_r_code.R $(pwd)
-${CI_TOOLS}/lint_todo.sh $(pwd)
-${CI_TOOLS}/check_docs.sh $(pwd)/docs
-${CI_TOOLS}/run_unit_tests.sh ${MIN_UNIT_TEST_COVERAGE}
-${CI_TOOLS}/run_smoke_tests.sh $(pwd)/test_data
+${CI_TOOLS}/lint-py.sh $(pwd)
+Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
+${CI_TOOLS}/lint-todo.sh $(pwd)
+${CI_TOOLS}/check-docs.sh $(pwd)/docs
+${CI_TOOLS}/run-unit-tests.sh ${MIN_UNIT_TEST_COVERAGE}
+${CI_TOOLS}/run-smoke-tests.sh $(pwd)/test_data
 
-${CI_TOOLS}/install_test_packages.sh
-${CI_TOOLS}/run_integration_tests.sh $(pwd)/test_data
+${CI_TOOLS}/install-test-packages.sh
+${CI_TOOLS}/run-integration-tests.sh $(pwd)/test_data
 
 Rscript ${CI_TOOLS}/test-analyze-r-coverage.R \
     --source-dir $(pwd) \
     --fail-under ${MIN_ANALYZE_R_TEST_COVERAGE}
 
-${CI_TOOLS}/run_analyze_py_coverage.sh ${MIN_ANALYZE_PY_TEST_COVERAGE}
+${CI_TOOLS}/run-analyze-py-coverage.sh ${MIN_ANALYZE_PY_TEST_COVERAGE}
 
 # If all is good, we did it!
 exit 0
