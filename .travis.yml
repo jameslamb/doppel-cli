@@ -33,19 +33,25 @@ matrix:
         - source activate testenv
         - pip install argparse
         - python setup.py install
-
-    - language: python
-      os: linux
+    - os: linux
+      language: python
       python: 3.5
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
         - CONDA_DIR=/home/travis/miniconda3
       install:
         - python setup.py install
-
-    - language: python
-      os: linux
+    - os: linux
+      language: python
       python: 3.6
+      env:
+        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        - CONDA_DIR=/home/travis/miniconda3
+      install:
+        - python setup.py install
+    - os: linux
+      language: python
+      python: 3.7
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
         - CONDA_DIR=/home/travis/miniconda3

@@ -17,16 +17,17 @@ FILES_TO_LINT <- list.files(
 )
 
 LINTERS_TO_USE <- list(
-    "assignment" = lintr::assignment_linter
+    "absolute_path" = lintr::absolute_path_linter
+    , "assignment" = lintr::assignment_linter
     , "closed_curly" = lintr::closed_curly_linter
+    , "commas" = lintr::commas_linter
     , "equals_na" = lintr::equals_na_linter
     , "function_left" = lintr::function_left_parentheses_linter
-    , "commas" = lintr::commas_linter
-    , "concatenation" = lintr::unneeded_concatenation_linter
     , "implicit_integers" = lintr::implicit_integer_linter
     , "infix_spaces" = lintr::infix_spaces_linter
     , "long_lines" = lintr::line_length_linter(length = 120L)
     , "tabs" = lintr::no_tab_linter
+    , "object_usage" = lintr::object_usage_linter
     , "open_curly" = lintr::open_curly_linter
     , "paren_brace_linter" = lintr::paren_brace_linter
     , "semicolon" = lintr::semicolon_terminator_linter
@@ -38,6 +39,7 @@ LINTERS_TO_USE <- list(
     , "trailing_blank" = lintr::trailing_blank_lines_linter
     , "trailing_white" = lintr::trailing_whitespace_linter
     , "true_false" = lintr::T_and_F_symbol_linter
+    , "unneeded_concatenation" = lintr::unneeded_concatenation_linter
 )
 
 cat(sprintf("Found %i R files to lint\n", length(FILES_TO_LINT)))
