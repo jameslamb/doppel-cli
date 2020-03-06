@@ -14,7 +14,7 @@ CI_TOOLS=$(pwd)/.ci
 # Test coverage stuff
 MIN_UNIT_TEST_COVERAGE=95
 MIN_ANALYZE_R_TEST_COVERAGE=100
-MIN_ANALYZE_PY_TEST_COVERAGE=90
+MIN_ANALYZE_PY_TEST_COVERAGE=97
 
 # Make sure we're living in conda land
 export PATH="$HOME/miniconda/bin:$PATH"
