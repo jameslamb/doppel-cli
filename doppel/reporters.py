@@ -77,11 +77,11 @@ class SimpleReporter:
         # Finally
         self._respond()
 
-    def _respond(self):
+    def _respond(self):  # pragma: no cover
         """
         After all evaluations, determine final exit status.
 
-        This down here in a separate method so that it can later
+        This is down here in a separate method so that it can later
         be extended to handle configuration like "skip these particular
         methods".
         """

@@ -298,7 +298,7 @@ def do_everything(parsed_args):
 # Structuring things like this so it can be instrumented
 # for test coverage.
 # See https://stackoverflow.com/a/18161115 for more
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
 
     parsed_args = parse_args(sys.argv[1:])
     do_everything(parsed_args)
