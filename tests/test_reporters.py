@@ -117,6 +117,34 @@ for i in range(5):
 PACKAGE_BEEFY2 = copy.deepcopy(PACKAGE_BEEFY)
 PACKAGE_BEEFY2['name'] = 'pkg2'
 
+PACKAGE_DIFFERENT_METHODS_1 = {
+    "name": "py_pkg",
+    "language": "python",
+    "functions": {},
+    "classes": {
+        "SomeClass": {
+            "public_methods": {
+                "~~CONSTRUCTOR~~": {
+                    "args": []
+                },
+                "write_py": {
+                    "args": ["x", "y"]
+                }
+            }
+        }
+    }
+}
+PACKAGE_DIFFERENT_METHODS_2 = copy.deepcopy(PACKAGE_DIFFERENT_METHODS_1)
+del PACKAGE_DIFFERENT_METHODS_2['classes']['SomeClass']['public_methods']['write_py']
+PACKAGE_DIFFERENT_METHODS_2['classes']['SomeClass']['public_methods'].update({
+    "write_r": {
+        "args": ["x", "y"]
+    }
+})
+PACKAGE_DIFFERENT_METHODS_2.update({
+    "name": "r_pkg"
+})
+
 
 class TestSimpleReporter(unittest.TestCase):
 
@@ -133,7 +161,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 3,
+            len(errors) == 3
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -156,7 +184,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 2,
+            len(errors) == 2
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -178,7 +206,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 1
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -200,7 +228,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 3,
+            len(errors) == 3
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -221,7 +249,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 0,
+            len(errors) == 0
         )
 
     def test_public_method_arg_number(self):
@@ -237,7 +265,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 3,
+            len(errors) == 3
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -260,7 +288,7 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 2,
+            len(errors) == 2
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -282,13 +310,38 @@ class TestSimpleReporter(unittest.TestCase):
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 1
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
         )
         self.assertTrue(
             errors[0].msg == "Public method 'no_days_off()' on class 'WaleFolarin' exists in all packages but with differing order of keyword arguments."
+        )
+
+    def test_different_public_methods(self):
+        """
+        SimpleReporter should handle the case where a class exists
+        in both packages, with the same number of public methods,
+        but with different methods.
+        """
+        reporter = SimpleReporter(
+            pkgs=[
+                PackageAPI(PACKAGE_DIFFERENT_METHODS_1),
+                PackageAPI(PACKAGE_DIFFERENT_METHODS_2)
+            ],
+            errors_allowed=2
+        )
+        reporter._check_class_public_methods()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 2
+        )
+        self.assertTrue(
+            all([isinstance(x, DoppelTestError) for x in errors])
+        )
+        self.assertTrue(
+            errors[0].msg.startswith("Not all implementations of class 'SomeClass' have public method")
         )
 
     def test_totally_empty(self):
