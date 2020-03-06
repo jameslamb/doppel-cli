@@ -99,6 +99,13 @@ def do_everything(parsed_args):
             _log_info(msg.format(f))
             return(_remove_decorators(thing.__wrapped__))
 
+    def _is_builtin(obj):
+        """
+        Checks whether an object is a built-in,
+        such as 'min()'.
+        """
+        return str(obj).startswith('<built-in ')
+
     modules_to_parse = [top_level_env]
     names_of_parsed_modules = set([])
 
@@ -178,6 +185,16 @@ def do_everything(parsed_args):
                             if not callable(class_member):
                                 continue
 
+                            # built-ins like 'min()' need special handling
+                            if _is_builtin(class_member):
+                                msg = f"found built-in '{class_member.__name__}', could not get signature"
+                                _log_warn(msg)
+                                method_args = []
+                                out['classes'][obj_name]['public_methods'][f] = {
+                                    "args": method_args
+                                }
+                                continue
+
                             # Class methods are technically classes, types.FunctionType()
                             # yields false. But we want to treat them as public methods of
                             # a parent class here
@@ -206,18 +223,11 @@ def do_everything(parsed_args):
                             # this is_function is still here to catch the case where the constructor
                             # wasn't implemented
                             if is_function or is_class_method:
-                                try:
-                                    res = inspect.signature(class_member)
-                                    method_args = _get_arg_names(
-                                        class_member,
-                                        KWARGS_STRING
-                                    )
-                                except ValueError:
-                                    msg = "Could not figure out signature of builtin {}".format(
-                                        class_member.__qualname__
-                                    )
-                                    _log_warn(msg)
-                                    method_args = []
+                                res = inspect.signature(class_member)
+                                method_args = _get_arg_names(
+                                    class_member,
+                                    KWARGS_STRING
+                                )
 
                                 # Handle Python "self" conventions
                                 method_args = [
@@ -265,6 +275,15 @@ def do_everything(parsed_args):
                         else:
                             _log_info("Module '{}' is in this package, adding it.".format(obj.__name__))
                             modules_to_parse.append(obj)
+
+            # built-ins like 'min()' are not classes, functions, or modules,
+            # according to the previous checks, but if they're callable
+            # they should count as exported functions
+            elif _is_builtin(obj) and callable(obj):
+                out["functions"][obj_name] = {
+                    "args": []
+                }
+
             else:
                 _log_info("Could not figure out what {} is".format(obj_name))
 

@@ -341,7 +341,7 @@ class TestClassOnly:
         assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS
 
 
-class PythonSpecific:
+class TestPythonSpecific:
     """
     Test the behavior of analyze.py for packages
     with some Python-specific features like
@@ -366,8 +366,8 @@ class PythonSpecific:
         """
         result_json = rundescribe['pythonspecific']
 
-        assert set(result_json['functions'].keys()) == set(['some_function'])
-        assert set(result_json['classes'].keys()) == set(['SomeClass', 'GreatClass'])
+        assert set(result_json['functions'].keys()) == set(['some_function', 'wrap_min'])
+        assert set(result_json['classes'].keys()) == set(['SomeClass', 'GreatClass', 'MinWrapper'])
 
     def test_inner_classes(self, rundescribe):
         """
@@ -377,6 +377,25 @@ class PythonSpecific:
         """
         result_json = rundescribe['pythonspecific']
 
-        assert set(result_json['classes']['GreatClass']['public_methods'].keys()) == set(['do_stuff', 'LilGreatClass'])
-        lil_args = result_json['classes']['GreatClass']['public_methods']['LilGreatClass']
-        assert set(lil_args) == ['things', 'stuff']
+        assert set(result_json['classes']['GreatClass']['public_methods'].keys()) == set(['do_stuff', 'LilGreatClass', '~~CONSTRUCTOR~~'])
+        lil_args = result_json['classes']['GreatClass']['public_methods']['LilGreatClass']['args']
+        assert set(lil_args) == set(['things', 'stuff'])
+
+    def test_builtin_func(self, rundescribe):
+        """
+        analyze.py should correctly handle the case where a built-in
+        like min() has been mapped directly to an exported function
+        """
+        result_json = rundescribe['pythonspecific']
+
+        assert result_json['functions']['wrap_min'] == {'args': []}
+
+    def test_builtin_method(self, rundescribe):
+        """
+        analyze.py should correctly handle the case where a built-in
+        like min() has been mapped directly to a public method
+        of a class
+        """
+        result_json = rundescribe['pythonspecific']
+
+        assert result_json['classes']['MinWrapper']['public_methods']['wrap_min'] == {'args': []}
