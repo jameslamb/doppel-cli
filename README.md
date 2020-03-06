@@ -43,11 +43,14 @@ pip install doppel-cli
 ### R requirements
 
 In order to use `doppel` on R packages, you will need the R packages shown in the following installation commands:
+
 ```{shell}
-Rscript -e "install.packages('argparse')"
-Rscript -e "install.packages('futile.logger')"
-Rscript -e "install.packages('jsonlite')"
-Rscript -e "install.packages('R6')"
+Rscript -e "
+    install.packages(
+        c('argparse', 'futile.logger', 'jsonlite', 'R6')
+        , repos = 'http://cran.rstudio.com'
+    )
+"
 ```
 
 ## Example: Testing continuity between R and Python implementations
