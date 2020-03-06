@@ -117,6 +117,34 @@ for i in range(5):
 PACKAGE_BEEFY2 = copy.deepcopy(PACKAGE_BEEFY)
 PACKAGE_BEEFY2['name'] = 'pkg2'
 
+PACKAGE_DIFFERENT_METHODS_1 = {
+    "name": "py_pkg",
+    "language": "python",
+    "functions": {},
+    "classes": {
+        "SomeClass": {
+            "public_methods": {
+                "~~CONSTRUCTOR~~": {
+                    "args": []
+                },
+                "write_py": {
+                    "args": ["x", "y"]
+                }
+            }
+        }
+    }
+}
+PACKAGE_DIFFERENT_METHODS_2 = copy.deepcopy(PACKAGE_DIFFERENT_METHODS_1)
+del PACKAGE_DIFFERENT_METHODS_2['classes']['SomeClass']['public_methods']['write_py']
+PACKAGE_DIFFERENT_METHODS_2['classes']['SomeClass']['public_methods'].update({
+    "write_r": {
+        "args": ["x", "y"]
+    }
+})
+PACKAGE_DIFFERENT_METHODS_2.update({
+    "name": "r_pkg"
+})
+
 
 class TestSimpleReporter(unittest.TestCase):
 
@@ -127,13 +155,16 @@ class TestSimpleReporter(unittest.TestCase):
         number of keyword arguments.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 3,
+            len(errors) == 3
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -150,13 +181,16 @@ class TestSimpleReporter(unittest.TestCase):
         of arguments)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARGS)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARGS)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 2,
+            len(errors) == 2
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -172,13 +206,16 @@ class TestSimpleReporter(unittest.TestCase):
         both packages but they are in different orders'
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 1
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -194,13 +231,16 @@ class TestSimpleReporter(unittest.TestCase):
         and different order.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_SUPER_DIFFERENT)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 3,
+            len(errors) == 3
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -215,13 +255,16 @@ class TestSimpleReporter(unittest.TestCase):
         if the shared function is the same in both packages.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(BASE_PACKAGE2)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(BASE_PACKAGE2)
+            ],
             errors_allowed=0
         )
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 0,
+            len(errors) == 0
         )
 
     def test_public_method_arg_number(self):
@@ -231,13 +274,16 @@ class TestSimpleReporter(unittest.TestCase):
         in two packages have different number of keyword arguments
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)
+            ],
             errors_allowed=100
         )
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 3,
+            len(errors) == 3
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -254,13 +300,16 @@ class TestSimpleReporter(unittest.TestCase):
         they have the same number of arguments)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARGS)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARGS)
+            ],
             errors_allowed=100
         )
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 2,
+            len(errors) == 2
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -276,13 +325,16 @@ class TestSimpleReporter(unittest.TestCase):
         both packages but they are in different orders'
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER)
+            ],
             errors_allowed=100
         )
         reporter._check_class_public_method_args()
         errors = reporter.errors
         self.assertTrue(
-            len(errors) == 1,
+            len(errors) == 1
         )
         self.assertTrue(
             all([isinstance(x, DoppelTestError) for x in errors])
@@ -291,13 +343,41 @@ class TestSimpleReporter(unittest.TestCase):
             errors[0].msg == "Public method 'no_days_off()' on class 'WaleFolarin' exists in all packages but with differing order of keyword arguments."
         )
 
+    def test_different_public_methods(self):
+        """
+        SimpleReporter should handle the case where a class exists
+        in both packages, with the same number of public methods,
+        but with different methods.
+        """
+        reporter = SimpleReporter(
+            pkgs=[
+                PackageAPI(PACKAGE_DIFFERENT_METHODS_1),
+                PackageAPI(PACKAGE_DIFFERENT_METHODS_2)
+            ],
+            errors_allowed=2
+        )
+        reporter._check_class_public_methods()
+        errors = reporter.errors
+        self.assertTrue(
+            len(errors) == 2
+        )
+        self.assertTrue(
+            all([isinstance(x, DoppelTestError) for x in errors])
+        )
+        self.assertTrue(
+            errors[0].msg.startswith("Not all implementations of class 'SomeClass' have public method")
+        )
+
     def test_totally_empty(self):
         """
         SimpleReporter should be fine if two packages
         are totally empty.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY2)],
+            pkgs=[
+                PackageAPI(PACKAGE_EMPTY),
+                PackageAPI(PACKAGE_EMPTY2)
+            ],
             errors_allowed=0
         )
         reporter._check_function_args()
@@ -308,7 +388,10 @@ class TestSimpleReporter(unittest.TestCase):
         SimpleReporter should run end-to-end without error
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            pkgs=[
+                PackageAPI(PACKAGE_BEEFY),
+                PackageAPI(PACKAGE_SUPER_DIFFERENT)
+            ],
             errors_allowed=100
         )
 
@@ -328,7 +411,10 @@ class TestSimpleReporter(unittest.TestCase):
         on shared classes and functions)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY2)],
+            pkgs=[
+                PackageAPI(PACKAGE_BEEFY),
+                PackageAPI(PACKAGE_BEEFY2)
+            ],
             errors_allowed=100
         )
 
@@ -347,7 +433,9 @@ class TestSimpleReporter(unittest.TestCase):
         only use a single package
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES)
+            ],
             errors_allowed=0
         )
 
