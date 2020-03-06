@@ -155,7 +155,10 @@ class TestSimpleReporter(unittest.TestCase):
         number of keyword arguments.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
@@ -178,7 +181,10 @@ class TestSimpleReporter(unittest.TestCase):
         of arguments)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARGS)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARGS)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
@@ -200,7 +206,10 @@ class TestSimpleReporter(unittest.TestCase):
         both packages but they are in different orders'
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
@@ -222,7 +231,10 @@ class TestSimpleReporter(unittest.TestCase):
         and different order.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_SUPER_DIFFERENT)
+            ],
             errors_allowed=100
         )
         reporter._check_function_args()
@@ -243,7 +255,10 @@ class TestSimpleReporter(unittest.TestCase):
         if the shared function is the same in both packages.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(BASE_PACKAGE2)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(BASE_PACKAGE2)
+            ],
             errors_allowed=0
         )
         reporter._check_function_args()
@@ -259,7 +274,10 @@ class TestSimpleReporter(unittest.TestCase):
         in two packages have different number of keyword arguments
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER)
+            ],
             errors_allowed=100
         )
         reporter._check_class_public_method_args()
@@ -282,7 +300,10 @@ class TestSimpleReporter(unittest.TestCase):
         they have the same number of arguments)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARGS)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARGS)
+            ],
             errors_allowed=100
         )
         reporter._check_class_public_method_args()
@@ -304,7 +325,10 @@ class TestSimpleReporter(unittest.TestCase):
         both packages but they are in different orders'
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES), PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER)
+            ],
             errors_allowed=100
         )
         reporter._check_class_public_method_args()
@@ -350,7 +374,10 @@ class TestSimpleReporter(unittest.TestCase):
         are totally empty.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY2)],
+            pkgs=[
+                PackageAPI(PACKAGE_EMPTY),
+                PackageAPI(PACKAGE_EMPTY2)
+            ],
             errors_allowed=0
         )
         reporter._check_function_args()
@@ -361,7 +388,10 @@ class TestSimpleReporter(unittest.TestCase):
         SimpleReporter should run end-to-end without error
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            pkgs=[
+                PackageAPI(PACKAGE_BEEFY),
+                PackageAPI(PACKAGE_SUPER_DIFFERENT)
+            ],
             errors_allowed=100
         )
 
@@ -381,7 +411,10 @@ class TestSimpleReporter(unittest.TestCase):
         on shared classes and functions)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY2)],
+            pkgs=[
+                PackageAPI(PACKAGE_BEEFY),
+                PackageAPI(PACKAGE_BEEFY2)
+            ],
             errors_allowed=100
         )
 
@@ -400,7 +433,9 @@ class TestSimpleReporter(unittest.TestCase):
         only use a single package
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE_WITH_CLASSES)
+            ],
             errors_allowed=0
         )
 
