@@ -46,9 +46,11 @@ def do_everything(parsed_args):
 
     # These are lanaguage-specific
     # conventions we can drop
+    SELF_KEYWORD = 'self'
+    CLASS_KEYWORD = 'cls'
     SPECIAL_METHOD_ARGS = [
-        'self',
-        'cls'
+        SELF_KEYWORD,
+        CLASS_KEYWORD
     ]
 
     # value to use for an empty function
@@ -171,29 +173,39 @@ def do_everything(parsed_args):
                             class_member = _remove_decorators(class_member)
                             is_function = isinstance(class_member, types.FunctionType)
 
+                            # class members like a dictionary or string literal
+                            # should not be included
+                            if not callable(class_member):
+                                continue
+
                             # Class methods are technically classes, types.FunctionType()
                             # yields false. But we want to treat them as public methods of
                             # a parent class here
                             # h/t https://stackoverflow.com/a/31843829 on the solution
-                            is_class_method = False
-                            if not is_function:
-                                try:
-                                    is_class_method = str(obj) == str(class_member.__self__)
-                                    _log_info("'" + f + "' is a class method")
-                                except AttributeError:
-                                    pass
-
+                            #
                             # If ClassA has a class ClassB as a public member,
-                            # that is basically being used as a class method. Treat it
+                            # ClassB is basically being used like a public method. Treat it
                             # like that and grab the arguments of its constructor
-                            if is_class_method and inspect.isclass(class_member):
-                                class_member = class_member.__init__
+                            #
+                            is_class_method = str(getattr(class_member, '__self__', None)) == str(obj)
+                            if not is_function and not is_constructor and not is_class_method:
+                                init_args = _get_arg_names(
+                                    class_member.__init__,
+                                    KWARGS_STRING
+                                )
+                                is_class_method = (CLASS_KEYWORD in init_args) or (SELF_KEYWORD in init_args)
+                                if is_class_method:
+                                    class_member = class_member.__init__
+                                    is_function = True
+                                    _log_info("'" + f + "' is a class method")
 
+                            # Try figuring out the actual signature, to see if
+                            # we hit the "no signature found for built-in" error
+                            # details: https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object
+                            #
+                            # this is_function is still here to catch the case where the constructor
+                            # wasn't implemented
                             if is_function or is_class_method:
-
-                                # Try figuring out the actual signature, to see if
-                                # we hit the "no signature found for built-in" error
-                                # details: https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object
                                 try:
                                     res = inspect.signature(class_member)
                                     method_args = _get_arg_names(
