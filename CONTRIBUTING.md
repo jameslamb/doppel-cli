@@ -95,19 +95,36 @@ open https://pypi.org/project/doppel-cli/
 
 This package is released to Anaconda Cloud for all major Platforms and all minor versions of Python `3.5.0` and greater.
 
-The recipe for building the package can be found in `conda-recipe/`, and was created using [this tutorial](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html).
+The recipe for building the package can be found in `conda-recipe/`, and was created using [this tutorial](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html). The steps in this section explain how to do a new release.
 
-To build packages for upload, you will need `conda-build`. It can be installed with
+**NOTE: the code below should be run from the root of the repo, on the `master` branch immediately after a release.**
+
+1. To begin, install two depedencies.
+
+* `anaconda-client`: upload packages to Anaconda.org
+* `conda-build`: build packages to be uploaded
 
 ```
-conda install -y conda-build
+conda install -y \
+    anaconda-client \
+    conda-build
 ```
+
+2. (optionally) update the build number in the conda recipe
+
+If you are building the current version for the first time, skip this step.
+
+If the current version is already up on Anaconda.org, increment the build number in `conda-recipe/meta.yaml`. This means that you'll be building a new release of the same `doppel-cli` version, so people doing `conda install doppel-cli==x.x.x` will get a different package today than they did yesterday. Use with caution!
+
+3. Build the packages
 
 To build for all platforms, run
 
 ```
-
+./build-conda.sh
 ```
+
+This script
 
 ## References for Developers <a name="references"></a>
 
@@ -121,3 +138,4 @@ To build for all platforms, run
 * [pytest fixtures](https://docs.pytest.org/en/latest/fixture.html)
 * [inspecting builtins](https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object)
 * [putting stuff on conda](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html)
+* [defining conda meta.yml](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html)
