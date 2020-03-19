@@ -27,7 +27,8 @@ for py_version in ${PYTHON_VERSIONS}; do
     echo "= Building conda package: Python ${py_version} ="
     echo "====================================="
     echo ""
-    conda build --python ${py_version} doppel-cli
+
+    conda build --python ${py_version} conda-recipe/
 
     echo ""
     echo "==========================================="

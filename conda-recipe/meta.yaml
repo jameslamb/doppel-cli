@@ -1,4 +1,4 @@
-{% set name ='doppel-cli' %}
+{% set name = 'doppel-cli' %}
 {% set version = load_setup_py_data().get('version') %}
 
 package:
