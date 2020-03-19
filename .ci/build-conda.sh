@@ -21,6 +21,9 @@ echo "Cleaning out old artifacts"
 conda build purge
 echo "Done cleaning out old artifacts"
 
+# don't upload automatically on build
+conda config --set anaconda_upload no
+
 for py_version in ${PYTHON_VERSIONS}; do
 
     echo ""
@@ -38,8 +41,13 @@ for py_version in ${PYTHON_VERSIONS}; do
     echo ""
 
     SHORT_VERSION=$(echo ${py_version} | tr -d '.')
-    TARBALL_BASENAME="doppel-cli-$(cat VERSION)-py${SHORT_VERSION}.tar.bz2"
-    FULL_PACKAGE_PATH=${CONDA_ARTIFACT_DIR}/${BUILD_SYSTEM_OS}/${TARBALL_NAME}
+    BUILD_NUMBER=$(
+        cat conda-recipe/meta.yaml \
+        | grep '^  number' \
+        | tr -d ' number:'
+    )
+    TARBALL_BASENAME="doppel-cli-$(cat VERSION)-py${SHORT_VERSION}_${BUILD_NUMBER}.tar.bz2"
+    FULL_PACKAGE_PATH=${CONDA_ARTIFACT_DIR}/${BUILD_SYSTEM_OS}/${TARBALL_BASENAME}
     conda-convert \
         --platform all \
         --output-dir ${LOCAL_ARTIFACT_DIR} \

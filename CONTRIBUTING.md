@@ -121,10 +121,28 @@ If the current version is already up on Anaconda.org, increment the build number
 To build for all platforms, run
 
 ```
-./build-conda.sh
+./.ci/build-conda.sh
 ```
 
-This script
+4. Upload to Anaconda.org
+
+The previous step will prepare packages in a directory called `conda-uploads`. To upload all of these packages to Anaconda.org, start by logging in from a shell.
+
+```shell
+anaconda login
+```
+
+Next, run the upload script.
+
+```shell
+./.ci/conda-upload.sh $(pwd)/conda-uploads
+```
+
+5. Logout when you're done
+
+```shell
+anaconda logout
+```
 
 ## References for Developers <a name="references"></a>
 
@@ -139,3 +157,4 @@ This script
 * [inspecting builtins](https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object)
 * [putting stuff on conda](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html)
 * [defining conda meta.yml](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html)
+* [uploading to Anaconda.org](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html#id7)
