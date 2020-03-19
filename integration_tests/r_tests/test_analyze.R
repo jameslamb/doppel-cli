@@ -1,4 +1,3 @@
-
 # integration tests on doppel-describe commandline entrypoint
 # (targeting an R package)
 library(jsonlite)

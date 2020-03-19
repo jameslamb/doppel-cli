@@ -27,6 +27,11 @@ parser$add_argument(
    , type = "character"
    , help = "String value to replace the constructor in the list of class public methods"
 )
+parser$add_argument(
+   "--verbose"
+   , action = "store_true"
+   , help = "Use this flag to get more detailed logs"
+)
 
 # Grab args (store in constants for easier debugging)
 args <- parser$parse_args()
@@ -38,6 +43,17 @@ args <- parser$parse_args()
     OUT_DIR <- args[["output_dir"]]
     KWARGS_STRING <- args[["kwargs_string"]]
     CONSTRUCTOR_STRING <- args[["constructor_string"]]
+    VERBOSE <- args[["verbose"]]
+
+    if (isTRUE(VERBOSE)){
+        log_threshold <- futile.logger::DEBUG
+        futile.logger::flog.debug("Running doppel-describe with verbose logging.")
+    } else {
+        log_threshold <- futile.logger::INFO
+    }
+    invisible(
+        futile.logger::flog.threshold(log_threshold)
+    )
 
     LANGUAGE <- "r"
     R6_SPECIAL_METHODS_TO_EXCLUDE <- c(

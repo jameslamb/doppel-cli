@@ -3,10 +3,17 @@
 import argparse
 import inspect
 import json
+import logging
 import os
 import sys
 import types
 import re
+
+logger = logging.getLogger()
+logging.basicConfig(
+    format='%(levelname)s [%(asctime)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 
 def parse_args(args):
@@ -32,6 +39,11 @@ def parse_args(args):
         type=str,
         help="String value to replace the constructor in the list of class public methods"
     )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Use this flag to get more detailed logs"
+    )
     return(parser.parse_args(args))
 
 
@@ -42,6 +54,14 @@ def do_everything(parsed_args):
     OUT_DIR = parsed_args.output_dir
     KWARGS_STRING = parsed_args.kwargs_string
     CONSTRUCTOR_STRING = parsed_args.constructor_string
+
+    VERBOSE = parsed_args.verbose
+    if VERBOSE is True:
+        logger.setLevel(logging.DEBUG)
+        logger.debug("Running doppel-describe with verbose logging.")
+    else:
+        logger.setLevel(logging.INFO)
+
     LANGUAGE = 'python'
 
     # Other repeated constants
@@ -75,12 +95,6 @@ def do_everything(parsed_args):
         CLASSES_KEY: {}
     }
 
-    def _log_info(msg):
-        print(msg)
-
-    def _log_warn(msg):
-        print("[WARN] " + msg)
-
     def _get_arg_names(f, kwargs_string):
         """
         Given a function object, get its argument names.
@@ -102,7 +116,7 @@ def do_everything(parsed_args):
             return(thing)
         else:
             msg = "'{}' is decorated, grabbing the underlying object"
-            _log_info(msg.format(f))
+            logger.info(msg.format(thing.__name__))
             return(_remove_decorators(thing.__wrapped__))
 
     def _is_builtin(obj):
@@ -148,7 +162,7 @@ def do_everything(parsed_args):
                 # requests
                 #
                 if obj.__module__.startswith(PKG_NAME):
-                    _log_info("'{}' is a function in this package, adding it".format(obj_name))
+                    logger.info("'{}' is a function in this package, adding it".format(obj_name))
                     out[FUNCTIONS_KEY][obj_name] = {
                         ARGS_KEY: _get_arg_names(obj, kwargs_string=KWARGS_STRING)
                     }
@@ -159,14 +173,14 @@ def do_everything(parsed_args):
             elif inspect.isclass(obj):
                 # Is it an exception? (skip)
                 if issubclass(obj, Exception):
-                    _log_info("{} is an Exception. Skipping.".format(obj_name))
+                    logger.info("{} is an Exception. Skipping.".format(obj_name))
                 else:
                     # imports like 'from requests.adapter import HTTPAdapter'
                     regex = "'" + PKG_NAME + "\\.+.*"
                     is_in_package = bool(re.search(regex, str(obj)))
 
                     if is_in_package:
-                        _log_info("'{}' is a class in this package, adding it".format(obj_name))
+                        logger.info("'{}' is a class in this package, adding it".format(obj_name))
                         out[CLASSES_KEY][obj_name] = {}
                         out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY] = {}
 
@@ -194,7 +208,7 @@ def do_everything(parsed_args):
                             # built-ins like 'min()' need special handling
                             if _is_builtin(class_member):
                                 msg = f"found built-in '{class_member.__name__}', could not get signature"
-                                _log_warn(msg)
+                                logger.warning(msg)
                                 method_args = []
                                 out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][f] = {
                                     ARGS_KEY: method_args
@@ -220,7 +234,7 @@ def do_everything(parsed_args):
                                 if is_class_method:
                                     class_member = class_member.__init__
                                     is_function = True
-                                    _log_info("'" + f + "' is a class method")
+                                    logger.debug("'" + f + "' is a class method")
 
                             # Try figuring out the actual signature, to see if
                             # we hit the "no signature found for built-in" error
@@ -253,14 +267,14 @@ def do_everything(parsed_args):
                         # still have one!
                         if not out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY].get(CONSTRUCTOR_STRING, None):
                             msg = "Class '{}' did not implement __init__. Adding it".format(obj_name)
-                            _log_info(msg)
+                            logger.info(msg)
 
                             out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][CONSTRUCTOR_STRING] = EMPTY_FUNCTION_DICT
 
                 next
 
             elif isinstance(obj, types.ModuleType):
-                _log_info("{} is a module".format(obj_name))
+                logger.debug("{} is a module".format(obj_name))
 
                 # If the module isn't defined inside this package, ignore it.
                 # Otherwise, it must be a sub-package we need to explore
@@ -274,12 +288,12 @@ def do_everything(parsed_args):
                     # has a sub-module exactly named the same as the package, which
                     # can cause an infinite recursion problem. Skip it when that happens
                     if obj.__name__ == PKG_NAME:
-                        _log_info("Skipping module '{}'".format(obj.__name__))
+                        logger.debug("Skipping module '{}'".format(obj.__name__))
                     else:
                         if obj.__name__ in names_of_parsed_modules:
-                            _log_info("Module '{}' is in this package but has already been parsed.".format(obj.__name__))
+                            logger.debug("Module '{}' is in this package but has already been parsed.".format(obj.__name__))
                         else:
-                            _log_info("Module '{}' is in this package, adding it.".format(obj.__name__))
+                            logger.info("Module '{}' is in this package, adding it.".format(obj.__name__))
                             modules_to_parse.append(obj)
 
             # built-ins like 'min()' are not classes, functions, or modules,
@@ -291,14 +305,14 @@ def do_everything(parsed_args):
                 next
 
             else:
-                _log_info("Could not figure out what {} is".format(obj_name))
+                logger.debug("Could not figure out what {} is".format(obj_name))
 
     # write it out
     out_file = os.path.join(OUT_DIR, "{}_{}.json".format(LANGUAGE, PKG_NAME))
-    _log_info("Writing output to {}".format(PKG_NAME))
+    logger.info("Writing output to {}".format(PKG_NAME))
     with open(out_file, 'w') as f:
         f.write(json.dumps(out))
-    _log_info("Done analyzing this package.")
+    logger.info("Done analyzing this package.")
 
 
 # Structuring things like this so it can be instrumented

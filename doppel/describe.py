@@ -1,8 +1,14 @@
-
 import click
 import pkg_resources
+import logging
 import os
 from sys import stdout
+
+logger = logging.getLogger()
+logging.basicConfig(
+    format='%(levelname)s [%(asctime)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 
 @click.command()
@@ -24,7 +30,13 @@ from sys import stdout
     help="Get the current version of doppel-describe",
     is_flag=True
 )
-def main(language: str, pkg_name: str, data_dir: str, version: bool) -> None:
+@click.option(
+    '--verbose',
+    is_flag=True,
+    default=False,
+    help="Use this flag to get more detailed logs"
+)
+def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bool) -> None:
     """
     Generate a description of the public API for a software package and
     write out a JSON representation of it.
@@ -39,8 +51,14 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool) -> None:
         stdout.write(out)
         return
 
+    if verbose is True:
+        logger.setLevel(logging.DEBUG)
+        logger.debug("Running doppel-describe with verbose logging.")
+    else:
+        logger.setLevel(logging.INFO)
+
     language = language.lower()
-    print("Testing package {} [{}]".format(pkg_name, language))
+    logger.info("Testing package {} [{}]".format(pkg_name, language))
 
     files = {
         'python': 'analyze.py',
@@ -52,22 +70,28 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool) -> None:
             'doppel', 'bin/{}'.format(files[language])
         )
     except KeyError:
-        raise KeyError("doppel does not know how to test {} packages".format(language))
+        msg = "doppel does not know how to test {} packages".format(language)
+        logger.fatal(msg)
+        raise KeyError(msg)
 
-    print(analysis_script)
+    logger.info(analysis_script)
 
     cmd = '{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~ --constructor-string ~~CONSTRUCTOR~~'.format(
         analysis_script, pkg_name, data_dir
     )
 
-    print("Describing package with command:\n {}".format(cmd))
+    if verbose is True:
+        cmd += ' --verbose'
+
+    logger.info("Describing package with command:\n {}".format(cmd))
 
     # Invoke the analysis script
     exit_code = os.system(cmd)
 
     if exit_code != 0:
-        msg = "doppel-describe exited with non-zero exit code: {}"
-        raise RuntimeError(msg.format(exit_code))
+        msg = "doppel-describe exited with non-zero exit code: {}".format(exit_code)
+        logger.fatal(msg)
+        raise RuntimeError(msg)
 
     return
 

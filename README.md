@@ -86,13 +86,15 @@ mkdir $(pwd)/test_data
 doppel-describe \
     -p ${PACKAGE} \
     --language R \
-    --data-dir $(pwd)/test_data
+    --data-dir $(pwd)/test_data \
+    --verbose
 
 # The python package
 doppel-describe \
     -p ${PACKAGE} \
     --language python \
-    --data-dir $(pwd)/test_data
+    --data-dir $(pwd)/test_data \
+    --verbose
 ```
 
 Cool! Let's do some testing! `doppel-test` can be used to compare multiple packages.
