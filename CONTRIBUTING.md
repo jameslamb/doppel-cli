@@ -14,7 +14,7 @@ This document contains information for maintainers and contributing developers. 
 * [Documentation](#docs)
 * [Releases](#releases)
     * [releasing to PyPi](#pypi)
-    * [releasing to Anaconda Cloud](#conda)
+    * [releasing to conda-forge](#conda)
 * [References for Developers](#references)
 
 ## Integrations <a name="integrations"></a>
@@ -91,9 +91,9 @@ To actually publish a new version, run:
 open https://pypi.org/project/doppel-cli/
 ```
 
-### Releasing to Anaconda Cloud <a name="conda"></a>
+### Releasing to conda-forge <a name="conda"></a>
 
-This package is released to Anaconda Cloud for all major Platforms and all minor versions of Python `3.5.0` and greater.
+This package is released to `conda-forge` for all major Platforms and all minor versions of Python `3.5.0` and greater.
 
 The recipe for building the package can be found in `conda-recipe/`, and was created using [this tutorial](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html). The steps in this section explain how to do a new release.
 
@@ -158,3 +158,5 @@ anaconda logout
 * [putting stuff on conda](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html)
 * [defining conda meta.yml](https://docs.conda.io/projects/conda-build/en/latest/resources/define-metadata.html)
 * [uploading to Anaconda.org](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html#id7)
+* [putting a package in a specific channel](https://enterprise-docs.anaconda.com/en/latest/data-science-workflows/packages/upload.html)
+* [using Anacodna repository](https://docs.anaconda.com/anaconda-repository/2.23/user/using/)
