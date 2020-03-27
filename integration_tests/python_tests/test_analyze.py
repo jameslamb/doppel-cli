@@ -30,7 +30,8 @@ def rundescribe():
         'testpkguno',
         'testpkgdos',
         'testpkgtres',
-        'pythonspecific'
+        'pythonspecific',
+        'pythonspecific2'
     ]
 
     # Added this abomination because something about
@@ -399,3 +400,57 @@ class TestPythonSpecific:
         result_json = rundescribe['pythonspecific']
 
         assert result_json['classes']['MinWrapper']['public_methods']['wrap_min'] == {'args': []}
+
+
+class TestPythonSpecific:
+    """
+    Test the behavior of analyze.py for packages using
+    'from <module> import *' in __init__.py. This package also
+    tests the behavior of analyze.py in the presence of top-level
+    built-in imports like "from warnings import warn"
+    """
+
+    def test_top_level_keys(self, rundescribe):
+        """
+        The JSON file produce by doppel-describe
+        should have only the expected top-level dictionary keys
+        """
+        result_json = rundescribe['pythonspecific2']
+
+        for top_level_key in EXPECTED_TOP_LEVEL_KEYS:
+            assert result_json.get(top_level_key, None) is not None
+        assert len(result_json.keys()) == NUM_TOP_LEVEL_KEYS
+
+    def test_functions(self, rundescribe):
+        """
+        analyze.py should find all functions defined in the package
+        whose names do not start with "_", regardless of what is in
+        ``__all__`` in ``__init__.py``.
+        """
+        result_json = rundescribe['pythonspecific2']
+
+        assert set(result_json['functions'].keys()) == set(['create_warning', 'create_warm_things'])
+        # imports from other packages are included if you explicitly
+        # wrap them in a def()
+        assert 'create_warm_things' in result_json['functions']
+        # import from other packages are excluded even if you map them to
+        # a new name in your package
+        assert 'shmeate_schmarning' not in result_json['functions']
+        # internal functions
+        assert '_super_secret' not in result_json['functions'].keys()
+        # imported standard lib function
+        assert 'warn' not in result_json['functions'].keys()
+        # imported non-standard-lib function
+        assert 'get' not in result_json['functions'].keys()
+        # imports from other packages are ignored even if you rename them
+        # or add them to __all__ in __init__.py
+        assert 'custom_post' not in result_json['functions'].keys()
+        assert 'post' not in result_json['functions'].keys()
+
+    def test_classes(self, rundescribe):
+        """
+        analyze.py should not have found any classes in this
+        package but should have created the 'classes' section
+        """
+        result_json = rundescribe['pythonspecific2']
+        assert result_json['classes'] == {}
