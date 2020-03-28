@@ -31,7 +31,7 @@ matrix:
       install:
         - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6 nose pytest
         - source activate testenv
-        - pip install argparse
+        - pip install argparse requests
         - python setup.py install
     - os: linux
       language: python
