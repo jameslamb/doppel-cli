@@ -49,13 +49,13 @@ class SimpleReporter:
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
-        self.errors: List = []
-        self.exists_string: str = 'yes'
-        self.absent_string: str = 'no'
+        self.errors = []
+        self.exists_string = 'yes'
+        self.absent_string = 'no'
 
-        self.pkgs: List[PackageAPI] = pkgs
-        self.pkg_collection: doppel.PackageCollection = doppel.PackageCollection(pkgs)
-        self._errors_allowed: int = errors_allowed
+        self.pkgs = pkgs
+        self.pkg_collection = doppel.PackageCollection(pkgs)
+        self._errors_allowed = errors_allowed
 
     def compare(self):
         """
