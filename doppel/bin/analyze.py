@@ -282,10 +282,6 @@ def do_everything(parsed_args):
             elif _is_builtin(obj) and callable(obj):
                 if not obj.__module__.startswith(PKG_NAME):
                     _log_info("Callable '{}' is a built-in not included in this package's namespace. Skipping it.".format(obj.__name__))
-                else:
-                    out["functions"][obj_name] = {
-                        "args": []
-                    }
                 next
 
             else:
