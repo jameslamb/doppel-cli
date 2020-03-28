@@ -1,4 +1,6 @@
 import json
+from typing import Dict
+from typing import List
 
 
 def _log_info(msg):
@@ -16,7 +18,8 @@ class PackageAPI():
     """
 
     def __init__(self, pkg_dict: dict):
-        """Python object containing data that describes a package API
+        """
+        Class containing data that describes a package API
 
         :param pkg_dict: A dictionary representation of a
             software package, complying with the output format of
@@ -46,7 +49,7 @@ class PackageAPI():
         # validate
         return cls(pkg_dict)
 
-    def _validate_pkg(self, pkg_dict: dict):
+    def _validate_pkg(self, pkg_dict: dict) -> None:
 
         assert isinstance(pkg_dict, dict)
         assert pkg_dict['name'] is not None
@@ -56,26 +59,58 @@ class PackageAPI():
 
         return
 
-    def name(self):
+    def name(self) -> str:
+        """
+        Get the name of the package.
+        """
         return(self.pkg_dict['name'])
 
-    def num_functions(self):
+    def num_functions(self) -> int:
+        """
+        Get the number of exported functions in the package.
+        """
         return(len(self.function_names()))
 
-    def function_names(self):
+    def function_names(self) -> List[str]:
+        """
+        Get a list with the names of all exported functions
+        in the package.
+        """
         return(sorted(list(self.pkg_dict['functions'].keys())))
 
-    def functions_with_args(self):
+    def functions_with_args(self) -> Dict[str, Dict]:
+        """
+        Get a dictionary with all exported functions in the package
+        and some  details describing them.
+        """
         return(self.pkg_dict['functions'])
 
-    def num_classes(self):
+    def num_classes(self) -> int:
+        """
+        Get the number of exported classes in the package.
+        """
         return(len(self.class_names()))
 
-    def class_names(self):
+    def class_names(self) -> List[str]:
+        """
+        Get a list with the names of all exported classes
+        in the package.
+        """
         return(sorted(list(self.pkg_dict['classes'].keys())))
 
-    def public_methods(self, class_name):
+    def public_methods(self, class_name: str) -> List[str]:
+        """
+        Get a list with the names of all public methods for a class.
+
+        :param class_name: Name of a class in the package
+        """
         return(sorted(list(self.pkg_dict['classes'][class_name]['public_methods'].keys())))
 
-    def public_method_args(self, class_name, method_name):
+    def public_method_args(self, class_name: str, method_name: str) -> List[str]:
+        """
+        Get a list of arguments for a public method from a class.
+
+        :param class_name: Name of a class in the package
+        :param method-name: Name of the method to get arguments for
+        """
         return(list(self.pkg_dict['classes'][class_name]['public_methods'][method_name]['args']))

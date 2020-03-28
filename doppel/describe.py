@@ -17,7 +17,7 @@ import os
     '--data-dir', '-d',
     help="Path to write output file to."
 )
-def main(language, pkg_name: str, data_dir: str):
+def main(language: str, pkg_name: str, data_dir: str) -> None:
     """
     Generate a description of the public API for a software package and
     write out a JSON representation of it.
