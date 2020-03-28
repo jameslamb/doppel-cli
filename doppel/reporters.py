@@ -2,7 +2,9 @@ import sys
 import doppel
 from sys import stdout
 from tabulate import tabulate
+from typing import List
 from functools import reduce
+from doppel.PackageAPI import PackageAPI
 from doppel.DoppelTestError import DoppelTestError
 
 
@@ -30,7 +32,7 @@ class _OutputTable:
 
 class SimpleReporter:
 
-    def __init__(self, pkgs: list, errors_allowed: int):
+    def __init__(self, pkgs: List[PackageAPI], errors_allowed: int):
         """Default object used to manage doppel reporting
 
         This object implements the interface used by doppel-cli

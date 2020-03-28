@@ -4,8 +4,20 @@ from typing import List
 
 
 class PackageCollection:
+    """
+    Create a collection of multiple ``PackageAPI`` objects.
+    This class contains access methods so you don't have to
+    keep doing ``for package in packages`` over a collection
+    of ``PackageAPI`` instances.
+    """
 
-    def __init__(self, packages):
+    def __init__(self, packages: List[PackageAPI]):
+        """
+        Class that holds multiple ``PackageAPI`` objects.
+
+        :param packages: List of ``PackageAPI`` instances to be
+            compared to each other.
+        """
         for pkg in packages:
             assert isinstance(pkg, PackageAPI)
 
@@ -17,6 +29,9 @@ class PackageCollection:
         self.pkgs = packages
 
     def package_names(self) -> List[str]:
+        """
+        Get a list of all the package names in this collection.
+        """
         return([p.name() for p in self.pkgs])
 
     def all_classes(self) -> List[str]:
