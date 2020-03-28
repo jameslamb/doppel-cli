@@ -280,9 +280,9 @@ def do_everything(parsed_args):
             # according to the previous checks, but if they're callable
             # they should count as exported functions
             elif _is_builtin(obj) and callable(obj):
-                out["functions"][obj_name] = {
-                    "args": []
-                }
+                if not obj.__module__.startswith(PKG_NAME):
+                    _log_info("Callable '{}' is a built-in not included in this package's namespace. Skipping it.".format(obj.__name__))
+                next
 
             else:
                 _log_info("Could not figure out what {} is".format(obj_name))

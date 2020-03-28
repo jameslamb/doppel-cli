@@ -10,7 +10,9 @@
 **/*.ipynb
 
 # R files
+**/*.Renviron
 **/*.Rhistory
+**/*.Rprofile
 **/*.rda
 **/*.rds
 **/*.Rdata
