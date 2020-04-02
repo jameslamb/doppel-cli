@@ -1,0 +1,40 @@
+{% set name = 'doppel-cli' %}
+{% set version = load_setup_py_data().get('version') %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+source:
+  git_url: ../
+build:
+  number: 0
+  entry_points:
+    - doppel-describe = doppel.describe:main
+    - doppel-test = doppel.cli:main
+requirements:
+  host:
+    - 'click'
+    - 'pip'
+    - 'python'
+    - 'tabulate'
+  run:
+    - 'click'
+    - 'python'
+    - 'tabulate'
+test:
+  requires:
+    - pytest
+  commands:
+    - 'doppel-test --help'
+    - 'doppel-describe --help'
+about:
+  home: 'http://github.com/jameslamb/doppel-cli'
+  license: 'BSD'
+  license_family: 'BSD'
+  license_file: 'LICENSE'
+  summary: >
+    An integration testing framework for testing API similarity
+    of software libraries in R and python.
+extra:
+  recipe-maintainers:
+    - https://github.com/jameslamb
