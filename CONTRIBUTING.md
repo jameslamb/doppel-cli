@@ -95,54 +95,19 @@ open https://pypi.org/project/doppel-cli/
 
 This package is released to `conda-forge` for all major Platforms and all minor versions of Python `3.5.0` and greater.
 
-The recipe for building the package can be found in `conda-recipe/`, and was created using [this tutorial](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html). The steps in this section explain how to do a new release.
+The recipe for the conda package is maintained at https://github.com/conda-forge/doppel-cli-feedstock. To release a new version to `conda-forge`.
 
-**NOTE: the code below should be run from the root of the repo, on the `master` branch immediately after a release.**
-
-1. To begin, install two depedencies.
-
-* `anaconda-client`: upload packages to Anaconda.org
-* `conda-build`: build packages to be uploaded
-
-```
-conda install -y \
-    anaconda-client \
-    conda-build
-```
-
-2. (optionally) update the build number in the conda recipe
-
-If you are building the current version for the first time, skip this step.
-
-If the current version is already up on Anaconda.org, increment the build number in `conda-recipe/meta.yaml`. This means that you'll be building a new release of the same `doppel-cli` version, so people doing `conda install doppel-cli==x.x.x` will get a different package today than they did yesterday. Use with caution!
-
-3. Build the packages
-
-To build for all platforms, run
-
-```
-./.ci/build-conda.sh
-```
-
-4. Upload to Anaconda.org
-
-The previous step will prepare packages in a directory called `conda-uploads`. To upload all of these packages to Anaconda.org, start by logging in from a shell.
+1. [Release to PyPi first](#pypi)
+2. Fork the [feedstock repo](https://github.com/conda-forge/doppel-cli-feedstock)
+3. Update the recipe on your fork, using [grayskull](https://conda-forge.org/blog//2020/03/05/grayskull).
 
 ```shell
-anaconda login
+GITHUB_USER=jameslamb
+./.ci/update-conda-recipe.sh ${GITHUB_USER}
 ```
 
-Next, run the upload script.
-
-```shell
-./.ci/conda-upload.sh $(pwd)/conda-uploads
-```
-
-5. Logout when you're done
-
-```shell
-anaconda logout
-```
+4. Navigate to your fork of `doppel-cli-feedstock` and open a pull request into [the main feedstock repo](https://github.com/conda-forge/doppel-cli-feedstock).
+5. Once that pull request is merged, the new version will get built and published on `conda-forge`!
 
 ## References for Developers <a name="references"></a>
 

@@ -1,9 +1,9 @@
-
 # Python caches and build artifacts
 **/__pycache__/
 **/*.egg-info/
 **/build/
 **/dist/
+**/conda-install/
 
 # Python files
 **/*.ipynb_checkpoints/
