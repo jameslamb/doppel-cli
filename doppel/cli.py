@@ -17,12 +17,22 @@ from doppel.PackageAPI import PackageAPI
     help="Integer number of errors to allow before returning non-zero exit code. Default is 0."
 )
 @click.option(
+    '--ignore-case',
+    default=False,
+    help="""
+        Ignore case in all class names, function names, method names, and arguments.
+        If you specify this flag, all those entities will be lowercased and have
+        underscores and dots removed before comparison.
+        """,
+    is_flag=True
+)
+@click.option(
     '--version',
     default=False,
     help="Get the current version of doppel-test",
     is_flag=True
 )
-def main(files: str, errors_allowed: int, version: bool) -> None:
+def main(files: str, errors_allowed: int, ignore_case: bool, version: bool) -> None:
     """
     doppel is a a continuous integration tool for testing
     the continuity of APIs for libraries implemented in
@@ -52,10 +62,16 @@ def main(files: str, errors_allowed: int, version: bool) -> None:
     f_list = files.split(',')
 
     # Check if these are legit package objects
-    pkgs = [PackageAPI.from_json(f) for f in f_list]
+    pkgs = [
+        PackageAPI.from_json(f)
+        for f in f_list
+    ]
 
     # Report
     reporter = SimpleReporter(pkgs, errors_allowed)
+    reporter.customize(
+        ignore_case=ignore_case
+    )
     reporter.compare()
 
 

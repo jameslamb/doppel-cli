@@ -52,9 +52,22 @@ class SimpleReporter:
         self.exists_string = 'yes'
         self.absent_string = 'no'
 
+        # customization options
+        self.ignore_case = False
+
         self.pkgs = pkgs
         self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
+
+    def customize(self, ignore_case: bool):
+        """
+        Customize the conditions ``SimpleReporter`` uses to
+        compare packages.
+
+        :param ignore_case: If ``True``, convert all entities to
+            lowercase, with ``_`` and ``.`` `` removed.
+        """
+        self.ignore_case = True
 
     def compare(self):
         """
