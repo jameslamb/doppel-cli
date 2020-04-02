@@ -29,7 +29,7 @@ ${CI_TOOLS}/run-smoke-tests.sh $(pwd)/test_data
 ${CI_TOOLS}/install-test-packages.sh
 ${CI_TOOLS}/run-integration-tests.sh $(pwd)/test_data
 
-Rscript ${CI_TOOLS}/test-analyze-r-coverage.R \
+Rscript --vanilla ${CI_TOOLS}/test-analyze-r-coverage.R \
     --source-dir $(pwd) \
     --fail-under ${MIN_ANALYZE_R_TEST_COVERAGE}
 

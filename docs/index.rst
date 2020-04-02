@@ -10,7 +10,6 @@ API Documentation
 
    code
 
-
 Indices and tables
 ==================
 

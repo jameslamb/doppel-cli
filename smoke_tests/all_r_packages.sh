@@ -20,7 +20,7 @@ run_describe () {
 }
 
 R_LIB=$(
-    Rscript -e "cat(.libPaths()[1])"
+    Rscript --vanilla -e "cat(.libPaths()[1])"
 )
 ALL_R_PACKAGES=$(ls ${R_LIB})
 NUM_PACKAGES=$(echo ${ALL_R_PACKAGES} | wc -w)

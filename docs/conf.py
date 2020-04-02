@@ -17,12 +17,15 @@ import sys
 SOURCE_DIR = os.path.abspath('../')
 sys.path.insert(0, SOURCE_DIR)
 
+# Some strings that are re-used a lot
+_PROJECT_NAME = 'doppel-cli'
+_AUTHOR = 'James Lamb'
 
 # -- Project information -----------------------------------------------------
 
-project = 'doppel-cli'
-copyright = '2019, James Lamb'
-author = 'James Lamb'
+project = _PROJECT_NAME
+copyright = f"2019, {_AUTHOR}"
+author = _AUTHOR
 
 # The short X.Y version
 with open(os.path.join(SOURCE_DIR, 'VERSION'), 'r') as f:
@@ -30,7 +33,6 @@ with open(os.path.join(SOURCE_DIR, 'VERSION'), 'r') as f:
 
 # The full version, including alpha/beta/rc tags
 release = version
-
 
 # -- General configuration ---------------------------------------------------
 
@@ -80,7 +82,6 @@ exclude_patterns = [
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = None
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -109,12 +110,10 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
-
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'doppel-clidoc'
-
+htmlhelp_basename = f"{_PROJECT_NAME}doc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -140,20 +139,18 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'doppel-cli.tex', 'doppel-cli Documentation',
-     'James Lamb', 'manual'),
+    (master_doc, f"{_PROJECT_NAME}.tex", f"{_PROJECT_NAME} Documentation",
+     _AUTHOR, 'manual'),
 ]
-
 
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'doppel-cli', 'doppel-cli Documentation',
+    (master_doc, _PROJECT_NAME, f"{_PROJECT_NAME} Documentation",
      [author], 1)
 ]
-
 
 # -- Options for Texinfo output ----------------------------------------------
 
@@ -161,11 +158,10 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'doppel-cli', 'doppel-cli Documentation',
-     author, 'doppel-cli', 'One line description of project.',
+    (master_doc, _PROJECT_NAME, f"{_PROJECT_NAME} Documentation",
+     author, _PROJECT_NAME, 'One line description of project.',
      'Miscellaneous'),
 ]
-
 
 # -- Options for Epub output -------------------------------------------------
 
@@ -183,7 +179,6 @@ epub_title = project
 
 # A list of files that should not be packed into the epub file.
 epub_exclude_files = ['search.html']
-
 
 # -- Extension configuration -------------------------------------------------
 

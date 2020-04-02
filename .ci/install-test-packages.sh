@@ -19,7 +19,7 @@ for pkg in $(ls ${R_TEST_PKG_DIR}); do
     echo "Installing package '${pkg}'"
     echo ""
     pushd ${R_TEST_PKG_DIR}/${pkg}
-        Rscript -e "roxygen2::roxygenize()"
+        Rscript --vanilla -e "roxygen2::roxygenize()"
         R CMD INSTALL \
             --no-docs \
             --no-multiarch \
