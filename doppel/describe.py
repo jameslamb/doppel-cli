@@ -2,6 +2,7 @@
 import click
 import pkg_resources
 import os
+from sys import stdout
 
 
 @click.command()
@@ -17,11 +18,27 @@ import os
     '--data-dir', '-d',
     help="Path to write output file to."
 )
-def main(language: str, pkg_name: str, data_dir: str) -> None:
+@click.option(
+    '--version',
+    default=False,
+    help="Get the current version of doppel-describe",
+    is_flag=True
+)
+def main(language: str, pkg_name: str, data_dir: str, version: bool) -> None:
     """
     Generate a description of the public API for a software package and
     write out a JSON representation of it.
     """
+    if version is True:
+        version_file = os.path.join(
+            os.path.dirname(__file__),
+            'VERSION'
+        )
+        with open(version_file, 'r') as f:
+            out = f.read()
+        stdout.write(out)
+        return
+
     language = language.lower()
     print("Testing package {} [{}]".format(pkg_name, language))
 

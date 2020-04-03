@@ -28,7 +28,7 @@ copyright = f"2019, {_AUTHOR}"
 author = _AUTHOR
 
 # The short X.Y version
-with open(os.path.join(SOURCE_DIR, 'VERSION'), 'r') as f:
+with open(os.path.join(SOURCE_DIR, 'doppel', 'VERSION'), 'r') as f:
     version = f.read().strip()
 
 # The full version, including alpha/beta/rc tags

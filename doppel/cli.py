@@ -1,6 +1,8 @@
 
 import click
 import json
+import os
+from sys import stdout
 from doppel.reporters import SimpleReporter
 from doppel.PackageAPI import PackageAPI
 
@@ -8,6 +10,7 @@ from doppel.PackageAPI import PackageAPI
 @click.command()
 @click.option(
     '--files', '-f',
+    default=None,
     help="Comma-delimited list of doppel output files."
 )
 @click.option(
@@ -15,7 +18,13 @@ from doppel.PackageAPI import PackageAPI
     default=0,
     help="Integer number of errors to allow before returning non-zero exit code. Default is 0."
 )
-def main(files: str, errors_allowed: int) -> None:
+@click.option(
+    '--version',
+    default=False,
+    help="Get the current version of doppel-test",
+    is_flag=True
+)
+def main(files: str, errors_allowed: int, version: bool) -> None:
     """
     doppel is a a continuous integration tool for testing
     the continuity of APIs for libraries implemented in
@@ -28,8 +37,18 @@ def main(files: str, errors_allowed: int) -> None:
         permissible before throwing a non-zero exit
         code. Set this to a higher value to make doppel-cli
         more permissive.
-
+    :param version: Get the current version of doppel-test.
     """
+    if version is True:
+        version_file = os.path.join(
+            os.path.dirname(__file__),
+            'VERSION'
+        )
+        with open(version_file, 'r') as f:
+            out = f.read()
+        stdout.write(out)
+        return
+
     print("Loading comparison files")
 
     f_list = files.split(',')
