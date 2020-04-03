@@ -58,6 +58,11 @@ args <- parser$parse_args()
         "unlock"
     )
 
+    # Other repeated constants
+    CLASSES_KEY <- "classes"
+    FUNCTIONS_KEY <- "functions"
+    PUBLIC_METHODS_KEY <- "public_methods"
+
     # lil helper
     .log_info <- function(msg) {
         futile.logger::flog.info(msg)
@@ -106,7 +111,7 @@ args <- parser$parse_args()
         obj <- get(obj_name, envir = pkg_env)
 
         if (is.function(obj)) {
-            out[["functions"]][[obj_name]] <- list(
+            out[[FUNCTIONS_KEY]][[obj_name]] <- list(
                 "args" = as.list(
                     gsub(
                         "\\.\\.\\."
@@ -120,8 +125,8 @@ args <- parser$parse_args()
 
         if (R6::is.R6Class(obj)) {
 
-            out[["classes"]][[obj_name]] <- list()
-            out[["classes"]][[obj_name]][["public_methods"]] <- list()
+            out[[CLASSES_KEY]][[obj_name]] <- list()
+            out[[CLASSES_KEY]][[obj_name]][[PUBLIC_METHODS_KEY]] <- list()
 
             public_methods <- .get_r6_public_methods(obj)
 
@@ -160,7 +165,7 @@ args <- parser$parse_args()
                     method_args <- list()
                 }
 
-                out[["classes"]][[obj_name]][["public_methods"]][[method_name]] <- list(
+                out[[CLASSES_KEY]][[obj_name]][[PUBLIC_METHODS_KEY]][[method_name]] <- list(
                     "args" = as.list(
                         gsub(
                             "\\.\\.\\."
@@ -201,7 +206,7 @@ args <- parser$parse_args()
                         method_args <- list()
                     }
 
-                    out[["classes"]][[obj_name]][["public_methods"]][[method]] <- list(
+                    out[[CLASSES_KEY]][[obj_name]][[PUBLIC_METHODS_KEY]][[method]] <- list(
                         "args" = as.list(method_args)
                     )
                 }
@@ -211,7 +216,7 @@ args <- parser$parse_args()
     }
 
     # jsonlite treats empty, unnamed lists as arrays, we want to write empty dicts
-    for (obj_type in c("functions", "classes")) {
+    for (obj_type in c(FUNCTIONS_KEY, CLASSES_KEY)) {
         if (identical(out[[obj_type]], list())) {
             lst <- list()
             names(lst) <- character(0L)

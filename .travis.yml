@@ -7,10 +7,6 @@ git:
 before_install:
   - .ci/setup.sh
   - export PATH=${CONDA_DIR}/bin:$PATH
-  - echo ${PATH}
-  - echo ${CONDA_DIR}
-  - which conda
-  - which Rscript
 
 # Testing strategy is just "run the code and see if it executes at all"
 script:
@@ -27,7 +23,7 @@ matrix:
       language: generic
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
-        - CONDA_DIR=/Users/travis/miniconda3
+        - CONDA_DIR=${HOME}/miniconda3
       install:
         - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6 nose pytest
         - source activate testenv
@@ -38,7 +34,7 @@ matrix:
       python: 3.5
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=/home/travis/miniconda3
+        - CONDA_DIR=${HOME}/miniconda3
       install:
         - python setup.py install
     - os: linux
@@ -46,7 +42,7 @@ matrix:
       python: 3.6
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=/home/travis/miniconda3
+        - CONDA_DIR=${HOME}/miniconda3
       install:
         - python setup.py install
     - os: linux
@@ -54,7 +50,15 @@ matrix:
       python: 3.7
       env:
         - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=/home/travis/miniconda3
+        - CONDA_DIR=${HOME}/miniconda3
+      install:
+        - python setup.py install
+    - os: linux
+      language: python
+      python: 3.8
+      env:
+        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+        - CONDA_DIR=${HOME}/miniconda3
       install:
         - python setup.py install
 

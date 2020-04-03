@@ -44,6 +44,12 @@ def do_everything(parsed_args):
     CONSTRUCTOR_STRING = parsed_args.constructor_string
     LANGUAGE = 'python'
 
+    # Other repeated constants
+    ARGS_KEY = "args"
+    CLASSES_KEY = "classes"
+    FUNCTIONS_KEY = "functions"
+    PUBLIC_METHODS_KEY = "public_methods"
+
     # These are lanaguage-specific
     # conventions we can drop
     SELF_KEYWORD = 'self'
@@ -55,7 +61,7 @@ def do_everything(parsed_args):
 
     # value to use for an empty function
     EMPTY_FUNCTION_DICT = {
-        "args": []
+        ARGS_KEY: []
     }
 
     # Import that module
@@ -65,8 +71,8 @@ def do_everything(parsed_args):
     out = {
         "name": "{} [python]".format(PKG_NAME),
         "language": "python",
-        "functions": {},
-        "classes": {}
+        FUNCTIONS_KEY: {},
+        CLASSES_KEY: {}
     }
 
     def _log_info(msg):
@@ -143,8 +149,8 @@ def do_everything(parsed_args):
                 #
                 if obj.__module__.startswith(PKG_NAME):
                     _log_info("'{}' is a function in this package, adding it".format(obj_name))
-                    out["functions"][obj_name] = {
-                        "args": _get_arg_names(obj, kwargs_string=KWARGS_STRING)
+                    out[FUNCTIONS_KEY][obj_name] = {
+                        ARGS_KEY: _get_arg_names(obj, kwargs_string=KWARGS_STRING)
                     }
 
                 next
@@ -161,8 +167,8 @@ def do_everything(parsed_args):
 
                     if is_in_package:
                         _log_info("'{}' is a class in this package, adding it".format(obj_name))
-                        out['classes'][obj_name] = {}
-                        out['classes'][obj_name]['public_methods'] = {}
+                        out[CLASSES_KEY][obj_name] = {}
+                        out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY] = {}
 
                         for f in dir(obj):
 
@@ -190,8 +196,8 @@ def do_everything(parsed_args):
                                 msg = f"found built-in '{class_member.__name__}', could not get signature"
                                 _log_warn(msg)
                                 method_args = []
-                                out['classes'][obj_name]['public_methods'][f] = {
-                                    "args": method_args
+                                out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][f] = {
+                                    ARGS_KEY: method_args
                                 }
                                 continue
 
@@ -239,17 +245,17 @@ def do_everything(parsed_args):
                                 if is_constructor:
                                     f = CONSTRUCTOR_STRING
 
-                                out['classes'][obj_name]['public_methods'][f] = {
-                                    "args": method_args
+                                out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][f] = {
+                                    ARGS_KEY: method_args
                                 }
 
                         # classes that don't implement a constructor
                         # still have one!
-                        if not out['classes'][obj_name]['public_methods'].get(CONSTRUCTOR_STRING, None):
+                        if not out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY].get(CONSTRUCTOR_STRING, None):
                             msg = "Class '{}' did not implement __init__. Adding it".format(obj_name)
                             _log_info(msg)
 
-                            out['classes'][obj_name]['public_methods'][CONSTRUCTOR_STRING] = EMPTY_FUNCTION_DICT
+                            out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][CONSTRUCTOR_STRING] = EMPTY_FUNCTION_DICT
 
                 next
 
