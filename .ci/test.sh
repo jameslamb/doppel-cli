@@ -8,6 +8,14 @@
 # Failure is a natural part of life
 set -e
 
+if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
+    source activate testenv
+    pip install argparse requests
+fi
+
+python setup.py install
+
 # Set up environment variables
 CI_TOOLS=$(pwd)/.ci
 

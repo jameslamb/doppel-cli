@@ -5,6 +5,12 @@ set -e
 # Set up environment variables
 export CRAN_MIRROR=http://cran.rstudio.com
 
+if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+    export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
+elif [[ $TRAVIS_OS_NAME == "linux" ]]; then
+    export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+fi
+
 # Install conda
 wget ${MINICONDA_INSTALLER} -O miniconda.sh;
 bash miniconda.sh -b -p ${CONDA_DIR}
