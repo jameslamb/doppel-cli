@@ -45,15 +45,18 @@ args <- parser$parse_args()
     CONSTRUCTOR_STRING <- args[["constructor_string"]]
     VERBOSE <- args[["verbose"]]
 
-    if (isTRUE(VERBOSE)){
-        log_threshold <- futile.logger::DEBUG
-        futile.logger::flog.debug("Running doppel-describe with verbose logging.")
-    } else {
-        log_threshold <- futile.logger::INFO
-    }
-    invisible(
-        futile.logger::flog.threshold(log_threshold)
-    )
+    invisible({
+        if (isTRUE(VERBOSE)) {
+            futile.logger::flog.threshold(
+                futile.logger::DEBUG
+            )
+            futile.logger::flog.debug("Running doppel-describe with verbose logging.")
+        } else {
+            futile.logger::flog.threshold(
+                futile.logger::INFO
+            )
+        }
+    })
 
     LANGUAGE <- "r"
     R6_SPECIAL_METHODS_TO_EXCLUDE <- c(

@@ -12,7 +12,8 @@ import re
 logger = logging.getLogger()
 logging.basicConfig(
     format='%(levelname)s [%(asctime)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stdout
 )
 
 
@@ -301,7 +302,7 @@ def do_everything(parsed_args):
             # they should count as exported functions
             elif _is_builtin(obj) and callable(obj):
                 if not obj.__module__.startswith(PKG_NAME):
-                    _log_info("Callable '{}' is a built-in not included in this package's namespace. Skipping it.".format(obj.__name__))
+                    logger.info("Callable '{}' is a built-in not included in this package's namespace. Skipping it.".format(obj.__name__))
                 next
 
             else:

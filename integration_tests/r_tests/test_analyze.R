@@ -418,3 +418,15 @@ test_that(txt, {
     expect_equal(length(RESULTS[["testpkgtres"]][["parsed"]]), NUM_TOP_LEVEL_KEYS)
 
 })
+
+test_that("--verbose should work", {
+    cmd <- "doppel-describe -l r -p argparse --data-dir test_data > thing.txt"
+    system(cmd, wait = TRUE)
+    logText <- readLines("thing.txt")
+    expect_false(any(grepl("DEBUG", logText)))
+
+    cmd <- "doppel-describe -l r -p argparse --data-dir test_data --verbose > thing.txt"
+    system(cmd, wait = TRUE)
+    logText <- readLines("thing.txt")
+    expect_true(any(grepl("DEBUG", logText)))
+})
