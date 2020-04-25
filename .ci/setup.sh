@@ -46,6 +46,7 @@ ${CONDA_DIR}/bin/pip install \
     click \
     coverage \
     codecov \
+    flake8 \
     pycodestyle \
     requests \
     sphinx \
