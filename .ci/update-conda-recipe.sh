@@ -8,7 +8,7 @@
 #     ./.ci/update-conda-recipe.sh ${GITHUB_USER}
 
 GITHUB_USER=${1}
-DOPPEL_VERSION=$(cat VERSION)
+DOPPEL_VERSION=$(cat doppel/VERSION)
 
 TMP_DIR=$(pwd)/conda-install
 

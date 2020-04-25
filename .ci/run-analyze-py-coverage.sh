@@ -3,7 +3,7 @@
 # [description]
 #     Measure the test coverage of analyze.py
 # [usage]
-#     ./.ci/run_analyze_py_coveraage.sh 20
+#     ./.ci/run-analyze-py-coveraage.sh 50
 
 MIN_TEST_COVERAGE=${1}
 

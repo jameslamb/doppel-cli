@@ -1,10 +1,11 @@
+import os
 from setuptools import setup
 from setuptools import find_packages
 
 with open('README.md', 'r') as f:
     readme = f.read()
 
-with open('VERSION', 'r') as f:
+with open(os.path.join('doppel', 'VERSION'), 'r') as f:
     version = f.read().strip()
 
 runtime_deps = [
@@ -39,7 +40,12 @@ setup(
         'all': runtime_deps + documentation_deps + testing_deps
     },
     package_data={
-        'doppel': ['bin/analyze.R', 'bin/analyze.py']
+        'doppel': [
+            'bin/analyze.R',
+            'bin/analyze.py',
+            'VERSION',
+            'LICENSE'
+        ]
     },
     entry_points={
         'console_scripts': [

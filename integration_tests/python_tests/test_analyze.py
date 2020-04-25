@@ -17,6 +17,9 @@ EXPECTED_TOP_LEVEL_KEYS = set([
 ])
 NUM_TOP_LEVEL_KEYS = len(EXPECTED_TOP_LEVEL_KEYS)
 
+with open('../../doppel/VERSION', 'r') as f:
+    EXPECTED_VERSION = f.read().strip()
+
 
 @pytest.fixture()
 def rundescribe():
@@ -62,6 +65,26 @@ def rundescribe():
         results[package_name] = result_json
 
     return results
+
+
+class TestVersion:
+    """
+    --version should work as expected.
+    """
+
+    def test_version(self):
+        """
+        doppel-test --version should work
+        """
+        version_string = os.popen('doppel-test --version').read().strip()
+        assert version_string == EXPECTED_VERSION
+
+    def test_describe_version(self):
+        """
+        doppel-describe --version should work
+        """
+        version_string = os.popen('doppel-describe --version').read().strip()
+        assert version_string == EXPECTED_VERSION
 
 
 class TestBasicContract:

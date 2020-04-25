@@ -5,7 +5,8 @@ set -e
 
 PYPI_REPO=$1
 
-VERSION=$(cat VERSION)
+VERSION=$(cat doppel/VERSION)
+cp LICENSE doppel/
 python setup.py sdist
 twine upload dist/doppel-cli-${VERSION}.tar.gz -r ${PYPI_REPO}
 
