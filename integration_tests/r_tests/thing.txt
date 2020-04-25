@@ -1,4 +1,0 @@
-DEBUG [2020-04-03 00:21:41] Running doppel-describe with verbose logging.
-INFO [2020-04-03 00:21:41] Loading up namespace for package argparse
-INFO [2020-04-03 00:21:41] Found 1 exported objects
-INFO [2020-04-03 00:21:41] Writing output to test_data/r_argparse.json
