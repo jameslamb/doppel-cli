@@ -4,9 +4,13 @@ git:
 
 before_install:
   - .ci/setup.sh
+  - export PATH=${CONDA_DIR}/bin:$PATH
 
 script:
   - .ci/test.sh
+
+env:
+  CONDA_DIR: ${HOME}/miniconda3
 
 matrix:
   include:

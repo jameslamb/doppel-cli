@@ -8,8 +8,6 @@
 # Failure is a natural part of life
 set -e
 
-export CONDA_DIR=${HOME}/miniconda3
-
 if [[ $TRAVIS_OS_NAME == "osx" ]]; then
     ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
     source activate testenv
@@ -25,9 +23,6 @@ CI_TOOLS=$(pwd)/.ci
 MIN_UNIT_TEST_COVERAGE=100
 MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
-
-# Make sure we're living in conda land
-export PATH="$HOME/miniconda/bin:$PATH"
 
 ${CI_TOOLS}/lint-py.sh $(pwd)
 Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
