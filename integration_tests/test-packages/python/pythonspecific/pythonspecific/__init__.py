@@ -1,4 +1,4 @@
-
+# flake8: noqa
 from pythonspecific.SomeException import SomeException
 
 # sub-modules

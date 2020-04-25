@@ -1,6 +1,4 @@
-
 import click
-import json
 import os
 from sys import stdout
 from doppel.reporters import SimpleReporter

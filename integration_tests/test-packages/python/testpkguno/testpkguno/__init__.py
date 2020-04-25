@@ -1,4 +1,4 @@
-
+# flake8: noqa
 from testpkguno.ClassA import ClassA
 from testpkguno.ClassB import ClassB
 from testpkguno.ClassC import ClassC

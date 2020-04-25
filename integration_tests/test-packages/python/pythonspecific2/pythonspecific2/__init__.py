@@ -3,4 +3,4 @@ __all__ = [
     'custom_post'
 ]
 
-from .module import *
+from .module import *  # noqa

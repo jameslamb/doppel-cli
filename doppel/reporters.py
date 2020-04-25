@@ -3,7 +3,6 @@ import doppel
 from sys import stdout
 from tabulate import tabulate
 from typing import List
-from functools import reduce
 from doppel.PackageAPI import PackageAPI
 from doppel.DoppelTestError import DoppelTestError
 

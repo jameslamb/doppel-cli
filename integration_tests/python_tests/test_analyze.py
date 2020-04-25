@@ -425,7 +425,7 @@ class TestPythonSpecific:
         assert result_json['classes']['MinWrapper']['public_methods']['wrap_min'] == {'args': []}
 
 
-class TestPythonSpecific:
+class TestWeirdImportStuff:
     """
     Test the behavior of analyze.py for packages using
     'from <module> import *' in __init__.py. This package also
