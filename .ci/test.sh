@@ -8,6 +8,14 @@
 # Failure is a natural part of life
 set -e
 
+if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
+    source activate testenv
+    pip install argparse requests
+fi
+
+python setup.py install
+
 # Set up environment variables
 CI_TOOLS=$(pwd)/.ci
 
@@ -15,9 +23,6 @@ CI_TOOLS=$(pwd)/.ci
 MIN_UNIT_TEST_COVERAGE=100
 MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
-
-# Make sure we're living in conda land
-export PATH="$HOME/miniconda/bin:$PATH"
 
 ${CI_TOOLS}/lint-py.sh $(pwd)
 Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)

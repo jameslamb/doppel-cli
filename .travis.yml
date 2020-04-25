@@ -1,16 +1,16 @@
-
 # We never need more than the most recent commit
 git:
   depth: 1
 
-# Stuff shared by all builds
 before_install:
   - .ci/setup.sh
   - export PATH=${CONDA_DIR}/bin:$PATH
 
-# Testing strategy is just "run the code and see if it executes at all"
 script:
   - .ci/test.sh
+
+env:
+  CONDA_DIR: ${HOME}/miniconda3
 
 matrix:
   include:
@@ -21,46 +21,18 @@ matrix:
     # https://docs.travis-ci.com/user/multi-os/#python-example-unsupported-languages
     - os: osx
       language: generic
-      env:
-        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
-        - CONDA_DIR=${HOME}/miniconda3
-      install:
-        - /Users/travis/miniconda3/bin/conda create -q -n testenv python=3.6 nose pytest
-        - source activate testenv
-        - pip install argparse requests
-        - python setup.py install
     - os: linux
       language: python
       python: 3.5
-      env:
-        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=${HOME}/miniconda3
-      install:
-        - python setup.py install
     - os: linux
       language: python
       python: 3.6
-      env:
-        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=${HOME}/miniconda3
-      install:
-        - python setup.py install
     - os: linux
       language: python
       python: 3.7
-      env:
-        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=${HOME}/miniconda3
-      install:
-        - python setup.py install
     - os: linux
       language: python
       python: 3.8
-      env:
-        - MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-        - CONDA_DIR=${HOME}/miniconda3
-      install:
-        - python setup.py install
 
 after_success:
   - codecov
