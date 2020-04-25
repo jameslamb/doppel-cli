@@ -2,10 +2,8 @@
 git:
   depth: 1
 
-# Stuff shared by all builds
 before_install:
   - .ci/setup.sh
-  - export CONDA_DIR=${HOME}/miniconda3
 
 script:
   - .ci/test.sh

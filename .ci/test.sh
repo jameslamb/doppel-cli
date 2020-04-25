@@ -8,6 +8,8 @@
 # Failure is a natural part of life
 set -e
 
+export CONDA_DIR=${HOME}/miniconda3
+
 if [[ $TRAVIS_OS_NAME == "osx" ]]; then
     ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
     source activate testenv
