@@ -60,12 +60,16 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
     language = language.lower()
     logger.info("Testing package {} [{}]".format(pkg_name, language))
 
-    files = {
-        'python': 'analyze.py',
-        'r': 'analyze.R'
-    }
+    if not os.path.isdir(data_dir):
+        msg = "Directory '{}' passed to --data-dir does not exist.".format(data_dir)
+        logger.fatal(msg)
+        raise RuntimeError(msg)
 
     try:
+        files = {
+            'python': 'analyze.py',
+            'r': 'analyze.R'
+        }
         analysis_script = pkg_resources.resource_filename(
             'doppel', 'bin/{}'.format(files[language])
         )

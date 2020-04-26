@@ -420,12 +420,18 @@ test_that(txt, {
 })
 
 test_that("--verbose should work", {
-    cmd <- "doppel-describe -l r -p argparse --data-dir test_data > thing.txt"
+    cmd <- sprintf(
+        "doppel-describe -l r -p argparse --data-dir %s > thing.txt"
+        , TEST_DATA_DIR
+    )
     system(cmd, wait = TRUE)
     logText <- readLines("thing.txt")
     expect_false(any(grepl("DEBUG", logText)))
 
-    cmd <- "doppel-describe -l r -p argparse --data-dir test_data --verbose > thing.txt"
+    cmd <- sprintf(
+        "doppel-describe -l r -p argparse --data-dir %s --verbose > thing.txt"
+        , TEST_DATA_DIR
+    )
     system(cmd, wait = TRUE)
     logText <- readLines("thing.txt")
     expect_true(any(grepl("DEBUG", logText)))

@@ -7,6 +7,8 @@ python package)
 import json
 import os
 import pytest
+import re
+import subprocess
 
 # details that will always be true of doppel-describe output
 EXPECTED_TOP_LEVEL_KEYS = set([
@@ -85,6 +87,22 @@ class TestVersion:
         """
         version_string = os.popen('doppel-describe --version').read().strip()
         assert version_string == EXPECTED_VERSION
+
+
+class TestBadDataDir:
+    """
+    An informative error should be thrown if the
+    directory passed to --data-dir does nottexist.
+    """
+    def test_describe_bad_input_dir(self):
+        result = subprocess.run([
+            'doppel-describe',
+            '--language', 'python',
+            '-p', 'testpkguno',
+            '--data-dir', 'random-nonexistent-dir'
+        ], stderr=subprocess.PIPE)
+        error_text = result.stderr.decode('utf-8')
+        assert bool(re.search('passed to --data-dir does not exist', error_text))
 
 
 class TestBasicContract:
