@@ -20,7 +20,7 @@ class TestAnalyzePy:
 
     def _test_analyze(self, arg_list, pkg_name):
         args = doppel_analyze.parse_args(arg_list)
-        res = doppel_analyze.do_everything(args)
+        res = doppel_analyze.do_everything(args)  # noqa
 
         out_file = os.path.join(self.output_dir, "python_" + pkg_name + ".json")
         with open(out_file, 'r') as f:

@@ -390,7 +390,7 @@ class TestPythonSpecific:
         """
         result_json = rundescribe['pythonspecific']
 
-        assert set(result_json['functions'].keys()) == set(['some_function', 'wrap_min'])
+        assert set(result_json['functions'].keys()) == set(['some_function'])
         assert set(result_json['classes'].keys()) == set(['SomeClass', 'GreatClass', 'MinWrapper'])
 
     def test_inner_classes(self, rundescribe):
@@ -408,11 +408,13 @@ class TestPythonSpecific:
     def test_builtin_func(self, rundescribe):
         """
         analyze.py should correctly handle the case where a built-in
-        like min() has been mapped directly to an exported function
+        like min() has been mapped directly to an exported function.
         """
         result_json = rundescribe['pythonspecific']
 
-        assert result_json['functions']['wrap_min'] == {'args': []}
+        # mapping a builtin with something like wrap_min = min
+        # is no ta valid way to "re-export" such a function
+        assert 'wrap_min' not in set(result_json['functions'].keys())
 
     def test_builtin_method(self, rundescribe):
         """
@@ -425,7 +427,7 @@ class TestPythonSpecific:
         assert result_json['classes']['MinWrapper']['public_methods']['wrap_min'] == {'args': []}
 
 
-class TestPythonSpecific:
+class TestWeirdImportStuff:
     """
     Test the behavior of analyze.py for packages using
     'from <module> import *' in __init__.py. This package also

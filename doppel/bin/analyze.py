@@ -244,7 +244,6 @@ def do_everything(parsed_args):
                             # this is_function is still here to catch the case where the constructor
                             # wasn't implemented
                             if is_function or is_class_method:
-                                res = inspect.signature(class_member)
                                 method_args = _get_arg_names(
                                     class_member,
                                     KWARGS_STRING
