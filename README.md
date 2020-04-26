@@ -1,7 +1,7 @@
 # doppel-cli
 
 [![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![conda-forge version](https://img.shields.io/conda/v/conda-forge/doppel-cli)](https://github.com/conda-forge/doppel-cli-feedstock) [![Travis Build Status](https://img.shields.io/travis/jameslamb/doppel-cli.svg?label=travis&logo=travis&branch=master)](https://travis-ci.org/jameslamb/doppel-cli)
-[![AppVeyor Build Status](https://img.shields.io/appveyor/ci/jameslamb/doppel-cli.svg?label=appveyor&logo=appveyor&branch=master)](https://ci.appveyor.com/project/jameslamb/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/gh/jameslamb/doppel-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/jameslamb/doppel-cli) [![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![downloads](https://img.shields.io/pypi/dm/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![license](https://img.shields.io/pypi/l/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
+[![AppVeyor Build Status](https://img.shields.io/appveyor/ci/jameslamb/doppel-cli.svg?label=appveyor&logo=appveyor&branch=master)](https://ci.appveyor.com/project/jameslamb/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/gh/jameslamb/doppel-cli/branch/master/graph/badge.svg)](https://codecov.io/gh/jameslamb/doppel-cli) [![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![downloads](https://img.shields.io/pypi/dm/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![license](https://img.shields.io/pypi/l/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3918/badge)](https://bestpractices.coreinfrastructure.org/en/projects/3918)
 
 `doppel-cli` is an integration testing framework for testing API similarity across languages. R and Python are currently supported.
 
@@ -222,3 +222,5 @@ doppel-test --help
 Bug reports, questions, and feature requests should be directed to [the issues page](https://github.com/jameslamb/doppel-cli/issues).
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on how to contribute.
+
+`doppel-cli` attempts to adhere to Core Infrastructure Initiative (CII) best practices for open source projects. See [the project's CII page](https://bestpractices.coreinfrastructure.org/en/projects/3918) for an explanation of how `doppel-cli` meets these requirements.
