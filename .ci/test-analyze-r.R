@@ -14,13 +14,6 @@ ANALYZE_SCRIPT <- file.path(
 
 for (TEST_PACKAGE in TEST_PACKAGES) {
 
-    TEST_VALUES <- list(
-        "pkg" = TEST_PACKAGE,
-        "output_dir" = TESTING_DIR,
-        "kwargs_string" = "~~KWARGS~~",
-        "constructor_string" = "~~CONSTRUCTOR~~"
-    )
-
     # override argparse:::Parser
     MockParser <- R6::R6Class(
         "MockParser",
@@ -28,9 +21,16 @@ for (TEST_PACKAGE in TEST_PACKAGES) {
             initialize = function(...) {
                 return(invisible(NULL))
             },
-            parse_args = function(...) {
+            parse_args = function(..., verbose = FALSE) {
                 print("returning mocked values")
-                return(TEST_VALUES)
+                out <- list(
+                    "pkg" = TEST_PACKAGE
+                    , "output_dir" = TESTING_DIR
+                    , "kwargs_string" = "~~KWARGS~~"
+                    , "constructor_string" = "~~CONSTRUCTOR~~"
+                    , "verbose" = verbose
+                )
+                return(out)
             },
             add_argument = function(...) {
                 return(invisible(NULL))
@@ -50,10 +50,14 @@ for (TEST_PACKAGE in TEST_PACKAGES) {
            , envir = .GlobalEnv
        )
     }, error = function(e) {
+        print(e)
         return(NULL)
     })
 
     .analyze(
-        args = argparse::ArgumentParser()$parse_args()
+        args = argparse::ArgumentParser()$parse_args(verbose = TRUE)
+    )
+    .analyze(
+        args = argparse::ArgumentParser()$parse_args(verbose = FALSE)
     )
 }
