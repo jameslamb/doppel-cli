@@ -14,15 +14,18 @@ logging.basicConfig(
 @click.command()
 @click.option(
     '--language', '-l',
-    help="Programming language. Currently python and R are supported."
+    help="Programming language. Currently python and R are supported.",
+    required=True
 )
 @click.option(
     '--pkg_name', '-p',
-    help="Name of a package"
+    help="Name of a package",
+    required=True
 )
 @click.option(
     '--data-dir', '-d',
-    help="Path to write output file to."
+    help="Path to write output file to.",
+    required=True
 )
 @click.option(
     '--version',

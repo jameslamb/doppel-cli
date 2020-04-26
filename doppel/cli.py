@@ -9,7 +9,8 @@ from doppel.PackageAPI import PackageAPI
 @click.option(
     '--files', '-f',
     default=None,
-    help="Comma-delimited list of doppel output files."
+    help="Comma-delimited list of doppel output files.",
+    required=True
 )
 @click.option(
     '--errors-allowed',
