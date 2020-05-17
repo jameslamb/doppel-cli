@@ -1,21 +1,18 @@
 # As config was originally based on an example by Olivier Grisel. Thanks!
 # https://github.com/ogrisel/python-appveyor-demo/blob/master/appveyor.yml
 clone_depth: 10
-
-# No reason for us to restrict the number concurrent jobs
 max_jobs: 5
 
-cache:
-  - '%LOCALAPPDATA%\pip\Cache'
+# only build pull requests and commits to 'master'
+branches:
+  only:
+    - master
 
 environment:
-
   matrix:
-
     - PYTHON: C:\Python35-x64
       PYTHON_VERSION: 3.5
       PYTHON_ARCH: 64
-
     - PYTHON: C:\Python36-x64
       PYTHON_VERSION: 3.6
       PYTHON_ARCH: 64
