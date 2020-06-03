@@ -9,6 +9,7 @@ import os
 import pytest
 import re
 import subprocess
+import uuid
 
 # details that will always be true of doppel-describe output
 EXPECTED_TOP_LEVEL_KEYS = set([
@@ -99,7 +100,7 @@ class TestBadDataDir:
             'doppel-describe',
             '--language', 'python',
             '-p', 'testpkguno',
-            '--data-dir', 'random-nonexistent-dir'
+            '--data-dir', str(uuid.uuid4())
         ], stderr=subprocess.PIPE)
         error_text = result.stderr.decode('utf-8')
         assert bool(re.search('passed to --data-dir does not exist', error_text))
@@ -545,10 +546,7 @@ class TestMissingFiles:
         '--files' should be required
         """
         result = subprocess.run([
-            'doppel-describe',
-            '--language', 'python',
-            '-p', 'testpkguno',
-            '--data-dir', 'random-nonexistent-dir'
+            'doppel-test',
         ], stderr=subprocess.PIPE)
         error_text = result.stderr.decode('utf-8')
         assert bool(re.search('Missing option "--files"', error_text))

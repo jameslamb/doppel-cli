@@ -9,8 +9,7 @@ from doppel.PackageAPI import PackageAPI
 @click.option(
     '--files', '-f',
     default=None,
-    help="Comma-delimited list of doppel output files.",
-    required=True
+    help="Comma-delimited list of doppel output files."
 )
 @click.option(
     '--errors-allowed',
@@ -47,6 +46,9 @@ def main(files: str, errors_allowed: int, version: bool) -> None:
             out = f.read()
         stdout.write(out)
         return
+
+    if files is None:
+        raise RuntimeError('Missing option "--files"')
 
     print("Loading comparison files")
 

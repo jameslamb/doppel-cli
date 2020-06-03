@@ -14,18 +14,18 @@ logging.basicConfig(
 @click.command()
 @click.option(
     '--language', '-l',
-    help="Programming language. Currently python and R are supported.",
-    required=True
+    default=None,
+    help="Programming language. Currently python and R are supported."
 )
 @click.option(
     '--pkg_name', '-p',
-    help="Name of a package",
-    required=True
+    default=None,
+    help="Name of a package"
 )
 @click.option(
     '--data-dir', '-d',
+    default=None,
     help="Path to write output file to.",
-    required=True
 )
 @click.option(
     '--version',
@@ -53,6 +53,15 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
             out = f.read()
         stdout.write(out)
         return
+
+    if language is None:
+        raise RuntimeError('Missing option "--language"')
+
+    if pkg_name is None:
+        raise RuntimeError('Missing option "--pkg_name"')
+
+    if data_dir is None:
+        raise RuntimeError('Missing option "--data-dir"')
 
     if verbose is True:
         logger.setLevel(logging.DEBUG)
