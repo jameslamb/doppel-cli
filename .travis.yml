@@ -10,7 +10,8 @@ script:
   - .ci/test.sh
 
 env:
-  CONDA_DIR: ${HOME}/miniconda3
+  global:
+    CONDA_DIR: ${HOME}/miniconda3
 
 matrix:
   include:
@@ -23,7 +24,8 @@ matrix:
       language: generic
     - os: linux
       language: python
-      python: 3.5
+      python: 3.8
+      env: TASK=lint
     - os: linux
       language: python
       python: 3.6
