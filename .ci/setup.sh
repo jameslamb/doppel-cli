@@ -30,8 +30,7 @@ ${CONDA_DIR}/bin/conda install -c r \
 ${CONDA_DIR}/bin/conda install -c conda-forge \
     r-covr \
     r-argparse \
-    r-futile.logger \
-    r-lintr>=2.0.0
+    r-futile.logger
 
 # Per https://github.com/ContinuumIO/anaconda-issues/issues/9423#issue-325303442,
 # packages that require compilation may fail to find the
@@ -42,17 +41,15 @@ export PATH=${PATH}:${CONDA_DIR}/bin
 # Get Python packages for testing
 ${CONDA_DIR}/bin/pip install \
     --user \
-    argparse \
-    click \
-    coverage \
-    codecov \
-    flake8 \
-    pycodestyle \
-    requests \
-    sphinx \
-    sphinx_autodoc_typehints \
-    sphinx_rtd_theme \
-    tabulate
+        argparse \
+        click \
+        coverage \
+        codecov \
+        requests \
+        sphinx \
+        sphinx_autodoc_typehints \
+        sphinx_rtd_theme \
+        tabulate
 
 export PIP_INSTALL_OPTS="--no-color"
 if [[ $TRAVIS_OS_NAME == "osx" ]]; then

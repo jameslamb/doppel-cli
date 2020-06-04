@@ -8,14 +8,6 @@
 # Failure is a natural part of life
 set -e
 
-if [[ $TRAVIS_OS_NAME == "osx" ]]; then
-    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
-    source activate testenv
-    pip install argparse requests
-fi
-
-python setup.py install
-
 # Set up environment variables
 CI_TOOLS=$(pwd)/.ci
 
@@ -24,9 +16,28 @@ MIN_UNIT_TEST_COVERAGE=100
 MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
 
-${CI_TOOLS}/lint-py.sh $(pwd)
-Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
-${CI_TOOLS}/lint-todo.sh $(pwd)
+if [[ $TASK == "lint" ]]; then
+    ${CONDA_DIR}/bin/conda install -c conda-forge \
+        r-lintr>=2.0.0
+    # Get Python packages for testing
+    ${CONDA_DIR}/bin/pip install \
+        --user \
+            flake8 \
+            pycodestyle
+    ${CI_TOOLS}/lint-py.sh $(pwd)
+    Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
+    ${CI_TOOLS}/lint-todo.sh $(pwd)
+    exit 0
+fi
+
+if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
+    source activate testenv
+    pip install argparse requests
+fi
+
+python setup.py install
+
 ${CI_TOOLS}/check-docs.sh $(pwd)/docs
 ${CI_TOOLS}/run-unit-tests.sh ${MIN_UNIT_TEST_COVERAGE}
 ${CI_TOOLS}/run-smoke-tests.sh $(pwd)/test_data
