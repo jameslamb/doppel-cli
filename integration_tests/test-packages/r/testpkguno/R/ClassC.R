@@ -7,6 +7,9 @@
 ClassC <- R6::R6Class(
     classname = "ClassC",
     public = list(
+
+        #' @description create a ClassC
+        #' @param ... dotz
         initialize = function(...) {
             return(invisible(NULL))
         }
