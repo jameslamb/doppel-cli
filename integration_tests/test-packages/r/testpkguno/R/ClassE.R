@@ -9,6 +9,7 @@
 ClassE <- R6::R6Class(
     classname = "ClassE",
     public = list(
+        #' @description create a ClassE
         initialize = function() {
             return(invisible(NULL))
         }
