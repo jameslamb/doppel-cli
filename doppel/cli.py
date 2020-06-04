@@ -47,6 +47,9 @@ def main(files: str, errors_allowed: int, version: bool) -> None:
         stdout.write(out)
         return
 
+    if files is None:
+        raise RuntimeError('Missing option "--files"')
+
     print("Loading comparison files")
 
     f_list = files.split(',')

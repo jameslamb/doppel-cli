@@ -9,6 +9,7 @@ import os
 import pytest
 import re
 import subprocess
+import uuid
 
 # details that will always be true of doppel-describe output
 EXPECTED_TOP_LEVEL_KEYS = set([
@@ -99,7 +100,7 @@ class TestBadDataDir:
             'doppel-describe',
             '--language', 'python',
             '-p', 'testpkguno',
-            '--data-dir', 'random-nonexistent-dir'
+            '--data-dir', str(uuid.uuid4())
         ], stderr=subprocess.PIPE)
         error_text = result.stderr.decode('utf-8')
         assert bool(re.search('passed to --data-dir does not exist', error_text))
@@ -497,3 +498,55 @@ class TestWeirdImportStuff:
         """
         result_json = rundescribe['pythonspecific2']
         assert result_json['classes'] == {}
+
+
+class TestMissingFiles:
+    """
+    An informative error should be thrown immediately if
+    you do not provide any of the required arguments.
+    """
+    def test_describe_no_package(self):
+        """
+        '-p' should be required
+        """
+        result = subprocess.run([
+            'doppel-describe',
+            '--language', 'python',
+            '--data-dir', '../../test_data'
+        ], stderr=subprocess.PIPE)
+        error_text = result.stderr.decode('utf-8')
+        assert bool(re.search('Missing option "--pkg_name"', error_text))
+
+    def test_describe_no_language(self):
+        """
+        '-l' should be required
+        """
+        result = subprocess.run([
+            'doppel-describe',
+            '-p', 'argparse',
+            '--data-dir', '../../test_data'
+        ], stderr=subprocess.PIPE)
+        error_text = result.stderr.decode('utf-8')
+        assert bool(re.search('Missing option "--language"', error_text))
+
+    def test_describe_no_data_dir(self):
+        """
+        '--data-dir' should be required
+        """
+        result = subprocess.run([
+            'doppel-describe',
+            '--pkg_name', 'argparse',
+            '-l', 'python'
+        ], stderr=subprocess.PIPE)
+        error_text = result.stderr.decode('utf-8')
+        assert bool(re.search('Missing option "--data-dir"', error_text))
+
+    def test_no_files(self):
+        """
+        '--files' should be required
+        """
+        result = subprocess.run([
+            'doppel-test',
+        ], stderr=subprocess.PIPE)
+        error_text = result.stderr.decode('utf-8')
+        assert bool(re.search('Missing option "--files"', error_text))
