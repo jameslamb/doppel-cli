@@ -1,3 +1,6 @@
+"""
+Implementation for doppel-test.
+"""
 import click
 import os
 from sys import stdout
@@ -17,12 +20,24 @@ from doppel.PackageAPI import PackageAPI
     help="Integer number of errors to allow before returning non-zero exit code. Default is 0."
 )
 @click.option(
+    '--ignore-classes',
+    default=False,
+    help="If given, classes will be ignored when comparing packages.",
+    is_flag=True
+)
+@click.option(
+    '--ignore-functions',
+    default=False,
+    help="If given, functions will be ignored when comparing packages.",
+    is_flag=True
+)
+@click.option(
     '--version',
     default=False,
     help="Get the current version of doppel-test",
     is_flag=True
 )
-def main(files: str, errors_allowed: int, version: bool) -> None:
+def main(files: str, errors_allowed: int, ignore_classes: bool, ignore_functions: bool, version: bool) -> None:
     """
     doppel is a a continuous integration tool for testing
     the continuity of APIs for libraries implemented in
@@ -35,6 +50,10 @@ def main(files: str, errors_allowed: int, version: bool) -> None:
         permissible before throwing a non-zero exit
         code. Set this to a higher value to make doppel-cli
         more permissive.
+    :param ignore_classes: If given, classes will be ignored when
+        comparing packages.
+    ;param ignore_functions: If given, functions will be ignored
+        when comparing packages.
     :param version: Get the current version of doppel-test.
     """
     if version is True:
@@ -55,7 +74,14 @@ def main(files: str, errors_allowed: int, version: bool) -> None:
     f_list = files.split(',')
 
     # Check if these are legit package objects
-    pkgs = [PackageAPI.from_json(f) for f in f_list]
+    pkgs = [
+        PackageAPI.from_json(
+            filename=f,
+            ignore_classes=ignore_classes,
+            ignore_functions=ignore_functions
+        )
+        for f in f_list
+    ]
 
     # Report
     reporter = SimpleReporter(pkgs, errors_allowed)

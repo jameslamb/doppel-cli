@@ -41,6 +41,16 @@ def parse_args(args):
         help="String value to replace the constructor in the list of class public methods"
     )
     parser.add_argument(
+        "--ignore-classes",
+        action="store_true",
+        help="If given, classes will be ignored when describing a package."
+    )
+    parser.add_argument(
+        "--ignore-functions",
+        action="store_true",
+        help="If given, functions will be ignored when describing a package."
+    )
+    parser.add_argument(
         "--verbose",
         action="store_true",
         help="Use this flag to get more detailed logs"
@@ -55,6 +65,8 @@ def do_everything(parsed_args):
     OUT_DIR = parsed_args.output_dir
     KWARGS_STRING = parsed_args.kwargs_string
     CONSTRUCTOR_STRING = parsed_args.constructor_string
+    IGNORE_CLASSES = parsed_args.ignore_classes
+    IGNORE_FUNCTIONS = parsed_args.ignore_functions
 
     VERBOSE = parsed_args.verbose
     if VERBOSE is True:
@@ -153,6 +165,9 @@ def do_everything(parsed_args):
             # Is it a function?
             if isinstance(obj, types.FunctionType):
 
+                if IGNORE_FUNCTIONS:
+                    next
+
                 # Handle special cases where someone did
                 # "from <pkg> import <whatever>" in a module.
                 #
@@ -172,6 +187,8 @@ def do_everything(parsed_args):
 
             # Is it a class?
             elif inspect.isclass(obj):
+                if IGNORE_CLASSES:
+                    next
                 # Is it an exception? (skip)
                 if issubclass(obj, Exception):
                     logger.info("{} is an Exception. Skipping.".format(obj_name))
@@ -300,6 +317,8 @@ def do_everything(parsed_args):
             # according to the previous checks, but if they're callable
             # they should count as exported functions
             elif _is_builtin(obj) and callable(obj):
+                if IGNORE_FUNCTIONS:
+                    next
                 if not obj.__module__.startswith(PKG_NAME):
                     logger.info("Callable '{}' is a built-in not included in this package's namespace. Skipping it.".format(obj.__name__))
                 next

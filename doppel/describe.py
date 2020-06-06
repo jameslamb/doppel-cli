@@ -28,9 +28,15 @@ logging.basicConfig(
     help="Path to write output file to.",
 )
 @click.option(
-    '--version',
+    '--ignore-classes',
     default=False,
-    help="Get the current version of doppel-describe",
+    help="If given, classes will be ignored when describing a package.",
+    is_flag=True
+)
+@click.option(
+    '--ignore-functions',
+    default=False,
+    help="If given, functions will be ignored when describing a package.",
     is_flag=True
 )
 @click.option(
@@ -39,7 +45,19 @@ logging.basicConfig(
     default=False,
     help="Use this flag to get more detailed logs"
 )
-def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bool) -> None:
+@click.option(
+    '--version',
+    default=False,
+    help="Get the current version of doppel-describe",
+    is_flag=True
+)
+def main(language: str,
+         pkg_name: str,
+         data_dir: str,
+         ignore_classes: bool,
+         ignore_functions: bool,
+         verbose: bool,
+         version: bool) -> None:
     """
     Generate a description of the public API for a software package and
     write out a JSON representation of it.
@@ -92,9 +110,16 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
 
     logger.info(analysis_script)
 
-    cmd = '{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~ --constructor-string ~~CONSTRUCTOR~~'.format(
+    cmd = "{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~ --constructor-string ~~CONSTRUCTOR~~"
+    cmd = cmd.format(
         analysis_script, pkg_name, data_dir
     )
+
+    if ignore_classes is True:
+        cmd += " --ignore-classes"
+
+    if ignore_functions is True:
+        cmd += " --ignore-functions"
 
     if verbose is True:
         cmd += ' --verbose'

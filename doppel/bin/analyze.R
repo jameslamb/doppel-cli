@@ -28,6 +28,16 @@ parser$add_argument(
    , help = "String value to replace the constructor in the list of class public methods"
 )
 parser$add_argument(
+    "--ignore-classes",
+    , action = "store_true"
+    , help = "If given, classes will be ignored when describing a package."
+)
+parser$add_argument(
+    "--ignore-functions",
+    , action = "store_true"
+    , help = "If given, functions will be ignored when describing a package."
+)
+parser$add_argument(
    "--verbose"
    , action = "store_true"
    , help = "Use this flag to get more detailed logs"
@@ -43,6 +53,8 @@ args <- parser$parse_args()
     OUT_DIR <- args[["output_dir"]]
     KWARGS_STRING <- args[["kwargs_string"]]
     CONSTRUCTOR_STRING <- args[["constructor_string"]]
+    IGNORE_CLASSES <- args[["ignore_classes"]]
+    IGNORE_FUNCTIONS <- args[["ignore_functions"]]
     VERBOSE <- args[["verbose"]]
 
     invisible({
@@ -130,6 +142,9 @@ args <- parser$parse_args()
         obj <- get(obj_name, envir = pkg_env)
 
         if (is.function(obj)) {
+            if (IGNORE_FUNCTIONS) {
+                next
+            }
             out[[FUNCTIONS_KEY]][[obj_name]] <- list(
                 "args" = as.list(
                     gsub(
@@ -143,6 +158,10 @@ args <- parser$parse_args()
         }
 
         if (R6::is.R6Class(obj)) {
+
+            if (IGNORE_CLASSES) {
+                next
+            }
 
             out[[CLASSES_KEY]][[obj_name]] <- list()
             out[[CLASSES_KEY]][[obj_name]][[PUBLIC_METHODS_KEY]] <- list()
