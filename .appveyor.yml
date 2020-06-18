@@ -3,10 +3,10 @@
 clone_depth: 10
 max_jobs: 5
 
-# only build pull requests and commits to 'master'
+# only build pull requests and commits to 'main'
 branches:
   only:
-    - master
+    - main
 
 environment:
   matrix:
