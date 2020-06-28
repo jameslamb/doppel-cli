@@ -1,6 +1,8 @@
-from doppel.PackageAPI import PackageAPI
 from typing import Dict
 from typing import List
+from typing import Set
+
+from doppel.PackageAPI import PackageAPI
 
 
 class PackageCollection:
@@ -39,7 +41,7 @@ class PackageCollection:
         List of all classes that exist in at least
         one of the packages.
         """
-        out = set([])
+        out: Set[str] = set([])
         for pkg in self.pkgs:
             out = out.union(pkg.class_names())
         return(list(out))
@@ -69,7 +71,7 @@ class PackageCollection:
         List of all functions that exist in at least
         one of the packages.
         """
-        out = set([])
+        out: Set[str] = set([])
         for pkg in self.pkgs:
             out = out.union(pkg.function_names())
         return(list(out))

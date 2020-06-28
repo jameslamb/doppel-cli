@@ -1,11 +1,16 @@
 import unittest
 import copy
 import re
+
+from typing import Any
+from typing import Dict
+
 from doppel import SimpleReporter
 from doppel import PackageAPI
 from doppel import DoppelTestError
 
-BASE_PACKAGE = {
+
+BASE_PACKAGE: Dict[str, Any] = {
     "name": "pkg1",
     "language": "python",
     "functions": {
@@ -134,7 +139,7 @@ PACKAGE_DIFFERENT_METHODS_1 = {
         }
     }
 }
-PACKAGE_DIFFERENT_METHODS_2 = copy.deepcopy(PACKAGE_DIFFERENT_METHODS_1)
+PACKAGE_DIFFERENT_METHODS_2: Dict[str, Any] = copy.deepcopy(PACKAGE_DIFFERENT_METHODS_1)
 del PACKAGE_DIFFERENT_METHODS_2['classes']['SomeClass']['public_methods']['write_py']
 PACKAGE_DIFFERENT_METHODS_2['classes']['SomeClass']['public_methods'].update({
     "write_r": {

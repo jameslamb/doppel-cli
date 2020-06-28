@@ -1,6 +1,8 @@
 import click
 import os
+
 from sys import stdout
+
 from doppel.reporters import SimpleReporter
 from doppel.PackageAPI import PackageAPI
 

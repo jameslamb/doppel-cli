@@ -24,7 +24,10 @@ testing_deps = [
 setup(
     name='doppel-cli',
     packages=find_packages(),
-    description='An integration testing framework for testing API similarity of software libraries.',
+    description=(
+        "An integration testing framework for testing API similarity "
+        "of software libraries."
+    ),
     long_description=readme,
     long_description_content_type="text/markdown",
     version=version,

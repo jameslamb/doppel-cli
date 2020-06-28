@@ -1,8 +1,10 @@
 import sys
 import doppel
+
 from sys import stdout
 from tabulate import tabulate
 from typing import List
+
 from doppel.PackageAPI import PackageAPI
 from doppel.DoppelTestError import DoppelTestError
 
@@ -48,7 +50,7 @@ class SimpleReporter:
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
-        self.errors = []
+        self.errors: List[DoppelTestError] = []
         self.exists_string = 'yes'
         self.absent_string = 'no'
 

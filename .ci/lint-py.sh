@@ -8,10 +8,18 @@
 
 SOURCE_DIR=${1}
 
+MAX_LINE_LENGTH=100
+
 echo ""
 echo "Checking code for python style problems..."
 echo ""
     
+    echo "checking code style with black"
+    black \
+        --line-length ${MAX_LINE_LENGTH} \
+        .
+    || exit  -1
+
     echo "running pycodestyle checks"
     pycodestyle \
         --show-pep8 \
@@ -22,9 +30,15 @@ echo ""
 
     echo "running flake8 checks"
     flake8 \
-        --ignore=E501 \
+        --max-line-length ${MAX_LINE_LENGTH} \
         ${SOURCE_DIR} \
     || exit -1
+
+    echo "running mypy checks"
+    mypy \
+        --ignore-missing-imports \
+        . \
+    || exit  -1
 
 echo ""
 echo "Done checking code for style problems."

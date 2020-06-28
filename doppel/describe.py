@@ -2,6 +2,7 @@ import click
 import pkg_resources
 import logging
 import os
+
 from sys import stdout
 
 logger = logging.getLogger()
