@@ -1,9 +1,18 @@
+"""
+Reporters take a ``PackageCollection`` and do things with
+it, like printing summaries and choosing whether or not
+to consider a comparison "failed" (which results in a
+non-0 exit code)
+"""
+
 import sys
+
+from typing import List
+from sys import stdout
+
 import doppel
 
-from sys import stdout
 from tabulate import tabulate
-from typing import List
 
 from doppel.PackageAPI import PackageAPI
 from doppel.DoppelTestError import DoppelTestError
@@ -28,31 +37,31 @@ class _OutputTable:
         Write out a table of results to stdout.
         """
         stdout.write(tabulate(self.rows, self.headers, tablefmt="grid"))
-        stdout.write('\n')
+        stdout.write("\n")
 
 
 class SimpleReporter:
+    """Default object used to manage doppel reporting
+
+    This object implements the interface used by doppel-cli
+    to handle reporting the status of a doppel-test run.
+
+    :param pkgs: List of the package objects to report
+        differences between.
+    :param errors_allowed: Number of errors that are
+        permissible before throwing a non-zero exit
+        code. Set this to a higher value to make doppel-cli
+        more permissive.
+
+    """
 
     def __init__(self, pkgs: List[PackageAPI], errors_allowed: int):
-        """Default object used to manage doppel reporting
-
-        This object implements the interface used by doppel-cli
-        to handle reporting the status of a doppel-test run.
-
-        :param pkgs: List of the package objects to report
-            differences between.
-        :param errors_allowed: Number of errors that are
-            permissible before throwing a non-zero exit
-            code. Set this to a higher value to make doppel-cli
-            more permissive.
-
-        """
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
         self.errors: List[DoppelTestError] = []
-        self.exists_string = 'yes'
-        self.absent_string = 'no'
+        self.exists_string = "yes"
+        self.absent_string = "no"
 
         self.pkgs = pkgs
         self.pkg_collection = doppel.PackageCollection(pkgs)
@@ -149,7 +158,7 @@ class SimpleReporter:
             functions_by_package[pkg_name] = pkg.function_names()
 
         # Headers are easy money
-        headers = ['function_name'] + [pkg.name() for pkg in self.pkgs]
+        headers = ["function_name"] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
         all_functions = self.pkg_collection.all_functions()
@@ -186,74 +195,70 @@ class SimpleReporter:
         stdout.write("\nFunction Argument Names\n")
         stdout.write("=======================\n")
 
-        func_blocks_by_package = {
-            pkg.name(): pkg.pkg_dict['functions']
-            for pkg in self.pkgs
-        }
+        func_blocks_by_package = {pkg.name(): pkg.pkg_dict["functions"] for pkg in self.pkgs}
         pkg_names = self.pkg_collection.package_names()
         shared_functions = self.pkg_collection.shared_functions()
 
         # If there are no shared functions, skip
         if len(shared_functions) == 0:
-            stdout.write('No shared functions.\n')
+            stdout.write("No shared functions.\n")
             return
 
-        headers = ['function_name', 'identical api?']
+        headers = ["function_name", "identical api?"]
         rows = []
 
         for func_name in shared_functions:
 
-            identical_api = 'yes'
+            identical_api = "yes"
 
-            args = [
-                func_blocks_by_package[p][func_name]['args']
-                for p in pkg_names
-            ]
+            args = [func_blocks_by_package[p][func_name]["args"] for p in pkg_names]
 
             # check 1: same number of arguments?
-            same_length = all([
-                len(func_arg_list) == len(args[0])
-                for func_arg_list in args
-            ])
+            same_length = all([len(func_arg_list) == len(args[0]) for func_arg_list in args])
             if not same_length:
-                error_txt = "Function '{}()' exists in all packages but with differing number of arguments ({})."
-                error_txt = error_txt.format(
-                    func_name,
-                    ",".join([str(len(a)) for a in args])
+                error_txt = (
+                    "Function '{}()' exists in all packages but with "
+                    "differing number of arguments ({})."
                 )
+                error_txt = error_txt.format(func_name, ",".join([str(len(a)) for a in args]))
                 self.errors.append(DoppelTestError(error_txt))
-                identical_api = 'no'
+                identical_api = "no"
 
             # check 2: same set of arguments
-            same_args = all([
-                sorted(func_arg_list) == sorted(args[0])
-                for func_arg_list in args
-            ])
+            same_args = all([sorted(func_arg_list) == sorted(args[0]) for func_arg_list in args])
             if not same_args:
-                error_txt = "Function '{}()' exists in all packages but some arguments are not shared in all implementations."
+                error_txt = (
+                    "Function '{}()' exists in all packages but some arguments "
+                    "are not shared in all implementations."
+                )
                 error_txt = error_txt.format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
-                identical_api = 'no'
+                identical_api = "no"
 
             # check 3: same set of arguments and same order
-            same_order = all([
-                len(func_arg_list) == len(args[0]) and func_arg_list == args[0]
-                for func_arg_list in args
-            ])
+            same_order = all(
+                [
+                    len(func_arg_list) == len(args[0]) and func_arg_list == args[0]
+                    for func_arg_list in args
+                ]
+            )
             if not same_order:
-                error_txt = "Function '{}()' exists in all packages but with differing order of keyword arguments."
+                error_txt = (
+                    "Function '{}()' exists in all packages but with differing "
+                    "order of keyword arguments."
+                )
                 error_txt = error_txt.format(func_name)
                 self.errors.append(DoppelTestError(error_txt))
-                identical_api = 'no'
+                identical_api = "no"
 
             # if you get here, we're gucci
             rows.append([func_name, identical_api])
 
         # Report output
-        stdout.write('\n{} of the {} functions shared across all packages have identical signatures\n\n'.format(
-            len([r for r in filter(lambda x: x[1] == 'yes', rows)]),
-            len(shared_functions)
-        ))
+        message = (
+            "\n{} of the {} functions shared across all packages have identical signatures\n\n"
+        )
+        stdout.write(message.format(len([r for r in rows if r[1] == "yes"]), len(shared_functions)))
 
         out = _OutputTable(headers=headers, rows=rows)
         out.write()
@@ -309,7 +314,7 @@ class SimpleReporter:
             classes_by_package[pkg_name] = pkg.class_names()
 
         # Headers are easy money
-        headers = ['class_name'] + [pkg.name() for pkg in self.pkgs]
+        headers = ["class_name"] + [pkg.name() for pkg in self.pkgs]
 
         # Build up the rows. This is slow but w/e it works.
         all_classes = self.pkg_collection.all_classes()
@@ -352,22 +357,18 @@ class SimpleReporter:
         shared_classes = self.pkg_collection.shared_classes()
 
         if len(shared_classes) == 0:
-            stdout.write('No shared classes.\n')
+            stdout.write("No shared classes.\n")
             return
 
         # Figure out which methods are not shared across
         # all packages
         for class_name in shared_classes:
-            shared_methods = set(
-                self.pkgs[0].public_methods(class_name)
-            )
+            shared_methods = set(self.pkgs[0].public_methods(class_name))
             nonshared_methods = set([])
 
             for pkg in self.pkgs[1:]:
                 methods = pkg.public_methods(class_name)
-                diff = shared_methods.symmetric_difference(
-                    methods
-                )
+                diff = shared_methods.symmetric_difference(methods)
 
                 shared_methods = shared_methods.intersection(methods)
                 for m in diff:
@@ -375,10 +376,8 @@ class SimpleReporter:
 
             # If anything is in nonshared methods, add an error
             for method in nonshared_methods:
-                error_txt = "Not all implementations of class '{}' have public method '{}()'".format(
-                    class_name,
-                    method
-                )
+                error_txt = "Not all implementations of class '{}' have public method '{}()'"
+                error_txt = error_txt.format(class_name, method)
                 self.errors.append(DoppelTestError(error_txt))
 
     def _check_class_public_method_args(self):
@@ -392,72 +391,60 @@ class SimpleReporter:
 
         shared_classes = self.pkg_collection.shared_classes()
         if len(shared_classes) == 0:
-            stdout.write('No shared classes.\n')
+            stdout.write("No shared classes.\n")
             return
 
         # Initialize the table
-        headers = ['class.method', 'identical api?']
+        headers = ["class.method", "identical api?"]
         rows = []
 
         shared_methods_by_class = self.pkg_collection.shared_methods_by_class()
         for class_name, methods in shared_methods_by_class.items():
             for method_name in methods:
 
-                identical_api = 'yes'
+                identical_api = "yes"
 
-                display_name = "{}.{}()".format(
-                    class_name,
-                    method_name
-                )
+                display_name = "{}.{}()".format(class_name, method_name)
 
                 # Generate a list of lists of args
-                args = [
-                    pkg.public_method_args(class_name, method_name)
-                    for pkg in self.pkgs
-                ]
+                args = [pkg.public_method_args(class_name, method_name) for pkg in self.pkgs]
 
                 # check 1: same number of arguments?
-                same_length = all([
-                    len(func_arg_list) == len(args[0])
-                    for func_arg_list in args
-                ])
+                same_length = all([len(func_arg_list) == len(args[0]) for func_arg_list in args])
                 if not same_length:
-                    error_txt = "Public method '{}()' on class '{}' exists in all packages but with differing number of arguments ({})."
+                    error_txt = (
+                        "Public method '{}()' on class '{}' exists in all "
+                        "packages but with differing number of arguments ({})."
+                    )
                     error_txt = error_txt.format(
-                        method_name,
-                        class_name,
-                        ",".join([str(len(a)) for a in args])
+                        method_name, class_name, ",".join([str(len(a)) for a in args])
                     )
                     self.errors.append(DoppelTestError(error_txt))
-                    identical_api = 'no'
+                    identical_api = "no"
 
                 # check 2: same set of arguments
-                same_args = all([
-                    sorted(func_arg_list) == sorted(args[0])
-                    for func_arg_list in args
-                ])
+                same_args = all(
+                    [sorted(func_arg_list) == sorted(args[0]) for func_arg_list in args]
+                )
                 if not same_args:
-                    error_txt = "Public method '{}()' on class '{}' exists in all packages but some arguments are not shared in all implementations."
-                    error_txt = error_txt.format(
-                        method_name,
-                        class_name
+                    error_txt = (
+                        "Public method '{}()' on class '{}' exists in all "
+                        "packages but some arguments are not shared in all implementations."
                     )
+                    error_txt = error_txt.format(method_name, class_name)
                     self.errors.append(DoppelTestError(error_txt))
-                    identical_api = 'no'
+                    identical_api = "no"
 
                 # check 3: same set or arguments and same order
-                same_order = all([
-                    func_arg_list == args[0]
-                    for func_arg_list in args
-                ])
+                same_order = all([func_arg_list == args[0] for func_arg_list in args])
                 if not same_order:
-                    error_txt = "Public method '{}()' on class '{}' exists in all packages but with differing order of keyword arguments."
-                    error_txt = error_txt.format(
-                        method_name,
-                        class_name
+                    error_txt = (
+                        "Public method '{}()' on class '{}' exists in "
+                        "all packages but with differing order of keyword arguments."
                     )
+                    error_txt = error_txt.format(method_name, class_name)
                     self.errors.append(DoppelTestError(error_txt))
-                    identical_api = 'no'
+                    identical_api = "no"
 
                 # if you get here, we're gucci
                 rows.append([display_name, identical_api])

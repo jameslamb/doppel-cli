@@ -2,12 +2,12 @@ from setuptools import setup
 from setuptools import find_packages
 
 setup(
-    name='testpkguno',
+    name="testpkguno",
     packages=find_packages(),
-    description='First package for testing doppel-cli',
-    version='0.0.2',
-    maintainer='James Lamb',
-    maintainer_email='jaylamb20@gmail.com',
+    description="First package for testing doppel-cli",
+    version="0.0.2",
+    maintainer="James Lamb",
+    maintainer_email="jaylamb20@gmail.com",
     install_requires=[],
-    extras_require={}
+    extras_require={},
 )

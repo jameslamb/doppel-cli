@@ -21,9 +21,13 @@ if [[ $TASK == "lint" ]]; then
         r-lintr>=2.0.0
     # Get Python packages for testing
     ${CONDA_DIR}/bin/pip install \
+        --upgrade \
         --user \
+            black \
             flake8 \
-            pycodestyle
+            mypy \
+            pycodestyle \
+            pylint
     ${CI_TOOLS}/lint-py.sh $(pwd)
     Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
     ${CI_TOOLS}/lint-todo.sh $(pwd)
