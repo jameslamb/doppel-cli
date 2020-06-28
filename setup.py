@@ -16,12 +16,18 @@ setup(
     name="doppel-cli",
     packages=find_packages(),
     description=(
-        "An integration testing framework for testing API similarity " "of software libraries."
+        "An integration testing framework for testing API similarity of software libraries."
     ),
     long_description=readme,
     long_description_content_type="text/markdown",
+    keywords="api library testing CI",
     version=version,
     url="http://github.com/jameslamb/doppel-cli",
+    project_urls={
+        "Documentation": "https://doppel-cli.readthedocs.io/en/latest/",
+        "Source": "http://github.com/jameslamb/doppel-cli",
+        "Issue Tracker": "http://github.com/jameslamb/doppel-cli/issues",
+    },
     license="BSD 3-clause",
     maintainer="James Lamb",
     maintainer_email="jaylamb20@gmail.com",
@@ -40,6 +46,7 @@ setup(
         ]
     },
     test_suite="tests",
+    tests_require=testing_deps,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
