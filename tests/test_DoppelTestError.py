@@ -9,13 +9,7 @@ class TestDoppelTestError(unittest.TestCase):
 
     def test_basic(self):
         e = DoppelTestError("hello I am a message")
-        self.assertEqual(
-            e.msg,
-            "hello I am a message"
-        )
+        self.assertEqual(e.msg, "hello I am a message")
 
         txt = str(e)
-        self.assertEqual(
-            txt,
-            "hello I am a message\n"
-        )
+        self.assertEqual(txt, "hello I am a message\n")

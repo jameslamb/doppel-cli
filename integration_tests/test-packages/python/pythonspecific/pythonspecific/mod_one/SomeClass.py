@@ -1,9 +1,7 @@
-
 SOME_CONSTANT = 10
 
 
 class SomeClass:
-
     def __init__(self):
         pass
 

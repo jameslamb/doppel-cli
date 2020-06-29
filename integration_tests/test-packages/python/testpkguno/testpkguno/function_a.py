@@ -1,4 +1,3 @@
-
 # Adding these imports to be sure that analyze.py
 # isn't tricked into thinking they belong to this
 # package
@@ -9,7 +8,7 @@ from random import LOG4
 # Adding an internal function to be sure tests catch
 # these suddenly getting picked up by analyze.py
 def _add_5(n):
-    return(n + 5)
+    return n + 5
 
 
 def function_a():

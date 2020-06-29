@@ -1,6 +1,4 @@
-
 class ClassE:
-
     def __init__(self):
         """
         This is ClassE, a class whose constructor has
@@ -11,4 +9,4 @@ class ClassE:
 
     @classmethod
     def from_string(cls):
-        return(cls())
+        return cls()
