@@ -9,6 +9,10 @@ import sys
 import types
 import re
 
+from typing import Any
+from typing import Callable
+from typing import List
+
 logger = logging.getLogger()
 logging.basicConfig(
     format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S", stream=sys.stdout
@@ -76,7 +80,7 @@ def do_everything(parsed_args):
         CLASSES_KEY: {},
     }
 
-    def _get_arg_names(f, kwargs_string):
+    def _get_arg_names(f: Callable, kwargs_string: str) -> List[str]:
         """
         Given a function object, get its argument names.
         """
@@ -87,7 +91,7 @@ def do_everything(parsed_args):
             args.append(kwargs_string)
         return args
 
-    def _remove_decorators(thing):
+    def _remove_decorators(thing: Any) -> Any:
         """
         Given a python object instrumented with one
         or more decorators, keep removing decorators
@@ -100,7 +104,7 @@ def do_everything(parsed_args):
             logger.info(msg.format(thing.__name__))
             return _remove_decorators(thing.__wrapped__)
 
-    def _is_builtin(obj):
+    def _is_builtin(obj: Any) -> bool:
         """
         Checks whether an object is a built-in,
         such as 'min()'.
