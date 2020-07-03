@@ -32,7 +32,7 @@ class _OutputTable:
         self.rows = rows
         self.headers = headers
 
-    def write(self):
+    def write(self) -> None:
         """
         Write out a table of results to stdout.
         """
@@ -67,7 +67,7 @@ class SimpleReporter:
         self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
 
-    def compare(self):
+    def compare(self) -> None:
         """
         Compare all the packages. This method will:
         * populate comparison data
@@ -89,7 +89,7 @@ class SimpleReporter:
         # Finally
         self._respond()
 
-    def _respond(self):  # pragma: no cover
+    def _respond(self) -> None:  # pragma: no cover
         """
         After all evaluations, determine final exit status.
 
@@ -110,7 +110,7 @@ class SimpleReporter:
         # Only throw a non-zero exit code if you had too many errors
         sys.exit(max(0, num_errors - self._errors_allowed))
 
-    def _check_function_count(self):
+    def _check_function_count(self) -> None:
         """
         Check consistency between exported functions
         """
@@ -140,7 +140,7 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_function_names(self):
+    def _check_function_names(self) -> None:
         """
         Check consistency between names of functions. Looking
         for errors of the form "function F does not exist
@@ -187,7 +187,7 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_function_args(self):
+    def _check_function_args(self) -> None:
         """
         For each function that is in all packages, check
         whether the arguments to the functions differ.
@@ -266,7 +266,7 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_class_count(self):
+    def _check_class_count(self) -> None:
         """
         Check consistency between exported classes
         """
@@ -296,7 +296,7 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_class_names(self):
+    def _check_class_names(self) -> None:
         """
         Check consistency between names of classes. Looking
         for errors of the form "class X does not exist
@@ -343,7 +343,7 @@ class SimpleReporter:
         # Print output
         stdout.write("\n")
 
-    def _check_class_public_methods(self):
+    def _check_class_public_methods(self) -> None:
         """
         Check for consistency of public method names
         across different classes. Looking for errors
@@ -380,7 +380,7 @@ class SimpleReporter:
                 error_txt = error_txt.format(class_name, method)
                 self.errors.append(DoppelTestError(error_txt))
 
-    def _check_class_public_method_args(self):
+    def _check_class_public_method_args(self) -> None:
         """
         Check for consistency of public method signatures
         (arguments) for shared public methods in shared

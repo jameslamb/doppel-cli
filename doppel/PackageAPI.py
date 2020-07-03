@@ -36,7 +36,7 @@ class PackageAPI:
         self.pkg_dict = pkg_dict
 
     @classmethod
-    def from_json(cls, filename: str):
+    def from_json(cls, filename: str) -> "PackageAPI":
         """
         Instantiate a Package object from a file.
 
