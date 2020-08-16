@@ -3,18 +3,15 @@
 clone_depth: 10
 max_jobs: 5
 
-# only build pull requests and commits to 'master'
+# only build pull requests and commits to 'main'
 branches:
   only:
-    - master
+    - main
 
 environment:
   matrix:
-    - PYTHON: C:\Python35-x64
-      PYTHON_VERSION: 3.5
-      PYTHON_ARCH: 64
     - PYTHON: C:\Python36-x64
-      PYTHON_VERSION: 3.6
+      PYTHON_VERSION: 3.7
       PYTHON_ARCH: 64
 
 install:

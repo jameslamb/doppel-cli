@@ -3,26 +3,17 @@ import os
 from doppel import PackageCollection
 from doppel import PackageAPI
 
-TESTDATA_DIR = os.path.join('tests', 'testdata')
+TESTDATA_DIR = os.path.join("tests", "testdata")
 
 
 class TestPackageAPI(unittest.TestCase):
 
-    py_pkg_file = os.path.join(
-        TESTDATA_DIR,
-        'python_package1.json'
-    )
-    r_pkg_file = os.path.join(
-        TESTDATA_DIR,
-        'r_package1.json'
-    )
+    py_pkg_file = os.path.join(TESTDATA_DIR, "python_package1.json")
+    r_pkg_file = os.path.join(TESTDATA_DIR, "r_package1.json")
 
     def setUp(self):
         self.pkg_collection = PackageCollection(
-            packages=[
-                PackageAPI.from_json(self.py_pkg_file),
-                PackageAPI.from_json(self.r_pkg_file)
-            ]
+            packages=[PackageAPI.from_json(self.py_pkg_file), PackageAPI.from_json(self.r_pkg_file)]
         )
 
     def test_all_classes(self):
@@ -30,60 +21,42 @@ class TestPackageAPI(unittest.TestCase):
         PackageCollection.all_classes() should work as expected
         for packages with identical classes
         """
-        self.assertEqual(
-            self.pkg_collection.all_classes(),
-            ["LupeFiasco"]
-        )
+        self.assertEqual(self.pkg_collection.all_classes(), ["LupeFiasco"])
 
     def test_shared_classes(self):
         """
         PackageCollection.shared_classes() should work as expected
         for packages with identical classes
         """
-        self.assertEqual(
-            self.pkg_collection.shared_classes(),
-            ["LupeFiasco"]
-        )
+        self.assertEqual(self.pkg_collection.shared_classes(), ["LupeFiasco"])
 
     def test_non_shared_classes(self):
         """
         PackageCollection.non_shared_classes() should work as expected
         for packages with identical classes.
         """
-        self.assertEqual(
-            self.pkg_collection.non_shared_classes(),
-            []
-        )
+        self.assertEqual(self.pkg_collection.non_shared_classes(), [])
 
     def test_all_functions(self):
         """
         PackageCollection.all_functions() should work as expected
         for packages with some overlapping functions
         """
-        self.assertEqual(
-            self.pkg_collection.all_functions(),
-            ["playback"]
-        )
+        self.assertEqual(self.pkg_collection.all_functions(), ["playback"])
 
     def test_shared_functions(self):
         """
         PackageCollection.shared_functions() should work as expected
         for packages with some overlapping functions
         """
-        self.assertEqual(
-            self.pkg_collection.shared_functions(),
-            ["playback"]
-        )
+        self.assertEqual(self.pkg_collection.shared_functions(), ["playback"])
 
     def test_non_shared_functions(self):
         """
         PackageCollection.non_shared_functions() should work as expected
         for packages with some overlapping functions
         """
-        self.assertEqual(
-            self.pkg_collection.non_shared_functions(),
-            []
-        )
+        self.assertEqual(self.pkg_collection.non_shared_functions(), [])
 
     def test_shared_methods_by_class(self):
         """
@@ -93,10 +66,7 @@ class TestPackageAPI(unittest.TestCase):
         """
         shared = self.pkg_collection.shared_methods_by_class()
         self.assertEqual(list(shared.keys()), ["LupeFiasco"])
-        self.assertEqual(
-            sorted(shared["LupeFiasco"]),
-            sorted(["~~CONSTRUCTOR~~", "coast"])
-        )
+        self.assertEqual(sorted(shared["LupeFiasco"]), sorted(["~~CONSTRUCTOR~~", "coast"]))
 
     def test_same_names(self):
         """
@@ -109,7 +79,7 @@ class TestPackageAPI(unittest.TestCase):
             lambda: PackageCollection(
                 packages=[
                     PackageAPI.from_json(self.py_pkg_file),
-                    PackageAPI.from_json(self.py_pkg_file)
+                    PackageAPI.from_json(self.py_pkg_file),
                 ]
-            )
+            ),
         )

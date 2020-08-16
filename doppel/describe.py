@@ -1,33 +1,38 @@
-import click
-import pkg_resources
+"""
+Code for ``doppel-describe``. This code calls scripts in ``bin/``:
+
+* ``analyze.py``: describe a Python package
+* ``analyze.R``: describe an R package
+"""
+
 import logging
 import os
+
 from sys import stdout
 
+import click
+import pkg_resources
+
 logger = logging.getLogger()
-logging.basicConfig(
-    format='%(levelname)s [%(asctime)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
+logging.basicConfig(format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 
 @click.command()
 @click.option(
-    '--language', '-l',
+    "--language",
+    "-l",
     default=None,
-    help="Programming language. Currently python and R are supported."
+    help="Programming language. Currently python and R are supported.",
+)
+@click.option("--pkg_name", "-p", default=None, help="Name of a package")
+@click.option(
+    "--data-dir", "-d", default=None, help="Path to write output file to.",
 )
 @click.option(
-    '--pkg_name', '-p',
-    default=None,
-    help="Name of a package"
+    "--version", default=False, help="Get the current version of doppel-describe", is_flag=True
 )
 @click.option(
-    '--data-dir', '-d',
-    default=None,
-    help="Path to write output file to.",
-)
-@click.option(
+<<<<<<< HEAD
     '--ignore-classes',
     default=False,
     help="If given, classes will be ignored when describing a package.",
@@ -44,6 +49,9 @@ logging.basicConfig(
     is_flag=True,
     default=False,
     help="Use this flag to get more detailed logs"
+=======
+    "--verbose", is_flag=True, default=False, help="Use this flag to get more detailed logs"
+>>>>>>> main
 )
 @click.option(
     '--version',
@@ -63,11 +71,8 @@ def main(language: str,
     write out a JSON representation of it.
     """
     if version is True:
-        version_file = os.path.join(
-            os.path.dirname(__file__),
-            'VERSION'
-        )
-        with open(version_file, 'r') as f:
+        version_file = os.path.join(os.path.dirname(__file__), "VERSION")
+        with open(version_file, "r") as f:
             out = f.read()
         stdout.write(out)
         return
@@ -96,12 +101,9 @@ def main(language: str,
         raise RuntimeError(msg)
 
     try:
-        files = {
-            'python': 'analyze.py',
-            'r': 'analyze.R'
-        }
+        files = {"python": "analyze.py", "r": "analyze.R"}
         analysis_script = pkg_resources.resource_filename(
-            'doppel', 'bin/{}'.format(files[language])
+            "doppel", "bin/{}".format(files[language])
         )
     except KeyError:
         msg = "doppel does not know how to test {} packages".format(language)
@@ -110,10 +112,18 @@ def main(language: str,
 
     logger.info(analysis_script)
 
+<<<<<<< HEAD
     cmd = "{} --pkg {} --output_dir {} --kwargs-string ~~KWARGS~~ --constructor-string ~~CONSTRUCTOR~~"
     cmd = cmd.format(
         analysis_script, pkg_name, data_dir
+=======
+    cmd = (
+        "{} --pkg {} --output_dir {} "
+        "--kwargs-string ~~KWARGS~~ "
+        "--constructor-string ~~CONSTRUCTOR~~"
+>>>>>>> main
     )
+    cmd = cmd.format(analysis_script, pkg_name, data_dir)
 
     if ignore_classes is True:
         cmd += " --ignore-classes"
@@ -122,7 +132,7 @@ def main(language: str,
         cmd += " --ignore-functions"
 
     if verbose is True:
-        cmd += ' --verbose'
+        cmd += " --verbose"
 
     logger.info("Describing package with command:\n {}".format(cmd))
 

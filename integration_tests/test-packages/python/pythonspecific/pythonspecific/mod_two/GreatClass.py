@@ -1,6 +1,4 @@
-
 class GreatClass:
-
     def __init__(self, x):
         self.x = x
 
@@ -8,7 +6,6 @@ class GreatClass:
         pass
 
     class LilGreatClass:
-
         def __init__(self, things, stuff):
             self.things = things
             self.stuff = stuff

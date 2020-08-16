@@ -1,4 +1,9 @@
+"""
+Class for package details.
+"""
+
 import json
+
 from typing import Dict
 from typing import List
 
@@ -11,7 +16,7 @@ CLASSES_KEY: str = "classes"
 FUNCTIONS_KEY: str = "functions"
 
 
-class PackageAPI():
+class PackageAPI:
     """Package API class
 
     This class is used to hold the interface of a given package
@@ -35,7 +40,7 @@ class PackageAPI():
         self.pkg_dict = pkg_dict
 
     @classmethod
-    def from_json(cls, filename: str, ignore_classes: bool, ignore_functions: bool):
+    def from_json(cls, filename: str, ignore_classes: bool, ignore_functions: bool) -> "PackageAPI":
         """
         Instantiate a Package object from a JSON file.
 
@@ -52,7 +57,7 @@ class PackageAPI():
         _log_info("Creating package from {}".format(filename))
 
         # read in output of "analyze.*" script
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             pkg_dict = json.loads(f.read())
 
         if ignore_classes:
@@ -64,7 +69,8 @@ class PackageAPI():
         # validate
         return cls(pkg_dict)
 
-    def _validate_pkg(self, pkg_dict: dict) -> None:
+    @staticmethod
+    def _validate_pkg(pkg_dict: dict) -> None:
 
         assert isinstance(pkg_dict, dict)
         assert pkg_dict['name'] is not None
@@ -72,46 +78,44 @@ class PackageAPI():
         assert pkg_dict[FUNCTIONS_KEY] is not None
         assert pkg_dict[CLASSES_KEY] is not None
 
-        return
-
     def name(self) -> str:
         """
         Get the name of the package.
         """
-        return(self.pkg_dict['name'])
+        return self.pkg_dict["name"]
 
     def num_functions(self) -> int:
         """
         Get the number of exported functions in the package.
         """
-        return(len(self.function_names()))
+        return len(self.function_names())
 
     def function_names(self) -> List[str]:
         """
         Get a list with the names of all exported functions
         in the package.
         """
-        return(sorted(list(self.pkg_dict[FUNCTIONS_KEY].keys())))
+        return sorted(list(self.pkg_dict[FUNCTIONS_KEY].keys()))
 
     def functions_with_args(self) -> Dict[str, Dict]:
         """
         Get a dictionary with all exported functions in the package
         and some  details describing them.
         """
-        return(self.pkg_dict[FUNCTIONS_KEY])
+        return self.pkg_dict[FUNCTIONS_KEY]
 
     def num_classes(self) -> int:
         """
         Get the number of exported classes in the package.
         """
-        return(len(self.class_names()))
+        return len(self.class_names())
 
     def class_names(self) -> List[str]:
         """
         Get a list with the names of all exported classes
         in the package.
         """
-        return(sorted(list(self.pkg_dict[CLASSES_KEY].keys())))
+        return sorted(list(self.pkg_dict[CLASSES_KEY].keys()))
 
     def public_methods(self, class_name: str) -> List[str]:
         """
@@ -119,7 +123,7 @@ class PackageAPI():
 
         :param class_name: Name of a class in the package
         """
-        return(sorted(list(self.pkg_dict[CLASSES_KEY][class_name]['public_methods'].keys())))
+        return sorted(list(self.pkg_dict[CLASSES_KEY][class_name]['public_methods'].keys()))
 
     def public_method_args(self, class_name: str, method_name: str) -> List[str]:
         """
@@ -128,4 +132,4 @@ class PackageAPI():
         :param class_name: Name of a class in the package
         :param method-name: Name of the method to get arguments for
         """
-        return(list(self.pkg_dict[CLASSES_KEY][class_name]['public_methods'][method_name]['args']))
+        return list(self.pkg_dict[CLASSES_KEY][class_name]['public_methods'][method_name]['args'])

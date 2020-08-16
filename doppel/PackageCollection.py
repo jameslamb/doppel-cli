@@ -1,6 +1,13 @@
-from doppel.PackageAPI import PackageAPI
+"""
+``PackageCollection`` implements methods for comparing
+a list of multiple ``PackageAPI`` objects.
+"""
+
 from typing import Dict
 from typing import List
+from typing import Set
+
+from doppel.PackageAPI import PackageAPI
 
 
 class PackageCollection:
@@ -22,7 +29,7 @@ class PackageCollection:
             assert isinstance(pkg, PackageAPI)
 
         pkg_names = [pkg.name() for pkg in packages]
-        if (len(set(pkg_names)) < len(packages)):
+        if len(set(pkg_names)) < len(packages):
             msg = "All packages provided to PackageCollection must have unique names"
             raise ValueError(msg)
 
@@ -32,17 +39,17 @@ class PackageCollection:
         """
         Get a list of all the package names in this collection.
         """
-        return([p.name() for p in self.pkgs])
+        return [p.name() for p in self.pkgs]
 
     def all_classes(self) -> List[str]:
         """
         List of all classes that exist in at least
         one of the packages.
         """
-        out = set([])
+        out: Set[str] = set([])
         for pkg in self.pkgs:
             out = out.union(pkg.class_names())
-        return(list(out))
+        return list(out)
 
     def shared_classes(self) -> List[str]:
         """
@@ -53,7 +60,7 @@ class PackageCollection:
         out = set(self.pkgs[0].class_names())
         for pkg in self.pkgs[1:]:
             out = out.intersection(pkg.class_names())
-        return(list(out))
+        return list(out)
 
     def non_shared_classes(self) -> List[str]:
         """
@@ -62,17 +69,17 @@ class PackageCollection:
         """
         all_classes = set(self.all_classes())
         shared_classes = set(self.shared_classes())
-        return(list(all_classes.difference(shared_classes)))
+        return list(all_classes.difference(shared_classes))
 
     def all_functions(self) -> List[str]:
         """
         List of all functions that exist in at least
         one of the packages.
         """
-        out = set([])
+        out: Set[str] = set([])
         for pkg in self.pkgs:
             out = out.union(pkg.function_names())
-        return(list(out))
+        return list(out)
 
     def shared_functions(self) -> List[str]:
         """
@@ -83,7 +90,7 @@ class PackageCollection:
         out = set(self.pkgs[0].function_names())
         for pkg in self.pkgs[1:]:
             out = out.intersection(pkg.function_names())
-        return(list(out))
+        return list(out)
 
     def non_shared_functions(self) -> List[str]:
         """
@@ -92,7 +99,7 @@ class PackageCollection:
         """
         all_funcs = set(self.all_functions())
         shared_funcs = set(self.shared_functions())
-        return(list(all_funcs.difference(shared_funcs)))
+        return list(all_funcs.difference(shared_funcs))
 
     def shared_methods_by_class(self) -> Dict[str, List[str]]:
         """
@@ -106,4 +113,4 @@ class PackageCollection:
             for pkg in self.pkgs[1:]:
                 methods = methods.intersection(pkg.public_methods(class_name))
             out[class_name] = list(methods)
-        return(out)
+        return out

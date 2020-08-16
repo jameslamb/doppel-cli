@@ -9,36 +9,27 @@ import sys
 import types
 import re
 
+from typing import Any
+from typing import Callable
+from typing import List
+
 logger = logging.getLogger()
 logging.basicConfig(
-    format='%(levelname)s [%(asctime)s] %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    stream=sys.stdout
+    format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S", stream=sys.stdout
 )
 
 
 def parse_args(args):
     parser = argparse.ArgumentParser()
+    parser.add_argument("--pkg", type=str, help="Name of the python package to test")
     parser.add_argument(
-        "--pkg",
-        type=str,
-        help="Name of the python package to test"
+        "--output_dir", type=str, default=os.getcwd(), help="Path to write files to"
     )
-    parser.add_argument(
-        "--output_dir",
-        type=str,
-        default=os.getcwd(),
-        help="Path to write files to"
-    )
-    parser.add_argument(
-        "--kwargs-string",
-        type=str,
-        help="String value to replace **kwarg"
-    )
+    parser.add_argument("--kwargs-string", type=str, help="String value to replace **kwarg")
     parser.add_argument(
         "--constructor-string",
         type=str,
-        help="String value to replace the constructor in the list of class public methods"
+        help="String value to replace the constructor in the list of class public methods",
     )
     parser.add_argument(
         "--ignore-classes",
@@ -51,11 +42,9 @@ def parse_args(args):
         help="If given, functions will be ignored when describing a package."
     )
     parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Use this flag to get more detailed logs"
+        "--verbose", action="store_true", help="Use this flag to get more detailed logs"
     )
-    return(parser.parse_args(args))
+    return parser.parse_args(args)
 
 
 def do_everything(parsed_args):
@@ -75,7 +64,7 @@ def do_everything(parsed_args):
     else:
         logger.setLevel(logging.INFO)
 
-    LANGUAGE = 'python'
+    LANGUAGE = "python"
 
     # Other repeated constants
     ARGS_KEY = "args"
@@ -85,17 +74,12 @@ def do_everything(parsed_args):
 
     # These are lanaguage-specific
     # conventions we can drop
-    SELF_KEYWORD = 'self'
-    CLASS_KEYWORD = 'cls'
-    SPECIAL_METHOD_ARGS = [
-        SELF_KEYWORD,
-        CLASS_KEYWORD
-    ]
+    SELF_KEYWORD = "self"
+    CLASS_KEYWORD = "cls"
+    SPECIAL_METHOD_ARGS = [SELF_KEYWORD, CLASS_KEYWORD]
 
     # value to use for an empty function
-    EMPTY_FUNCTION_DICT = {
-        ARGS_KEY: []
-    }
+    EMPTY_FUNCTION_DICT = {ARGS_KEY: []}
 
     # Import that module
     top_level_env = __import__(PKG_NAME)
@@ -105,39 +89,39 @@ def do_everything(parsed_args):
         "name": "{} [python]".format(PKG_NAME),
         "language": "python",
         FUNCTIONS_KEY: {},
-        CLASSES_KEY: {}
+        CLASSES_KEY: {},
     }
 
-    def _get_arg_names(f, kwargs_string):
+    def _get_arg_names(f: Callable, kwargs_string: str) -> List[str]:
         """
         Given a function object, get its argument names.
         """
         f_dict = inspect.getfullargspec(f)._asdict()
-        args = f_dict['args'] + f_dict['kwonlyargs']
+        args = f_dict["args"] + f_dict["kwonlyargs"]
         # deal with people passing "**kwargs"
-        if f_dict['varkw'] is not None:
+        if f_dict["varkw"] is not None:
             args.append(kwargs_string)
-        return(args)
+        return args
 
-    def _remove_decorators(thing):
+    def _remove_decorators(thing: Any) -> Any:
         """
         Given a python object instrumented with one
         or more decorators, keep removing decorators
         until you get to the base object
         """
-        if not hasattr(thing, '__wrapped__'):
-            return(thing)
+        if not hasattr(thing, "__wrapped__"):
+            return thing
         else:
             msg = "'{}' is decorated, grabbing the underlying object"
             logger.info(msg.format(thing.__name__))
-            return(_remove_decorators(thing.__wrapped__))
+            return _remove_decorators(thing.__wrapped__)
 
-    def _is_builtin(obj):
+    def _is_builtin(obj: Any) -> bool:
         """
         Checks whether an object is a built-in,
         such as 'min()'.
         """
-        return str(obj).startswith('<built-in ')
+        return str(obj).startswith("<built-in ")
 
     modules_to_parse = [top_level_env]
     names_of_parsed_modules = set([])
@@ -151,10 +135,7 @@ def do_everything(parsed_args):
         names_of_parsed_modules.add(pkg_env.__name__)
 
         # Get the exported stuff
-        export_names = list(filter(
-            lambda x: not x.startswith('_'),
-            dir(pkg_env)
-        ))
+        export_names = list(filter(lambda x: not x.startswith("_"), dir(pkg_env)))
 
         for obj_name in export_names:
 
@@ -209,7 +190,7 @@ def do_everything(parsed_args):
                             # with custom stuff like read-only descriptors
                             # e.g. https://stackoverflow.com/a/24914634
                             is_private = f.startswith("_")
-                            is_constructor = f == '__init__'
+                            is_constructor = f == "__init__"
                             if is_private and not is_constructor:
                                 continue
 
@@ -225,7 +206,10 @@ def do_everything(parsed_args):
 
                             # built-ins like 'min()' need special handling
                             if _is_builtin(class_member):
-                                msg = f"found built-in '{class_member.__name__}', could not get signature"
+                                msg = (
+                                    f"found built-in '{class_member.__name__}', "
+                                    "could not get signature"
+                                )
                                 logger.warning(msg)
                                 method_args = []
                                 out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][f] = {
@@ -242,13 +226,14 @@ def do_everything(parsed_args):
                             # ClassB is basically being used like a public method. Treat it
                             # like that and grab the arguments of its constructor
                             #
-                            is_class_method = str(getattr(class_member, '__self__', None)) == str(obj)
+                            is_class_method = str(getattr(class_member, "__self__", None)) == str(
+                                obj
+                            )
                             if not is_function and not is_constructor and not is_class_method:
-                                init_args = _get_arg_names(
-                                    class_member.__init__,
-                                    KWARGS_STRING
+                                init_args = _get_arg_names(class_member.__init__, KWARGS_STRING)
+                                is_class_method = (CLASS_KEYWORD in init_args) or (
+                                    SELF_KEYWORD in init_args
                                 )
-                                is_class_method = (CLASS_KEYWORD in init_args) or (SELF_KEYWORD in init_args)
                                 if is_class_method:
                                     class_member = class_member.__init__
                                     is_function = True
@@ -256,15 +241,13 @@ def do_everything(parsed_args):
 
                             # Try figuring out the actual signature, to see if
                             # we hit the "no signature found for built-in" error
-                            # details: https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object
+                            # details:
+                            # https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object
                             #
                             # this is_function is still here to catch the case where the constructor
                             # wasn't implemented
                             if is_function or is_class_method:
-                                method_args = _get_arg_names(
-                                    class_member,
-                                    KWARGS_STRING
-                                )
+                                method_args = _get_arg_names(class_member, KWARGS_STRING)
 
                                 # Handle Python "self" conventions
                                 method_args = [
@@ -282,11 +265,17 @@ def do_everything(parsed_args):
 
                         # classes that don't implement a constructor
                         # still have one!
-                        if not out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY].get(CONSTRUCTOR_STRING, None):
-                            msg = "Class '{}' did not implement __init__. Adding it".format(obj_name)
+                        if not out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY].get(
+                            CONSTRUCTOR_STRING, None
+                        ):
+                            msg = "Class '{}' did not implement __init__. Adding it".format(
+                                obj_name
+                            )
                             logger.info(msg)
 
-                            out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][CONSTRUCTOR_STRING] = EMPTY_FUNCTION_DICT
+                            out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY][
+                                CONSTRUCTOR_STRING
+                            ] = EMPTY_FUNCTION_DICT
 
                 next
 
@@ -296,7 +285,7 @@ def do_everything(parsed_args):
                 # If the module isn't defined inside this package, ignore it.
                 # Otherwise, it must be a sub-package we need to explore
                 exact_match = obj.__package__ == PKG_NAME
-                looks_like_submodule = obj.__name__.startswith(PKG_NAME + '.')
+                looks_like_submodule = obj.__name__.startswith(PKG_NAME + ".")
 
                 is_in_package = exact_match or looks_like_submodule
                 if is_in_package:
@@ -308,9 +297,12 @@ def do_everything(parsed_args):
                         logger.debug("Skipping module '{}'".format(obj.__name__))
                     else:
                         if obj.__name__ in names_of_parsed_modules:
-                            logger.debug("Module '{}' is in this package but has already been parsed.".format(obj.__name__))
+                            msg = "Module '{}' is in this package but has already been parsed."
+                            logger.debug(msg.format(obj.__name__))
                         else:
-                            logger.info("Module '{}' is in this package, adding it.".format(obj.__name__))
+                            logger.info(
+                                "Module '{}' is in this package, adding it.".format(obj.__name__)
+                            )
                             modules_to_parse.append(obj)
 
             # built-ins like 'min()' are not classes, functions, or modules,
@@ -320,7 +312,11 @@ def do_everything(parsed_args):
                 if IGNORE_FUNCTIONS:
                     next
                 if not obj.__module__.startswith(PKG_NAME):
-                    logger.info("Callable '{}' is a built-in not included in this package's namespace. Skipping it.".format(obj.__name__))
+                    msg = (
+                        "Callable '{}' is a built-in not included in this "
+                        "package's namespace. Skipping it."
+                    )
+                    logger.info(msg.format(obj.__name__))
                 next
 
             else:
@@ -329,7 +325,7 @@ def do_everything(parsed_args):
     # write it out
     out_file = os.path.join(OUT_DIR, "{}_{}.json".format(LANGUAGE, PKG_NAME))
     logger.info("Writing output to {}".format(PKG_NAME))
-    with open(out_file, 'w') as f:
+    with open(out_file, "w") as f:
         f.write(json.dumps(out))
     logger.info("Done analyzing this package.")
 
