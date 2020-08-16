@@ -1,13 +1,17 @@
+"""
+Custom error class for testing errors
+"""
+
 
 class DoppelTestError:
+    """
+    Custom error class used for testing issues.
 
-    def __init__(self, msg: str) -> None:
-        """
-        Custom error class used for testing issues.
+    :param msg: Error text to print
+    """
 
-        :param msg: Error text to print
-        """
+    def __init__(self, msg: str):
         self.msg = msg
 
     def __str__(self) -> str:
-        return("{}\n".format(self.msg))
+        return "{}\n".format(self.msg)

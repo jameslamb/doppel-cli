@@ -1,6 +1,3 @@
-
-__all__ = [
-    "GreatClass"
-]
+__all__ = ["GreatClass"]
 
 from .GreatClass import GreatClass

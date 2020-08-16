@@ -10,17 +10,22 @@ ClassB <- R6::R6Class(
 
     public = list(
 
+        #' @description ClassB
+        #' @param ... dotz
         initialize = function(...) {
             return(invisible(NULL))
         },
 
-        # Overwriting one method from ClassA to
-        # test that ordering of inheritance is
-        # respected
+        #' @description Overwriting one method from ClassA to
+        #'              test that ordering of inheritance is
+        #'              respected
+        #' @param nonsense nonsense
         banarchy = function(nonsense = TRUE) {
             return(nonsense)
         },
 
+        #' @description oh hello
+        #' @param greeting greeting
         hello_there = function(greeting) {
             return(invisible(NULL))
         }

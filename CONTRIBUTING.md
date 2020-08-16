@@ -23,31 +23,31 @@ This document contains information for maintainers and contributing developers. 
 
 [Appveyor](https://www.appveyor.com/) is used to perform CI tasks in Windows environments. Appveyor jobs are used to ensure that `doppel-cli` continues to work for Windows users.
 
-configuration: [.appveyor.yml](https://github.com/jameslamb/doppel-cli/blob/master/.appveyor.yml)
+configuration: [.appveyor.yml](https://github.com/jameslamb/doppel-cli/blob/main/.appveyor.yml)
 
 ### Codecov <a name="codecov"></a>
 
 [https://codecov.io/](https://codecov.io/) is used to handle a variety of details related to the [code coverage](https://en.wikipedia.org/wiki/Code_coverage) of `doppel-cli`'s unit tests. This service handles details like hosting interactive reports with line-by-line coverage breakdown and telling GitHub whether or not to fail PR checks.
 
-configuration: [.codecov.yml](https://github.com/jameslamb/doppel-cli/blob/master/.codecovs.yml)
+configuration: [.codecov.yml](https://github.com/jameslamb/doppel-cli/blob/main/.codecovs.yml)
 
 ### pep8speaks <a name="pepspeaks"></a>
 
 [pep8speaks](https://github.com/OrkoHunter/pep8speaks) is a GitHub app that automatically checks every pull request on `doppel-cli` for compliance with this project's preferred style for Python code. The `pep8speaks` bot leaves comments on open PRs if any issues are found, recommending how they can be addressed.
 
-configuration: [.pep8speaks.yml](https://github.com/jameslamb/doppel-cli/blob/master/.pep8speaks.yml)
+configuration: [.pep8speaks.yml](https://github.com/jameslamb/doppel-cli/blob/main/.pep8speaks.yml)
 
 ### readthedocs <a name="rtd"></a>
 
-[readthedocs](https://readthedocs.org/) is used for free creation and hosting of the documentation for `doppel-cli`. The documentation at https://doppel-cli.readthedocs.io/en/latest/index.html# is created automatically, for free, from the `master` branch of this repository.
+[readthedocs](https://readthedocs.org/) is used for free creation and hosting of the documentation for `doppel-cli`. The documentation at https://doppel-cli.readthedocs.io/en/latest/index.html# is created automatically, for free, from the `main` branch of this repository.
 
-configuration: [.readthedocs.yml](https://github.com/jameslamb/doppel-cli/blob/master/.readthedocs.yml)
+configuration: [.readthedocs.yml](https://github.com/jameslamb/doppel-cli/blob/main/.readthedocs.yml)
 
 ### Travis <a name="travis"></a>
 
 [Travis CI](https://travis-ci.org/) is used to perform CI tasks in Linux and Mac OS environments. This integration is the most important one for `doppel-cli`.
 
-configuration: [.travis.yml](https://github.com/jameslamb/doppel-cli/blob/master/.travis.yml)
+configuration: [.travis.yml](https://github.com/jameslamb/doppel-cli/blob/main/.travis.yml)
 
 ## Testing <a name="testing"></a>
 

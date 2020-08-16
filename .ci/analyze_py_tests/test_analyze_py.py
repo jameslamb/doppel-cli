@@ -1,4 +1,3 @@
-
 import json
 import os
 
@@ -10,12 +9,7 @@ except ModuleNotFoundError:
 
 class TestAnalyzePy:
 
-    TEST_PACKAGES = [
-        "testpkguno",
-        "testpkgdos",
-        "testpkgtres",
-        "pythonspecific"
-    ]
+    TEST_PACKAGES = ["testpkguno", "testpkgdos", "testpkgtres", "pythonspecific"]
     output_dir = "../../test_data"
 
     def _test_analyze(self, arg_list, pkg_name):
@@ -23,7 +17,7 @@ class TestAnalyzePy:
         res = doppel_analyze.do_everything(args)  # noqa
 
         out_file = os.path.join(self.output_dir, "python_" + pkg_name + ".json")
-        with open(out_file, 'r') as f:
+        with open(out_file, "r") as f:
             result = json.loads(f.read())
             assert isinstance(result, dict)
 
@@ -32,12 +26,16 @@ class TestAnalyzePy:
         for pkg_name in self.TEST_PACKAGES:
             self._test_analyze(
                 [
-                    "--pkg", pkg_name,
-                    "--output_dir", self.output_dir,
-                    "--kwargs-string", "~~kwargs~~",
-                    "--constructor-string", "~~CONSTRUCTOR~~"
+                    "--pkg",
+                    pkg_name,
+                    "--output_dir",
+                    self.output_dir,
+                    "--kwargs-string",
+                    "~~kwargs~~",
+                    "--constructor-string",
+                    "~~CONSTRUCTOR~~",
                 ],
-                pkg_name
+                pkg_name,
             )
 
     def test_verbose(self):
@@ -47,11 +45,15 @@ class TestAnalyzePy:
         for pkg_name in self.TEST_PACKAGES:
             self._test_analyze(
                 [
-                    "--pkg", pkg_name,
-                    "--output_dir", self.output_dir,
-                    "--kwargs-string", "~~kwargs~~",
-                    "--constructor-string", "~~CONSTRUCTOR~~",
-                    "--verbose"
+                    "--pkg",
+                    pkg_name,
+                    "--output_dir",
+                    self.output_dir,
+                    "--kwargs-string",
+                    "~~kwargs~~",
+                    "--constructor-string",
+                    "~~CONSTRUCTOR~~",
+                    "--verbose",
                 ],
-                pkg_name
+                pkg_name,
             )

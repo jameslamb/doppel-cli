@@ -4,6 +4,14 @@
 
 * Fixed bug which could cause `doppel-describe --language python` to fail to document the constructor for empty classes (classes which do not implement `__init__()`). ([#133](https://github.com/jameslamb/doppel-cli/pull/133), [#143](https://github.com/jameslamb/doppel-cli/pull/143))
 
+#0.3.0
+
+* Added tests to get to 100% test coverage of the code behind `doppel-describe`, for both R and Python ([#133](https://github.com/jameslamb/doppel-cli/pull/133), [#143](https://github.com/jameslamb/doppel-cli/pull/143), [#149](https://github.com/jameslamb/doppel-cli/pull/149), [#155](https://github.com/jameslamb/doppel-cli/pull/155), [#156](https://github.com/jameslamb/doppel-cli/pull/156))
+* Added a code of conduct. Thanks to [@RikTheunis](https://github.com/RikTheunis). ([#117](https://github.com/jameslamb/doppel-cli/issues/117))
+* Improvements to continuous integration and testing setup. Thanks to [@lorenafreitas](https://github.com/lorenafreitas) and to [@bburns632](https://github.com/bburns632) for contributing! ([#129](https://github.com/jameslamb/doppel-cli/pull/129), [#130](https://github.com/jameslamb/doppel-cli/pull/130), [#136](https://github.com/jameslamb/doppel-cli/pull/136), [#138](https://github.com/jameslamb/doppel-cli/pull/138), [#140](https://github.com/jameslamb/doppel-cli/pull/140), [#142](https://github.com/jameslamb/doppel-cli/issues/142), [#146](https://github.com/jameslamb/doppel-cli/pull/146), [#150](https://github.com/jameslamb/doppel-cli/pull/150), [#151](https://github.com/jameslamb/doppel-cli/pull/151), [#152](https://github.com/jameslamb/doppel-cli/pull/152))
+* Added version floor of Python 3.5. Thanks to [@lorenafreitas](https://github.com/lorenafreitas). ([#147](https://github.com/jameslamb/doppel-cli/pull/147)).
+* Added a link to the video of `doppel-cli` presentation at SatRDays Chicago conference to documentation ([#132](https://github.com/jameslamb/doppel-cli/pull/132))
+
 ## 0.2.1
 
 * Fixed a bug in handling of functions with [keyword-only arguments]() in `doppel-describe --language python`. Thanks to [@austin3dickey](https://github.com/austin3dickey) for the help! ([#126](https://github.com/jameslamb/doppel-cli/pull/126))

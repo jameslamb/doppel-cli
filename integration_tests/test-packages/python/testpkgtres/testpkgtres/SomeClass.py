@@ -1,6 +1,4 @@
-
 class SomeClass:
-
     def __init__(self):
         """
         a class that is classy
@@ -8,4 +6,4 @@ class SomeClass:
         pass
 
     def some_method(self, x):
-        return(x + 5)
+        return x + 5

@@ -1,3 +1,2 @@
-
 class SomeException(Exception):
     pass
