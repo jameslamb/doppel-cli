@@ -75,21 +75,9 @@ If anything breaks, [create an issue](https://github.com/jameslamb/doppel-cli/is
 
 ### Releasing to PyPi <a name="pypi"></a>
 
-PyPi is the official package manager used for distributing Python packages. A "test" version is provided for side effect free integration testing.
+PyPi is the official package manager used for distributing Python packages.
 
-To test whether the current state of publishing `doppel` plays nicely with PyPi, maintainers may from time to time run the following:
-
-```
-./publish.sh testpypi
-open https://test.pypi.org/project/doppel-cli/
-```
-
-To actually publish a new version, run:
-
-```
-./publish.sh pypi
-open https://pypi.org/project/doppel-cli/
-```
+Releases to PyPi are done automatically by GitHub Actions whenever a new release is created on [the Releases page](https://github.com/jameslamb/doppel-cli/releases).
 
 ### Releasing to conda-forge <a name="conda"></a>
 
