@@ -69,7 +69,7 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
 
     if not os.path.isdir(data_dir):
         msg = "Directory '{}' passed to --data-dir does not exist.".format(data_dir)
-        logger.fatal(msg)   # type: ignore
+        logger.fatal(msg)  # type: ignore
         raise RuntimeError(msg)
 
     try:
