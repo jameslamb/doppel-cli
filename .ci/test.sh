@@ -28,7 +28,7 @@ if [[ $TASK == "lint" ]]; then
             mypy \
             pycodestyle \
             pylint
-    ${CI_TOOLS}/lint-py.sh $(pwd)
+    make lint
     Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
     ${CI_TOOLS}/lint-todo.sh $(pwd)
     exit 0
