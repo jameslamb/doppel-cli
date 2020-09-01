@@ -69,7 +69,7 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
 
     if not os.path.isdir(data_dir):
         msg = "Directory '{}' passed to --data-dir does not exist.".format(data_dir)
-        logger.fatal(msg)
+        logger.fatal(msg)   # type: ignore
         raise RuntimeError(msg)
 
     try:
@@ -79,7 +79,7 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
         )
     except KeyError:
         msg = "doppel does not know how to test {} packages".format(language)
-        logger.fatal(msg)
+        logger.fatal(msg)  # type: ignore
         raise KeyError(msg)
 
     logger.info(analysis_script)
@@ -101,7 +101,7 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
 
     if exit_code != 0:
         msg = "doppel-describe exited with non-zero exit code: {}".format(exit_code)
-        logger.fatal(msg)
+        logger.fatal(msg)  # type: ignore
         raise RuntimeError(msg)
 
     return
