@@ -26,7 +26,10 @@ logging.basicConfig(format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%
 )
 @click.option("--pkg_name", "-p", default=None, help="Name of a package")
 @click.option(
-    "--data-dir", "-d", default=None, help="Path to write output file to.",
+    "--data-dir",
+    "-d",
+    default=None,
+    help="Path to write output file to.",
 )
 @click.option(
     "--version", default=False, help="Get the current version of doppel-describe", is_flag=True
