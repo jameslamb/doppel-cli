@@ -7,6 +7,9 @@ import json
 from typing import Dict
 from typing import List
 
+FUNCTION_KEY = "functions"
+CLASSES_KEY = "classes"
+
 
 def _log_info(msg):
     print(msg)
@@ -34,6 +37,12 @@ class PackageAPI:
 
         self._validate_pkg(pkg_dict)
         self.pkg_dict = pkg_dict
+
+    def remove_casing(self) -> None:
+        """
+        This method removes all casing information from
+        a package.
+        """
 
     @classmethod
     def from_json(cls, filename: str) -> "PackageAPI":

@@ -5,3 +5,7 @@ format:
 .PHONY: lint
 lint:
 	./.ci/lint-py.sh $$(pwd)
+
+.PHONY: test
+test:
+	./.ci/test.sh

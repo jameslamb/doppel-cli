@@ -65,8 +65,7 @@ def main(files: str, errors_allowed: int, ignore_case: bool, version: bool) -> N
     pkgs = [PackageAPI.from_json(f) for f in f_list]
 
     # Report
-    reporter = SimpleReporter(pkgs, errors_allowed)
-    reporter.customize(ignore_case=ignore_case)
+    reporter = SimpleReporter(pkgs=pkgs, errors_allowed=errors_allowed, ignore_case=ignore_case)
     reporter.compare()
 
 

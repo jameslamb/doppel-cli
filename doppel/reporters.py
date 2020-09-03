@@ -52,10 +52,13 @@ class SimpleReporter:
         permissible before throwing a non-zero exit
         code. Set this to a higher value to make doppel-cli
         more permissive.
+    :param ignore_case: Boolean, indicating whether case should be
+        ignored when comparing things. If ``True``, all names will be
+        lowercased and have ``.`` and ``_`` removed before
 
     """
 
-    def __init__(self, pkgs: List[PackageAPI], errors_allowed: int):
+    def __init__(self, pkgs: List[PackageAPI], errors_allowed: int, ignore_case: bool):
         for pkg in pkgs:
             assert isinstance(pkg, doppel.PackageAPI)
 
@@ -64,21 +67,11 @@ class SimpleReporter:
         self.absent_string = "no"
 
         # customization options
-        self.ignore_case = False
+        self.ignore_case = ignore_case
 
         self.pkgs = pkgs
         self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
-
-    def customize(self, ignore_case: bool):
-        """
-        Customize the conditions ``SimpleReporter`` uses to
-        compare packages.
-
-        :param ignore_case: If ``True``, convert all entities to
-            lowercase, with ``_`` and ``.`` `` removed.
-        """
-        self.ignore_case = True
 
     def compare(self) -> None:
         """
