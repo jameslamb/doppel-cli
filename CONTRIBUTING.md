@@ -7,7 +7,6 @@ This document contains information for maintainers and contributing developers. 
 * [Integrations](#integrations)
     * [Appveyor](#appveyor)
     * [Codecov](#codecov)
-    * [pep8speaks](#pepspeaks)
     * [readthedocs.io](#rtd)
     * [Travis CI](#travis)
 * [Testing](#testing)
@@ -30,12 +29,6 @@ configuration: [.appveyor.yml](https://github.com/jameslamb/doppel-cli/blob/main
 [https://codecov.io/](https://codecov.io/) is used to handle a variety of details related to the [code coverage](https://en.wikipedia.org/wiki/Code_coverage) of `doppel-cli`'s unit tests. This service handles details like hosting interactive reports with line-by-line coverage breakdown and telling GitHub whether or not to fail PR checks.
 
 configuration: [.codecov.yml](https://github.com/jameslamb/doppel-cli/blob/main/.codecovs.yml)
-
-### pep8speaks <a name="pepspeaks"></a>
-
-[pep8speaks](https://github.com/OrkoHunter/pep8speaks) is a GitHub app that automatically checks every pull request on `doppel-cli` for compliance with this project's preferred style for Python code. The `pep8speaks` bot leaves comments on open PRs if any issues are found, recommending how they can be addressed.
-
-configuration: [.pep8speaks.yml](https://github.com/jameslamb/doppel-cli/blob/main/.pep8speaks.yml)
 
 ### readthedocs <a name="rtd"></a>
 
