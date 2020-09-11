@@ -10,26 +10,28 @@ TEST_PKG_DIR=$(pwd)/integration_tests/test-packages
 R_TEST_PKG_DIR=${TEST_PKG_DIR}/r
 PYTHON_TEST_PKG_DIR=${TEST_PKG_DIR}/python
 
-echo ""
-echo "installing test R packages..."
-echo ""
+if [[ $GITHUB_ACTIONS != "true" ]]; then
+    echo ""
+    echo "installing test R packages..."
+    echo ""
 
-for pkg in $(ls ${R_TEST_PKG_DIR}); do
-    echo ""
-    echo "Installing package '${pkg}'"
-    echo ""
-    pushd ${R_TEST_PKG_DIR}/${pkg}
-        Rscript --vanilla -e "roxygen2::roxygenize()"
-        R CMD INSTALL \
-            --no-docs \
-            --no-multiarch \
-            --clean \
-            .
-    popd
-    echo ""
-    echo "Done"
-    echo ""
-done
+    for pkg in $(ls ${R_TEST_PKG_DIR}); do
+        echo ""
+        echo "Installing package '${pkg}'"
+        echo ""
+        pushd ${R_TEST_PKG_DIR}/${pkg}
+            Rscript --vanilla -e "roxygen2::roxygenize()"
+            R CMD INSTALL \
+                --no-docs \
+                --no-multiarch \
+                --clean \
+                .
+        popd
+        echo ""
+        echo "Done"
+        echo ""
+    done
+fi
 
 echo ""
 echo "installing test python packages..."
