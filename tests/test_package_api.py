@@ -46,3 +46,9 @@ class TestPackageAPI(unittest.TestCase):
         self.assertEqual(pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"), ["kick", "push"])
         self.assertEqual(pkg.public_method_args("LupeFiasco", "coast"), [])
         self.assertEqual(pkg.public_method_args("LupeFiasco", "words"), ["i_said", "i_never_said"])
+
+
+class TestIgnoringCase(unittest.TestCase):
+    """
+    Tests on code that removes case froom a package.
+    """

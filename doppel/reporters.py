@@ -54,7 +54,8 @@ class SimpleReporter:
         more permissive.
     :param ignore_case: Boolean, indicating whether case should be
         ignored when comparing things. If ``True``, all names will be
-        lowercased and have ``.`` and ``_`` removed before
+        lowercased and have ``.`` and ``_`` removed before testing
+        for API differences.
 
     """
 
@@ -70,6 +71,12 @@ class SimpleReporter:
         self.ignore_case = ignore_case
 
         self.pkgs = pkgs
+
+        if ignore_case is True:
+            pkgs = [
+                pkg.remove_casing()
+                for pkg in pkgs
+            ]
         self.pkg_collection = doppel.PackageCollection(pkgs)
         self._errors_allowed = errors_allowed
 
