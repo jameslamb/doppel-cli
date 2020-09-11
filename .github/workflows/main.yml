@@ -36,7 +36,7 @@ jobs:
           auto-update-conda: false
       - name: Setup and run tests on Windows
         if: startsWith(matrix.os, 'windows')
-        shell: sh
+        shell: bash -l {0}
         run: |
           conda init powershell
           $env:GITHUB_WORKSPACE/.ci/test.sh
