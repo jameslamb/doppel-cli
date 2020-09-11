@@ -5,7 +5,6 @@ This document contains information for maintainers and contributing developers. 
 #### Table of Contents
 
 * [Integrations](#integrations)
-    * [Appveyor](#appveyor)
     * [Codecov](#codecov)
     * [pep8speaks](#pepspeaks)
     * [readthedocs.io](#rtd)
@@ -18,12 +17,6 @@ This document contains information for maintainers and contributing developers. 
 * [References for Developers](#references)
 
 ## Integrations <a name="integrations"></a>
-
-### Appveyor <a name="appveyor"></a>
-
-[Appveyor](https://www.appveyor.com/) is used to perform CI tasks in Windows environments. Appveyor jobs are used to ensure that `doppel-cli` continues to work for Windows users.
-
-configuration: [.appveyor.yml](https://github.com/jameslamb/doppel-cli/blob/main/.appveyor.yml)
 
 ### Codecov <a name="codecov"></a>
 
@@ -104,7 +97,6 @@ GITHUB_USER=jameslamb
 * [Testing on multiple operating systems with Travis](https://docs.travis-ci.com/user/multi-os/)
 * [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
 * [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
-* [networkx: example appveyor setup for python](https://github.com/networkx/networkx/blob/master/.appveyor.yml)
 * [simple codecov Python example](https://github.com/codecov/example-python/blob/master/.travis.yml)
 * [pytest fixtures](https://docs.pytest.org/en/latest/fixture.html)
 * [inspecting builtins](https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object)
