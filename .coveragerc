@@ -7,6 +7,6 @@
 omit =
     *tests/*
     *.eggs/*
-    *.egg*
+    *Users/*
     *.local/*
     *bin/doppel-describe
