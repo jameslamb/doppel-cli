@@ -26,18 +26,18 @@ echo ""
 echo "Running smoke tests"
 echo ""
 
-    mkdir -p ${TEST_DATA_DIR}
+    mkdir -p "${TEST_DATA_DIR}"
 
     doppel-describe \
         -p ${PYTHON_TEST_PACKAGE} \
         --language python \
-        --data-dir ${TEST_DATA_DIR}
+        --data-dir "${TEST_DATA_DIR}"
     doppel-describe \
         -p ${R_TEST_PACKAGE} \
         --language r \
-        --data-dir ${TEST_DATA_DIR}
+        --data-dir "${TEST_DATA_DIR}"
     doppel-test \
-        --files ${TEST_FILES_TO_COMPARE} \
+        --files "${TEST_FILES_TO_COMPARE}" \
         --errors-allowed 100
 
 echo ""

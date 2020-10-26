@@ -17,10 +17,10 @@ MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
 
 if [[ $TASK == "lint" ]]; then
-    ${CONDA_DIR}/bin/conda install -c conda-forge \
+    "${CONDA_DIR}/bin/conda" install -c conda-forge \
         r-lintr>=2.0.0
     # Get Python packages for testing
-    ${CONDA_DIR}/bin/pip install \
+    "${CONDA_DIR}/bin/pip" install \
         --upgrade \
         --user \
             black \
@@ -29,31 +29,33 @@ if [[ $TASK == "lint" ]]; then
             pycodestyle \
             pylint
     make lint
-    Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
-    ${CI_TOOLS}/lint-todo.sh $(pwd)
+    Rscript "${CI_TOOLS}/lint-r-code.R" "$(pwd)"
+    "${CI_TOOLS}/lint-todo.sh"
+    "${CI_TOOLS}/lint-shell-scripts.sh"
     exit 0
 fi
 
 if [[ $TRAVIS_OS_NAME == "osx" ]]; then
-    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
+    "${CONDA_DIR}/bin/conda" create -q -n testenv python=3.6 nose pytest
+    # shellcheck disable=SC1091
     source activate testenv
     pip install argparse requests
 fi
 
 python setup.py install
 
-${CI_TOOLS}/check-docs.sh $(pwd)/docs
-${CI_TOOLS}/run-unit-tests.sh ${MIN_UNIT_TEST_COVERAGE}
-${CI_TOOLS}/run-smoke-tests.sh $(pwd)/test_data
+"${CI_TOOLS}/check-docs.sh" "$(pwd)/docs"
+"${CI_TOOLS}/run-unit-tests.sh" "${MIN_UNIT_TEST_COVERAGE}"
+"${CI_TOOLS}/run-smoke-tests.sh" "$(pwd)/test_data"
 
-${CI_TOOLS}/install-test-packages.sh
-${CI_TOOLS}/run-integration-tests.sh $(pwd)/test_data
+"${CI_TOOLS}/install-test-packages.sh"
+"${CI_TOOLS}/run-integration-tests.sh" "$(pwd)/test_data"
 
-Rscript --vanilla ${CI_TOOLS}/test-analyze-r-coverage.R \
-    --source-dir $(pwd) \
+Rscript --vanilla "${CI_TOOLS}/test-analyze-r-coverage.R" \
+    --source-dir "$(pwd)" \
     --fail-under ${MIN_ANALYZE_R_TEST_COVERAGE}
 
-${CI_TOOLS}/run-analyze-py-coverage.sh ${MIN_ANALYZE_PY_TEST_COVERAGE}
+"${CI_TOOLS}/run-analyze-py-coverage.sh" ${MIN_ANALYZE_PY_TEST_COVERAGE}
 
 # If all is good, we did it!
 exit 0

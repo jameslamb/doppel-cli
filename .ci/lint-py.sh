@@ -23,8 +23,8 @@ echo ""
         --line-length ${MAX_LINE_LENGTH} \
         --check \
         --diff \
-        ${SOURCE_DIR} \
-    || exit  -1
+        "${SOURCE_DIR}" \
+    || exit 1
 
     echo ""
     echo "###############"
@@ -33,8 +33,8 @@ echo ""
     echo ""
     flake8 \
         --max-line-length ${MAX_LINE_LENGTH} \
-        ${SOURCE_DIR} \
-    || exit -1
+        "${SOURCE_DIR}" \
+    || exit 1
 
     echo ""
     echo "###############"
@@ -50,12 +50,12 @@ echo ""
     #     * R0914: Too many local variable
     #     * W1202: Use lazy % formatting in logging functions
     #
-    pushd ${SOURCE_DIR}/doppel
+    pushd "${SOURCE_DIR}/doppel" || exit 1
         pylint \
             --disable=C0103,E1120,R0801,R0903,R0914,W1202 \
             . \
-        || exit -1
-    popd
+        || exit 1
+    popd || exit 1
 
     echo ""
     echo "###############"
@@ -66,8 +66,8 @@ echo ""
         --show-source \
         --max-line-length ${MAX_LINE_LENGTH} \
         --count \
-        ${SOURCE_DIR} \
-    || exit -1
+        "${SOURCE_DIR}" \
+    || exit 1
 
     echo ""
     echo "###############"
@@ -76,8 +76,8 @@ echo ""
     echo ""
     mypy \
         --ignore-missing-imports \
-        ${SOURCE_DIR} \
-    || exit  -1
+        "${SOURCE_DIR}" \
+    || exit 1
 
 echo ""
 echo "Done checking code for style problems."

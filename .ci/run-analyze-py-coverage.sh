@@ -11,7 +11,7 @@ MIN_TEST_COVERAGE=${1}
 set -e
 
 INTEGRATION_TEST_DIR=$(pwd)/.ci/analyze_py_tests
-mkdir -p $(pwd)/test_data
+mkdir -p "$(pwd)/test_data"
 
 # This is a thing ... need to have a copy of the code
 # near the tests so we can use a relative import to
@@ -19,13 +19,13 @@ mkdir -p $(pwd)/test_data
 echo "copying analyze.py to a location next to the tests"
 ANALYZE_PY_SCRIPT=$(pwd)/doppel/bin/analyze.py
 ANALYZE_PY_COPY=${INTEGRATION_TEST_DIR}/doppel_analyze.py
-cp ${ANALYZE_PY_SCRIPT} ${ANALYZE_PY_COPY}
+cp "${ANALYZE_PY_SCRIPT}" "${ANALYZE_PY_COPY}"
 
-pushd ${INTEGRATION_TEST_DIR}
+pushd "${INTEGRATION_TEST_DIR}" || exit 1
     pytest \
         --cov
 
     coverage report \
         -m \
-        --fail-under=${MIN_TEST_COVERAGE}
-popd
+        --fail-under="${MIN_TEST_COVERAGE}"
+popd || exit 1

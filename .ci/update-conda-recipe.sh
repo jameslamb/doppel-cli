@@ -12,24 +12,25 @@ DOPPEL_VERSION=$(cat doppel/VERSION)
 
 TMP_DIR=$(pwd)/conda-install
 
-pushd ${TMP_DIR}
+pushd "${TMP_DIR}" || exit 1
 
-    git clone git@github.com:${GITHUB_USER}/doppel-cli-feedstock.git
+    git "clone git@github.com:${GITHUB_USER}/doppel-cli-feedstock.git"
 
-    cd doppel-cli-feedstock/recipe
+    cd doppel-cli-feedstock/recipe || exit 1
 
     RELEASE_BRANCH="release/v${DOPPEL_VERSION}"
-    git checkout -b ${RELEASE_BRANCH}
+    git checkout -b "${RELEASE_BRANCH}"
     grayskull pypi \
         --maintainers jameslamb \
-        --output $(pwd) \
+        --output "$(pwd)" \
         doppel-cli
 
     mv doppel-cli/meta.yaml .
     rm -r doppel-cli
 
     git commit -m "Updated conda recipe to version ${DOPPEL_VERSION}"
-    git push origin ${RELEASE_BRANCH}
+    git push origin "${RELEASE_BRANCH}"
 
     echo "Done updating recipe! Changes are on branch '${RELEASE_BRANCH}'"
-popd
+
+popd || exit 1

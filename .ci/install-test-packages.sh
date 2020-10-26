@@ -14,18 +14,18 @@ echo ""
 echo "installing test R packages..."
 echo ""
 
-for pkg in $(ls ${R_TEST_PKG_DIR}); do
+for pkg in $(ls "${R_TEST_PKG_DIR}"); do
     echo ""
     echo "Installing package '${pkg}'"
     echo ""
-    pushd ${R_TEST_PKG_DIR}/${pkg}
+    pushd "${R_TEST_PKG_DIR}/${pkg}" || exit 1
         Rscript --vanilla -e "roxygen2::roxygenize()"
         R CMD INSTALL \
             --no-docs \
             --no-multiarch \
             --clean \
             .
-    popd
+    popd || exit 1
     echo ""
     echo "Done"
     echo ""
@@ -35,13 +35,13 @@ echo ""
 echo "installing test python packages..."
 echo ""
 
-for pkg in $(ls ${PYTHON_TEST_PKG_DIR}); do
+for pkg in $(ls "${PYTHON_TEST_PKG_DIR}"); do
     echo ""
     echo "Installing package '${pkg}'"
     echo ""
-    pushd ${PYTHON_TEST_PKG_DIR}/${pkg}
+    pushd "${PYTHON_TEST_PKG_DIR}/${pkg}" || exit 1
         python setup.py install --user
-    popd
+    popd || exit 1
     echo ""
     echo "Done"
     echo ""

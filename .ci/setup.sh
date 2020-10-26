@@ -1,3 +1,4 @@
+#!/bin/bash
 
 # Failure is a natural part of life
 set -e
@@ -13,21 +14,21 @@ fi
 
 # Install conda
 wget ${MINICONDA_INSTALLER} -O miniconda.sh;
-bash miniconda.sh -b -p ${CONDA_DIR}
+bash miniconda.sh -b -p "${CONDA_DIR}"
 
-${CONDA_DIR}/bin/conda config --set always_yes yes --set changeps1 no
-${CONDA_DIR}/bin/conda update -q conda
-${CONDA_DIR}/bin/conda info -a
+"${CONDA_DIR}/bin/conda" config --set always_yes yes --set changeps1 no
+"${CONDA_DIR}/bin/conda" update -q conda
+"${CONDA_DIR}/bin/conda" info -a
 
 # Set up R (gulp)
-${CONDA_DIR}/bin/conda install -c r \
+"${CONDA_DIR}/bin/conda" install -c r \
     r-assertthat \
     r-jsonlite \
     r-r6 \
     r-roxygen2 \
     r-testthat
 
-${CONDA_DIR}/bin/conda install -c conda-forge \
+"${CONDA_DIR}/bin/conda" install -c conda-forge \
     r-covr \
     r-argparse \
     r-futile.logger
@@ -39,7 +40,7 @@ ${CONDA_DIR}/bin/conda install -c conda-forge \
 export PATH=${PATH}:${CONDA_DIR}/bin
 
 # Get Python packages for testing
-${CONDA_DIR}/bin/pip install \
+"${CONDA_DIR}/bin/pip" install \
     --user \
         argparse \
         click \
@@ -56,7 +57,7 @@ if [[ $TRAVIS_OS_NAME == "osx" ]]; then
     export PIP_INSTALL_OPTS="--user"
 fi
 
-${CONDA_DIR}/bin/pip install \
+"${CONDA_DIR}/bin/pip" install \
     ${PIP_INSTALL_OPTS} \
         pytest \
         pytest-cov
