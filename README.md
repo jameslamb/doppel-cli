@@ -1,6 +1,6 @@
 # doppel-cli
 
-[![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![conda-forge version](https://img.shields.io/conda/v/conda-forge/doppel-cli)](https://github.com/conda-forge/doppel-cli-feedstock) [![Travis Build Status](https://img.shields.io/travis/jameslamb/doppel-cli.svg?label=travis&logo=travis&branch=main)](https://travis-ci.org/jameslamb/doppel-cli)
+[![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![conda-forge version](https://img.shields.io/conda/v/conda-forge/doppel-cli)](https://github.com/conda-forge/doppel-cli-feedstock) [![GitHub Actions Build Status](https://github.com/jameslamb/doppel-cli/workflows/Tests/badge.svg?branch=main)](https://github.com/jameslamb/doppel-cli/actions)
 [![AppVeyor Build Status](https://img.shields.io/appveyor/ci/jameslamb/doppel-cli.svg?label=appveyor&logo=appveyor&branch=main)](https://ci.appveyor.com/project/jameslamb/doppel-cli) [![Documentation Status](https://readthedocs.org/projects/doppel-cli/badge/?version=latest)](https://doppel-cli.readthedocs.io/en/latest/?badge=latest) [![codecov](https://codecov.io/gh/jameslamb/doppel-cli/branch/main/graph/badge.svg)](https://codecov.io/gh/jameslamb/doppel-cli) [![Python Versions](https://img.shields.io/pypi/pyversions/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![downloads](https://img.shields.io/pypi/dm/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![license](https://img.shields.io/pypi/l/doppel-cli.svg)](https://pypi.org/project/doppel-cli) [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3918/badge)](https://bestpractices.coreinfrastructure.org/en/projects/3918)
 
 `doppel-cli` is an integration testing framework for testing API similarity across languages. R and Python are currently supported.
@@ -201,7 +201,7 @@ Test Failures (12)
 
 As you can see above, the `argparse` Python package has 9 exported classes while the R package has none.
 
-From `doppel-cli`'s perspective, this is considered a test failure. If you run `echo $?` in the terminal, should should see `1` printed. Returning a non-zero exit code like this tells CI tools like [Travis](https://travis-ci.org/) that the test was a failure, making `doppel-cli` useful for CI (more on this in a future example).
+From `doppel-cli`'s perspective, this is considered a test failure. If you run `echo $?` in the terminal, should should see `1` printed. Returning a non-zero exit code like this tells CI tools like [GitHub Actions](https://github.com/features/actions) that the test was a failure, making `doppel-cli` useful for CI (more on this in a future example).
 
 You may be thinking "well wait, surely you'd want to test for way more stuff than just counts of classes and functions, right?". Absolutely! See [the project issues issues](https://github.com/jameslamb/doppel-cli/issues) for a backlog of features I'd like to add. PRs are welcomed!!!
 
