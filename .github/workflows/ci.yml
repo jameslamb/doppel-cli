@@ -52,7 +52,7 @@ jobs:
           fi
           export CONDA_DIR=${HOME}/miniconda3
           export TASK="${{ matrix.task }}"
-          export PATH=${CONDA_DIR}/bin:$PATH
+          export PATH=${CONDA_DIR}/bin:${HOME}/.local/bin:$PATH
           $GITHUB_WORKSPACE/.ci/setup.sh
           $GITHUB_WORKSPACE/.ci/test.sh
           codecov
