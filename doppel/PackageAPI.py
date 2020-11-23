@@ -4,11 +4,10 @@ Class for package details.
 
 import json
 
-from typing import Dict
-from typing import List
+from typing import Any, Dict, List
 
 
-def _log_info(msg):
+def _log_info(msg: str) -> None:
     print(msg)
 
 
@@ -22,7 +21,7 @@ class PackageAPI:
 
     """
 
-    def __init__(self, pkg_dict: dict):
+    def __init__(self, pkg_dict: Dict[str, Any]):
         """
         Class containing data that describes a package API
 
@@ -55,7 +54,7 @@ class PackageAPI:
         return cls(pkg_dict)
 
     @staticmethod
-    def _validate_pkg(pkg_dict: dict) -> None:
+    def _validate_pkg(pkg_dict: Dict[str, Any]) -> None:
 
         assert isinstance(pkg_dict, dict)
         assert pkg_dict["name"] is not None
@@ -82,7 +81,7 @@ class PackageAPI:
         """
         return sorted(list(self.pkg_dict["functions"].keys()))
 
-    def functions_with_args(self) -> Dict[str, Dict]:
+    def functions_with_args(self) -> Dict[str, Dict[str, Any]]:
         """
         Get a dictionary with all exported functions in the package
         and some  details describing them.
