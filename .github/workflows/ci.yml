@@ -72,8 +72,8 @@ jobs:
           conda init powershell
           pip install argparse click codecov coverage pytest pytest-cov requests tabulate
           $GITHUB_WORKSPACE/.ci/install-test-packages.sh
-          $GITHUB_WORKSPACE/.ci/run-analyze-py-coverage.sh 100
-          $GITHUB_WORKSPACE/.ci/run-unit-tests.sh 100
+          $GITHUB_WORKSPACE/.ci/run-analyze-py-coverage.sh 50
+          $GITHUB_WORKSPACE/.ci/run-unit-tests.sh 50
   # https://github.community/t/is-it-possible-to-require-all-github-actions-tasks-to-pass-without-enumerating-them/117957/4?u=graingert
   all-successful:
     runs-on: ubuntu-latest
