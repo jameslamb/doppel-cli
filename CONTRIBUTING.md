@@ -6,8 +6,8 @@ This document contains information for maintainers and contributing developers. 
 
 * [Integrations](#integrations)
     * [Codecov](#codecov)
+    * [GitHub Actions](#gha)
     * [readthedocs.io](#rtd)
-    * [Travis CI](#travis)
 * [Testing](#testing)
 * [Documentation](#docs)
 * [Releases](#releases)
@@ -23,17 +23,17 @@ This document contains information for maintainers and contributing developers. 
 
 configuration: [.codecov.yml](https://github.com/jameslamb/doppel-cli/blob/main/.codecovs.yml)
 
+### GitHub Actions <a name="gha"></a>
+
+[GitHub Actions](https://github.com/features/actions) is used to perform CI tasks in Linux and Mac OS environments. This integration is the most important one for `doppel-cli`.
+
+configuration: [.github/workflows/ci.yml](https://github.com/jameslamb/doppel-cli/blob/main/.github/workflows/ci.yml)
+
 ### readthedocs <a name="rtd"></a>
 
 [readthedocs](https://readthedocs.org/) is used for free creation and hosting of the documentation for `doppel-cli`. The documentation at https://doppel-cli.readthedocs.io/en/latest/index.html# is created automatically, for free, from the `main` branch of this repository.
 
 configuration: [.readthedocs.yml](https://github.com/jameslamb/doppel-cli/blob/main/.readthedocs.yml)
-
-### Travis <a name="travis"></a>
-
-[Travis CI](https://travis-ci.org/) is used to perform CI tasks in Linux and Mac OS environments. This integration is the most important one for `doppel-cli`.
-
-configuration: [.travis.yml](https://github.com/jameslamb/doppel-cli/blob/main/.travis.yml)
 
 ## Testing <a name="testing"></a>
 
@@ -87,8 +87,6 @@ GITHUB_USER=jameslamb
 
 * [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
 * [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
-* [Testing on multiple operating systems with Travis](https://docs.travis-ci.com/user/multi-os/)
-* [Building Python and R in one environment on Travis](https://www.augustguang.com/travis-ci-for-python-and-r/)
 * [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
 * [simple codecov Python example](https://github.com/codecov/example-python/blob/master/.travis.yml)
 * [pytest fixtures](https://docs.pytest.org/en/latest/fixture.html)

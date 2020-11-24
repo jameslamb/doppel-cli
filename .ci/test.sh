@@ -34,7 +34,7 @@ if [[ $TASK == "lint" ]]; then
     exit 0
 fi
 
-if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+if [[ $OS_NAME == "macos" ]]; then
     ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
     source activate testenv
     pip install argparse requests
