@@ -42,7 +42,7 @@ for pkg in $(ls ${PYTHON_TEST_PKG_DIR}); do
     echo "Installing package '${pkg}'"
     echo ""
     pushd ${PYTHON_TEST_PKG_DIR}/${pkg}
-        python setup.py install --user
+        python setup.py develop
     popd
     echo ""
     echo "Done"
