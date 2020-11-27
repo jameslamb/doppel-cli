@@ -17,7 +17,7 @@ echo ""
 echo "installing test R packages..."
 echo ""
 
-if [[ $OS_NAME != "windows-latest" ]];; then
+if [[ $OS_NAME != "windows-latest" ]]; then
     for pkg in $(ls ${R_TEST_PKG_DIR}); do
         echo ""
         echo "Installing package '${pkg}'"
