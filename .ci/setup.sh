@@ -46,7 +46,10 @@ conda install \
 echo "pippy bippy"
 echo $PATH
 echo $CONDA_DIR
+echo "----- which pip -----"
+which pip
 pip --version
+ls /usr/share/miniconda/condabin
 
 exit 255
 
