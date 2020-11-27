@@ -14,7 +14,8 @@ echo ""
 echo "Checking code for TODO comments..."
 echo ""
 
-todo_count=$(git grep -i -E '(#|(/\*))+\s*todo[\s|:|$]?' | wc -l)
+todo_count=$(git grep --count -i -E '(#|(/\*))+\s*todo[\s|:|$]?')
+echo "found ${todo_count} TODOs"
 exit ${todo_count}
 
 echo ""

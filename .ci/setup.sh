@@ -21,14 +21,18 @@ ${CONDA_DIR}/bin/conda update -q conda
 ${CONDA_DIR}/bin/conda info -a
 
 # Set up R (gulp)
-${CONDA_DIR}/bin/conda install -c r \
+${CONDA_DIR}/bin/conda install \
+    -c r \
+    --quiet \
     r-assertthat \
     r-jsonlite \
     r-r6 \
     r-roxygen2 \
     r-testthat
 
-${CONDA_DIR}/bin/conda install -c conda-forge \
+${CONDA_DIR}/bin/conda install \
+    -c conda-forge \
+    --quiet \
     r-covr \
     r-argparse \
     r-futile.logger
