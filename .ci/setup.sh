@@ -39,16 +39,15 @@ conda install \
 
 # Get Python packages for testing
 pip install \
-    --user \
-        argparse \
-        click \
-        coverage \
-        codecov \
-        pytest \
-        pytest-cov \
-        requests \
-        sphinx \
-        sphinx_autodoc_typehints \
-        sphinx_rtd_theme \
-        tabulate \
-        wheel
+    argparse \
+    click \
+    coverage \
+    codecov \
+    pytest \
+    pytest-cov \
+    requests \
+    sphinx \
+    sphinx_autodoc_typehints \
+    sphinx_rtd_theme \
+    tabulate \
+    wheel
