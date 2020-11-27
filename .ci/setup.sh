@@ -37,22 +37,6 @@ conda install \
     r-argparse \
     r-futile.logger
 
-# Per https://github.com/ContinuumIO/anaconda-issues/issues/9423#issue-325303442,
-# packages that require compilation may fail to find the
-# gcc bundled with conda
-
-#export PATH=${PATH}:${CONDA_DIR}/bin
-
-echo "pippy bippy"
-echo $PATH
-echo $CONDA_DIR
-echo "----- which pip -----"
-which pip
-pip --version
-ls /usr/share/miniconda/condabin
-
-exit 255
-
 # Get Python packages for testing
 pip install \
     --user \
