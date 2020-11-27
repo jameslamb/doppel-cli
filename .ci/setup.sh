@@ -44,6 +44,8 @@ conda install \
 #export PATH=${PATH}:${CONDA_DIR}/bin
 
 echo "pippy bippy"
+echo $PATH
+echo $CONDA_DIR
 pip --version
 
 exit 255
