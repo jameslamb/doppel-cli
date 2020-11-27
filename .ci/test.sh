@@ -30,7 +30,7 @@ if [[ $TASK == "lint" ]]; then
             pylint
     make lint
     Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
-    ${CI_TOOLS}/lint-todo.sh $(pwd)
+    ${CI_TOOLS}/lint-todo.sh
     exit 0
 fi
 

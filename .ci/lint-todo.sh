@@ -6,16 +6,13 @@
 #     ./.ci/lint_todo.sh $(pwd)
 
 # failure is a natural part of life
-set -eou pipefail
-
-SOURCE_DIR=${1}
+set -eu
 
 echo ""
 echo "Checking code for TODO comments..."
 echo ""
-
-todo_count=$(git grep --count -i -E '(#|(/\*))+\s*todo[\s|:|$]?')
-echo "found ${todo_count} TODOs"
+todo_count=$(git grep -i -E '#+ *todo' | wc -l)
+echo "TODOs found: ${todo_count}"
 exit ${todo_count}
 
 echo ""
