@@ -54,7 +54,8 @@ pip install \
         sphinx \
         sphinx_autodoc_typehints \
         sphinx_rtd_theme \
-        tabulate
+        tabulate \
+        wheel
 
 # export PIP_INSTALL_OPTS="--no-color"
 # if [[ $OS_NAME == "macOS-latest" ]]; then

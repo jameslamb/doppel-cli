@@ -17,7 +17,7 @@ MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
 
 if [[ $TASK == "lint" ]]; then
-    onda install -c conda-forge \
+    conda install -c conda-forge \
         r-lintr>=2.0.0
     # Get Python packages for testing
     pip install \
