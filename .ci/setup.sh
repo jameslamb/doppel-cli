@@ -6,22 +6,22 @@ set -e
 # Set up environment variables
 export CRAN_MIRROR=http://cran.rstudio.com
 
-if [[ $OS_NAME == "macOS-latest" ]]; then
-    export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
-elif [[ $OS_NAME == "ubuntu-latest" ]]; then
-    export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-fi
+# if [[ $OS_NAME == "macOS-latest" ]]; then
+#     export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
+# elif [[ $OS_NAME == "ubuntu-latest" ]]; then
+#     export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# fi
 
 # Install conda
-wget ${MINICONDA_INSTALLER} -O miniconda.sh;
-bash miniconda.sh -b -p ${CONDA_DIR}
+# wget ${MINICONDA_INSTALLER} -O miniconda.sh;
+# bash miniconda.sh -b -p ${CONDA_DIR}
 
-${CONDA_DIR}/bin/conda config --set always_yes yes --set changeps1 no
-${CONDA_DIR}/bin/conda update -q conda
-${CONDA_DIR}/bin/conda info -a
+conda config --set always_yes yes --set changeps1 no
+conda update -q conda
+conda info -a
 
 # Set up R (gulp)
-${CONDA_DIR}/bin/conda install \
+conda install \
     -c r \
     --quiet \
     r-assertthat \
@@ -30,7 +30,7 @@ ${CONDA_DIR}/bin/conda install \
     r-roxygen2 \
     r-testthat
 
-${CONDA_DIR}/bin/conda install \
+conda install \
     -c conda-forge \
     --quiet \
     r-covr \
@@ -41,10 +41,10 @@ ${CONDA_DIR}/bin/conda install \
 # packages that require compilation may fail to find the
 # gcc bundled with conda
 
-export PATH=${PATH}:${CONDA_DIR}/bin
+#export PATH=${PATH}:${CONDA_DIR}/bin
 
 # Get Python packages for testing
-${CONDA_DIR}/bin/pip install \
+pip install \
     --user \
         argparse \
         click \
@@ -61,7 +61,7 @@ if [[ $OS_NAME == "macOS-latest" ]]; then
     export PIP_INSTALL_OPTS="--user"
 fi
 
-${CONDA_DIR}/bin/pip install \
+pip install \
     ${PIP_INSTALL_OPTS} \
         pytest \
         pytest-cov

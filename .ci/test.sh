@@ -17,10 +17,10 @@ MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
 
 if [[ $TASK == "lint" ]]; then
-    ${CONDA_DIR}/bin/conda install -c conda-forge \
+    onda install -c conda-forge \
         r-lintr>=2.0.0
     # Get Python packages for testing
-    ${CONDA_DIR}/bin/pip install \
+    pip install \
         --upgrade \
         --user \
             black \
@@ -35,7 +35,7 @@ if [[ $TASK == "lint" ]]; then
 fi
 
 if [[ $OS_NAME == "macOS-latest" ]]; then
-    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
+    conda create -q -n testenv python=3.6 nose pytest
     source activate testenv
     pip install argparse requests
 fi
