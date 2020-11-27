@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # failure is a natural part of life
-set -eou pipefail
+set -e
 
 # Set up environment variables
 export CRAN_MIRROR=http://cran.rstudio.com
