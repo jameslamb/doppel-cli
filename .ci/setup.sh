@@ -56,12 +56,12 @@ pip install \
         sphinx_rtd_theme \
         tabulate
 
-export PIP_INSTALL_OPTS="--no-color"
-if [[ $OS_NAME == "macOS-latest" ]]; then
-    export PIP_INSTALL_OPTS="--user"
-fi
+# export PIP_INSTALL_OPTS="--no-color"
+# if [[ $OS_NAME == "macOS-latest" ]]; then
+#     export PIP_INSTALL_OPTS="--user"
+# fi
 
 pip install \
-    ${PIP_INSTALL_OPTS} \
+    --user \
         pytest \
         pytest-cov
