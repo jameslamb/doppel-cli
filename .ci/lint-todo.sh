@@ -5,10 +5,10 @@
 # [usage]
 #     ./.ci/lint_todo.sh $(pwd)
 
-SOURCE_DIR=${1}
-
 # failure is a natural part of life
-set -e
+set -eou pipefail
+
+SOURCE_DIR=${1}
 
 echo ""
 echo "Checking code for TODO comments..."

@@ -1,13 +1,14 @@
+#!/bin/bash
 
-# Failure is a natural part of life
-set -e
+# failure is a natural part of life
+set -eou pipefail
 
 # Set up environment variables
 export CRAN_MIRROR=http://cran.rstudio.com
 
-if [[ $OS_NAME == "macos" ]]; then
+if [[ $OS_NAME == "macOS-latest" ]]; then
     export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
-elif [[ $OS_NAME == "linux" ]]; then
+elif [[ $OS_NAME == "ubuntu-latest" ]]; then
     export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 fi
 
@@ -52,7 +53,7 @@ ${CONDA_DIR}/bin/pip install \
         tabulate
 
 export PIP_INSTALL_OPTS="--no-color"
-if [[ $OS_NAME == "macos" ]]; then
+if [[ $OS_NAME == "macOS-latest" ]]; then
     export PIP_INSTALL_OPTS="--user"
 fi
 

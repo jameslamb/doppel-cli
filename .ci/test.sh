@@ -5,8 +5,8 @@
 # [usage]
 #     ./.ci/test.sh
 
-# Failure is a natural part of life
-set -e
+# failure is a natural part of life
+set -eou pipefail
 
 # Set up environment variables
 CI_TOOLS=$(pwd)/.ci
@@ -34,7 +34,7 @@ if [[ $TASK == "lint" ]]; then
     exit 0
 fi
 
-if [[ $OS_NAME == "macos" ]]; then
+if [[ $OS_NAME == "macOS-latest" ]]; then
     ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
     source activate testenv
     pip install argparse requests

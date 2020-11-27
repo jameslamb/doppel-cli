@@ -5,10 +5,10 @@
 # [usage]
 #     ./.ci/run-analyze-py-coveraage.sh 50
 
-MIN_TEST_COVERAGE=${1}
-
 # failure is a natural part of life
-set -e
+set -eou pipefail
+
+MIN_TEST_COVERAGE=${1}
 
 INTEGRATION_TEST_DIR=$(pwd)/.ci/analyze_py_tests
 mkdir -p $(pwd)/test_data

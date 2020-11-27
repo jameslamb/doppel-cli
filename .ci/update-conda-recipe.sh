@@ -7,9 +7,12 @@
 #     GITHUB_USER="jameslamb"
 #     ./.ci/update-conda-recipe.sh ${GITHUB_USER}
 
-GITHUB_USER=${1}
-DOPPEL_VERSION=$(cat doppel/VERSION)
+# failure is a natural part of life
+set -eou pipefail
 
+GITHUB_USER=${1}
+
+DOPPEL_VERSION=$(cat doppel/VERSION)
 TMP_DIR=$(pwd)/conda-install
 
 pushd ${TMP_DIR}
