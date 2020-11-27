@@ -44,19 +44,11 @@ pip install \
         click \
         coverage \
         codecov \
+        pytest \
+        pytest-cov \
         requests \
         sphinx \
         sphinx_autodoc_typehints \
         sphinx_rtd_theme \
         tabulate \
         wheel
-
-# export PIP_INSTALL_OPTS="--no-color"
-# if [[ $OS_NAME == "macOS-latest" ]]; then
-#     export PIP_INSTALL_OPTS="--user"
-# fi
-
-pip install \
-    --user \
-        pytest \
-        pytest-cov
