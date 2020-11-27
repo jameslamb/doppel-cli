@@ -43,6 +43,11 @@ conda install \
 
 #export PATH=${PATH}:${CONDA_DIR}/bin
 
+echo "pippy bippy"
+pip --version
+
+exit 255
+
 # Get Python packages for testing
 pip install \
     --user \
