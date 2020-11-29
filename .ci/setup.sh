@@ -51,3 +51,7 @@ pip install \
     sphinx_rtd_theme \
     tabulate \
     wheel
+
+# fixes issues with pytest-cov:
+# https://stackoverflow.com/a/41066450/3986677
+pip install --upgrade setuptools
