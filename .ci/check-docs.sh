@@ -6,10 +6,10 @@
 # [usage]
 #     ./.ci/check_docs.sh $(pwd)/docs
 
-SOURCE_DIR=${1}
-
 # failure is a natural part of life
-set -e
+set -eou pipefail
+
+SOURCE_DIR=${1}
 
 echo ""
 echo "Checking docs for problems"

@@ -10,10 +10,10 @@
 #     ./.ci/install_tests_packages.sh
 #     ./.ci/run_integration_tests.sh $(pwd)/test_data
 
-export TEST_DATA_DIR=${1}
-
 # failure is a natural part of life
-set -e
+set -eou pipefail
+
+export TEST_DATA_DIR=${1}
 
 mkdir -p ${TEST_DATA_DIR}
 

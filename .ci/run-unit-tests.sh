@@ -6,10 +6,10 @@
 # [usage]
 #     ./.ci/run_unit_tests.sh 50
 
-MIN_TEST_COVERAGE=${1}
-
 # failure is a natural part of life
-set -e
+set -eou pipefail
+
+MIN_TEST_COVERAGE=${1}
 
 echo ""
 echo "Running unit tests"

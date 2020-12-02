@@ -5,16 +5,14 @@
 # [usage]
 #     ./.ci/lint_todo.sh $(pwd)
 
-SOURCE_DIR=${1}
-
 # failure is a natural part of life
-set -e
+set -eu
 
 echo ""
 echo "Checking code for TODO comments..."
 echo ""
-
-todo_count=$(git grep -i -E '(#|(/\*))+\s*todo[\s|:|$]?' | wc -l)
+todo_count=$(git grep -i -E '#+ *todo' | wc -l)
+echo "TODOs found: ${todo_count}"
 exit ${todo_count}
 
 echo ""

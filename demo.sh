@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # failure is a natural part of life
-set -e
+set -eou pipefail
 
 mkdir -p $(pwd)/test_data
 

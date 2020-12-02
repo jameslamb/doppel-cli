@@ -5,8 +5,8 @@
 # [usage]
 #     ./.ci/test.sh
 
-# Failure is a natural part of life
-set -e
+# failure is a natural part of life
+set -eou pipefail
 
 # Set up environment variables
 CI_TOOLS=$(pwd)/.ci
@@ -17,10 +17,10 @@ MIN_ANALYZE_R_TEST_COVERAGE=100
 MIN_ANALYZE_PY_TEST_COVERAGE=100
 
 if [[ $TASK == "lint" ]]; then
-    ${CONDA_DIR}/bin/conda install -c conda-forge \
+    conda install -c conda-forge \
         r-lintr>=2.0.0
     # Get Python packages for testing
-    ${CONDA_DIR}/bin/pip install \
+    pip install \
         --upgrade \
         --user \
             black \
@@ -30,12 +30,12 @@ if [[ $TASK == "lint" ]]; then
             pylint
     make lint
     Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
-    ${CI_TOOLS}/lint-todo.sh $(pwd)
+    ${CI_TOOLS}/lint-todo.sh
     exit 0
 fi
 
-if [[ $OS_NAME == "macos" ]]; then
-    ${CONDA_DIR}/bin/conda create -q -n testenv python=3.6 nose pytest
+if [[ $OS_NAME == "macOS-latest" ]]; then
+    conda create -q -n testenv python=3.6 nose pytest pytest-cov
     source activate testenv
     pip install argparse requests
 fi

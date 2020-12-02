@@ -14,13 +14,13 @@
 # [usage]
 #     ./.ci/run_smoke_tests.sh $(pwd)/test_data
 
+# failure is a natural part of life
+set -eou pipefail
+
 TEST_DATA_DIR=${1}
 R_TEST_PACKAGE="argparse"
 PYTHON_TEST_PACKAGE="argparse"
 TEST_FILES_TO_COMPARE="${TEST_DATA_DIR}/python_${PYTHON_TEST_PACKAGE}.json,${TEST_DATA_DIR}/r_${R_TEST_PACKAGE}.json"
-
-# failure is a natural part of life
-set -e
 
 echo ""
 echo "Running smoke tests"

@@ -6,6 +6,9 @@
 # [usage]
 #     ./.ci/lint-py.sh $(pwd)
 
+# failure is a natural part of life
+set -eou pipefail
+
 SOURCE_DIR=${1}
 
 MAX_LINE_LENGTH=100
