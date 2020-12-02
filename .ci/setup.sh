@@ -37,7 +37,7 @@ pip install \
     tabulate \
     wheel
 
-pip install \
-    --user \
+conda install \
+    -y \
         pytest \
         pytest-cov
