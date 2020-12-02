@@ -55,7 +55,7 @@ jobs:
           OS_NAME: ${{ matrix.os }}
         run: |
           export TASK="${{ matrix.task }}"
-          export PATH=${HOME}/.local/bin:${CONDA}/bin:$PATH
+          export PATH=${CONDA}/bin:${HOME}/.local/bin:$PATH
           $GITHUB_WORKSPACE/.ci/setup.sh
           $GITHUB_WORKSPACE/.ci/test.sh
           codecov
