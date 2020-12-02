@@ -35,7 +35,7 @@ if [[ $TASK == "lint" ]]; then
 fi
 
 if [[ $OS_NAME == "macOS-latest" ]]; then
-    conda create -q -n testenv python=3.6 nose pytest
+    conda create -q -n testenv python=3.6 nose pytest pytest-cov
     source activate testenv
     pip install argparse requests
 fi
