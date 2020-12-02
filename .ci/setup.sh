@@ -3,19 +3,6 @@
 # failure is a natural part of life
 set -e
 
-# Set up environment variables
-export CRAN_MIRROR=http://cran.rstudio.com
-
-# if [[ $OS_NAME == "macOS-latest" ]]; then
-#     export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-4.3.21-MacOSX-x86_64.sh
-# elif [[ $OS_NAME == "ubuntu-latest" ]]; then
-#     export MINICONDA_INSTALLER=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-# fi
-
-# Install conda
-# wget ${MINICONDA_INSTALLER} -O miniconda.sh;
-# bash miniconda.sh -b -p ${CONDA_DIR}
-
 conda config --set always_yes yes --set changeps1 no
 conda update -q conda
 conda info -a
@@ -43,8 +30,6 @@ pip install \
     click \
     coverage \
     codecov \
-    pytest \
-    pytest-cov \
     requests \
     sphinx \
     sphinx_autodoc_typehints \
@@ -52,6 +37,7 @@ pip install \
     tabulate \
     wheel
 
-# fixes issues with pytest-cov:
-# https://stackoverflow.com/a/41066450/3986677
-pip install --upgrade setuptools
+pip install \
+    --user \
+        pytest \
+        pytest-cov
