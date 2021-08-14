@@ -5,3 +5,4 @@ format:
 .PHONY: lint
 lint:
 	./.ci/lint-py.sh $$(pwd)
+	./.ci/lint-shell-scripts.sh

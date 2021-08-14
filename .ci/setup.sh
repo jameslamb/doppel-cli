@@ -31,6 +31,7 @@ pip install \
     coverage \
     codecov \
     requests \
+    shellcheck \
     sphinx \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \

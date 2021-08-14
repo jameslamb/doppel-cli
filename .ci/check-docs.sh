@@ -9,13 +9,13 @@
 # failure is a natural part of life
 set -eou pipefail
 
-SOURCE_DIR=${1}
+SOURCE_DIR="${1}"
 
 echo ""
 echo "Checking docs for problems"
 echo ""
 
-    pushd ${SOURCE_DIR}
+    pushd "${SOURCE_DIR}"
         make html
         NUM_WARNINGS=$(cat warnings.txt | wc -l)
         if [[ ${NUM_WARNINGS} -ne 0 ]]; then

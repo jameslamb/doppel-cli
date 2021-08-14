@@ -17,7 +17,7 @@
 # failure is a natural part of life
 set -eou pipefail
 
-TEST_DATA_DIR=${1}
+TEST_DATA_DIR="${1}"
 R_TEST_PACKAGE="argparse"
 PYTHON_TEST_PACKAGE="argparse"
 TEST_FILES_TO_COMPARE="${TEST_DATA_DIR}/python_${PYTHON_TEST_PACKAGE}.json,${TEST_DATA_DIR}/r_${R_TEST_PACKAGE}.json"
@@ -26,16 +26,16 @@ echo ""
 echo "Running smoke tests"
 echo ""
 
-    mkdir -p ${TEST_DATA_DIR}
+    mkdir -p "${TEST_DATA_DIR}"
 
     doppel-describe \
         -p ${PYTHON_TEST_PACKAGE} \
         --language python \
-        --data-dir ${TEST_DATA_DIR}
+        --data-dir "${TEST_DATA_DIR}"
     doppel-describe \
         -p ${R_TEST_PACKAGE} \
         --language r \
-        --data-dir ${TEST_DATA_DIR}
+        --data-dir "${TEST_DATA_DIR}"
     doppel-test \
         --files ${TEST_FILES_TO_COMPARE} \
         --errors-allowed 100

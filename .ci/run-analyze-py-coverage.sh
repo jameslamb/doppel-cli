@@ -17,11 +17,11 @@ mkdir -p $(pwd)/test_data
 # near the tests so we can use a relative import to
 # import and call it
 echo "copying analyze.py to a location next to the tests"
-ANALYZE_PY_SCRIPT=$(pwd)/doppel/bin/analyze.py
-ANALYZE_PY_COPY=${INTEGRATION_TEST_DIR}/doppel_analyze.py
-cp ${ANALYZE_PY_SCRIPT} ${ANALYZE_PY_COPY}
+ANALYZE_PY_SCRIPT="$(pwd)/doppel/bin/analyze.py"
+ANALYZE_PY_COPY="${INTEGRATION_TEST_DIR}/doppel_analyze.py"
+cp "${ANALYZE_PY_SCRIPT}" "${ANALYZE_PY_COPY}"
 
-pushd ${INTEGRATION_TEST_DIR}
+pushd "${INTEGRATION_TEST_DIR}"
     pytest \
         --cov
 

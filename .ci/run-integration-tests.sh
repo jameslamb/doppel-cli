@@ -13,15 +13,15 @@
 # failure is a natural part of life
 set -eou pipefail
 
-export TEST_DATA_DIR=${1}
+export TEST_DATA_DIR="${1}"
 
-mkdir -p ${TEST_DATA_DIR}
+mkdir -p "${TEST_DATA_DIR}"
 
 echo ""
 echo "Running python integration tests"
 echo ""
 
-    pushd $(pwd)/integration_tests/python_tests
+    pushd "$(pwd)/integration_tests/python_tests"
         pytest \
             --cache-clear \
             -vv
@@ -35,8 +35,8 @@ echo ""
 echo "Running R integration tests"
 echo ""
     
-    export DOPPEL_DESCRIBE_LOC=$(which doppel-describe)
-    pushd $(pwd)/integration_tests/r_tests
+    export DOPPEL_DESCRIBE_LOC="$(which doppel-describe)"
+    pushd "$(pwd)/integration_tests/r_tests"
         Rscript --vanilla -e "testthat::test_dir('.', stop_on_failure = TRUE)"
     popd
 
@@ -45,14 +45,13 @@ echo "Done running R integration tests"
 echo ""
 
 
-TEST_PKG_DIR=$(pwd)/integration_tests/test-packages
-R_TEST_PKG_DIR=${TEST_PKG_DIR}/r
-PYTHON_TEST_PKG_DIR=${TEST_PKG_DIR}/python
+TEST_PKG_DIR="$(pwd)/integration_tests/test-packages"
+R_TEST_PKG_DIR="${TEST_PKG_DIR}/r"
 
 # All other tests in this file only make sense if
 # the Python and R test packages are equivalent.
 # This block of code down here tests that they are
-for pkg in $(ls ${R_TEST_PKG_DIR}); do
+for pkg in $(ls "${R_TEST_PKG_DIR}"); do
 
     echo ""
     echo "Checking API similarity of package '${pkg}' with doppel-test"
