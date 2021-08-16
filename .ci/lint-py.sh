@@ -79,7 +79,37 @@ echo ""
     echo ""
     mypy \
         --ignore-missing-imports \
-        ${SOURCE_DIR} \
+        ${SOURCE_DIR}/doppel \
+    || exit  -1
+
+    mypy \
+        --ignore-missing-imports \
+        ${SOURCE_DIR}/integration_tests/test-packages/python/pythonspecific \
+    || exit  -1
+
+    mypy \
+        --ignore-missing-imports \
+        ${SOURCE_DIR}/integration_tests/test-packages/python/pythonspecific2 \
+    || exit  -1
+
+    mypy \
+        --ignore-missing-imports \
+        ${SOURCE_DIR}/integration_tests/test-packages/python/testpkguno \
+    || exit  -1
+
+    mypy \
+        --ignore-missing-imports \
+        ${SOURCE_DIR}/integration_tests/test-packages/python/testpkgdos \
+    || exit  -1
+
+    mypy \
+        --ignore-missing-imports \
+        ${SOURCE_DIR}/integration_tests/test-packages/python/testpkgtres \
+    || exit  -1
+
+    mypy \
+        --ignore-missing-imports \
+        ${SOURCE_DIR}/tests \
     || exit  -1
 
 echo ""

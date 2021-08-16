@@ -27,7 +27,10 @@ if [[ $TASK == "lint" ]]; then
             flake8 \
             mypy \
             pycodestyle \
-            pylint
+            pylint \
+            types-requests \
+            types-setuptools \
+            types-tabulate
     make lint
     Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)
     ${CI_TOOLS}/lint-todo.sh

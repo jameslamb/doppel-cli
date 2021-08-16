@@ -2,7 +2,7 @@
 # isn't tricked into thinking they belong to this
 # package
 import math
-from random import LOG4
+from random import LOG4  # type: ignore
 
 
 # Adding an internal function to be sure tests catch

@@ -1,4 +1,4 @@
-from testpkguno import ClassA
+from .ClassA import ClassA
 
 
 class ClassB(ClassA):
