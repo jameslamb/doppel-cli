@@ -20,7 +20,7 @@ echo ""
         NUM_WARNINGS=$(cat warnings.txt | wc -l)
         if [[ ${NUM_WARNINGS} -ne 0 ]]; then
             echo "Found ${NUM_WARNINGS} issues in Sphinx docs in the docs/ folder";
-            exit ${NUM_WARNINGS};
+            exit "${NUM_WARNINGS}";
         fi
     popd
 

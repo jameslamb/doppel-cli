@@ -37,7 +37,7 @@ echo ""
         --language r \
         --data-dir "${TEST_DATA_DIR}"
     doppel-test \
-        --files ${TEST_FILES_TO_COMPARE} \
+        --files "${TEST_FILES_TO_COMPARE}" \
         --errors-allowed 100
 
 echo ""

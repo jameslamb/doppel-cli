@@ -13,7 +13,7 @@ echo "Checking code for TODO comments..."
 echo ""
 todo_count=$(git grep -i -E '#+ *todo' | wc -l)
 echo "TODOs found: ${todo_count}"
-exit ${todo_count}
+exit "${todo_count}"
 
 echo ""
 echo "Done checking code for TODO comments."

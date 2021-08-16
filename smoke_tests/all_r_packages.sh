@@ -29,7 +29,7 @@ echo "You have ${NUM_PACKAGES} R packages installed."
 
 # Randomly select packages and start working through them
 RANDOM_PACKAGES=$(
-    echo $ALL_R_PACKAGES | tr ' ' "\n" | sort --sort=random
+    echo "$ALL_R_PACKAGES" | tr ' ' "\n" | sort --sort=random
 )
 
 for pkg in ${RANDOM_PACKAGES}; do

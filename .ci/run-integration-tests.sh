@@ -34,8 +34,9 @@ echo ""
 echo ""
 echo "Running R integration tests"
 echo ""
-    
-    export DOPPEL_DESCRIBE_LOC="$(which doppel-describe)"
+
+    DOPPEL_DESCRIBE_LOC="$(which doppel-describe)"
+    export DOPPEL_DESCRIBE_LOC
     pushd "$(pwd)/integration_tests/r_tests"
         Rscript --vanilla -e "testthat::test_dir('.', stop_on_failure = TRUE)"
     popd

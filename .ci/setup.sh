@@ -22,8 +22,7 @@ conda install \
     --quiet \
     r-covr \
     r-argparse \
-    r-futile.logger \
-    shellcheck
+    r-futile.logger
 
 # Get Python packages for testing
 pip install \

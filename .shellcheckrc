@@ -1,0 +1,11 @@
+# useless cat
+disable=SC2002
+
+# iterating over ls output is fragile
+disable=SC2045
+
+# Not following: activate was not specified as input
+disable=SC1091
+
+# consider using grep -c instead of grep|wc -l
+disable=SC2126

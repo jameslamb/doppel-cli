@@ -16,7 +16,7 @@ echo "Running unit tests"
 echo ""
 
     coverage run setup.py test
-    coverage report -m --fail-under=${MIN_TEST_COVERAGE}
+    coverage report -m --fail-under="${MIN_TEST_COVERAGE}"
 
 echo ""
 echo "Done running unit tests"

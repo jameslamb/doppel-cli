@@ -18,7 +18,7 @@ echo "installing test R packages..."
 echo ""
 
 if [[ "$OS_NAME" != "windows-latest" ]]; then
-    for pkg in $(ls ${R_TEST_PKG_DIR}); do
+    for pkg in $(ls "${R_TEST_PKG_DIR}"); do
         echo ""
         echo "Installing package '${pkg}'"
         echo ""
@@ -42,7 +42,7 @@ echo ""
 echo "installing test python packages..."
 echo ""
 
-for pkg in $(ls ${PYTHON_TEST_PKG_DIR}); do
+for pkg in $(ls "${PYTHON_TEST_PKG_DIR}"); do
     echo ""
     echo "Installing package '${pkg}'"
     echo ""
