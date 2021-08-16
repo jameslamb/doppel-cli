@@ -11,6 +11,7 @@ conda info -a
 conda install \
     -c r \
     --quiet \
+    'r-base>=4.1.0' \
     r-assertthat \
     r-jsonlite \
     r-r6 \
