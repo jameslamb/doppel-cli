@@ -18,7 +18,7 @@ MIN_ANALYZE_PY_TEST_COVERAGE=100
 
 if [[ $TASK == "lint" ]]; then
     conda install -c conda-forge \
-        r-lintr>=2.0.0
+        'r-lintr>=2.0.0'
     # Get Python packages for testing
     pip install \
         --upgrade \
