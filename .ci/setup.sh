@@ -22,7 +22,8 @@ conda install \
     --quiet \
     r-covr \
     r-argparse \
-    r-futile.logger
+    r-futile.logger \
+    shellcheck
 
 # Get Python packages for testing
 pip install \
@@ -31,7 +32,6 @@ pip install \
     coverage \
     codecov \
     requests \
-    shellcheck \
     sphinx \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \
