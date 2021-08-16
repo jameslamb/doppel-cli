@@ -9,9 +9,14 @@ conda info -a
 
 # Set up R (gulp)
 conda install \
+    -c conda-forge \
+    --yes \
+    'r-base>=4.1.0'
+
+conda install \
     -c r \
     --quiet \
-    'r-base>=4.1.0' \
+    --yes \
     r-assertthat \
     r-jsonlite \
     r-r6 \
@@ -21,6 +26,7 @@ conda install \
 conda install \
     -c conda-forge \
     --quiet \
+    --yes \
     r-covr \
     r-argparse \
     r-futile.logger
