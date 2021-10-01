@@ -14,4 +14,4 @@ class DoppelTestError:
         self.msg = msg
 
     def __str__(self) -> str:
-        return "{}\n".format(self.msg)
+        return f"{self.msg}\n"

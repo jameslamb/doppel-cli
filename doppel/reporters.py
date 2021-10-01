@@ -101,10 +101,10 @@ class SimpleReporter:
         i = 1
         if num_errors > 0:
 
-            stdout.write("\nTest Failures ({})\n".format(num_errors))
+            stdout.write(f"\nTest Failures ({num_errors})\n")
             stdout.write("===================\n")
             for err in self.errors:
-                stdout.write("{}. {}\n".format(i, str(err)))
+                stdout.write(f"{i}. {str(err)}\n")
                 i += 1
 
         # Only throw a non-zero exit code if you had too many errors
@@ -133,7 +133,7 @@ class SimpleReporter:
         if len(set(counts)) > 1:
             error_txt = "Packages have different counts of public functions! {}"
             error_txt = error_txt.format(
-                ", ".join(["{} ({})".format(x, y) for x, y in zip(pkg_names, counts)])
+                ", ".join([f"{x} ({y})" for x, y in zip(pkg_names, counts)])
             )
             self.errors.append(DoppelTestError(error_txt))
 
@@ -181,7 +181,7 @@ class SimpleReporter:
         # Append errors
         if len(non_shared_functions) > 0:
             for func_name in non_shared_functions:
-                error_txt = "Function '{}()' is not exported by all packages".format(func_name)
+                error_txt = f"Function '{func_name}()' is not exported by all packages"
                 self.errors.append(DoppelTestError(error_txt))
 
         # Print output
@@ -289,7 +289,7 @@ class SimpleReporter:
         if len(set(counts)) > 1:
             error_txt = "Packages have different counts of exported classes! {}"
             error_txt = error_txt.format(
-                ", ".join(["{} ({})".format(x, y) for x, y in zip(names, counts)])
+                ", ".join([f"{x} ({y})" for x, y in zip(names, counts)])
             )
             self.errors.append(DoppelTestError(error_txt))
 
@@ -337,7 +337,7 @@ class SimpleReporter:
         # Append errors
         if len(non_shared_classes) > 0:
             for class_name in non_shared_classes:
-                error_txt = "Class '{}' is not exported by all packages".format(class_name)
+                error_txt = f"Class '{class_name}' is not exported by all packages"
                 self.errors.append(DoppelTestError(error_txt))
 
         # Print output
@@ -404,7 +404,7 @@ class SimpleReporter:
 
                 identical_api = "yes"
 
-                display_name = "{}.{}()".format(class_name, method_name)
+                display_name = f"{class_name}.{method_name}()"
 
                 # Generate a list of lists of args
                 args = [pkg.public_method_args(class_name, method_name) for pkg in self.pkgs]

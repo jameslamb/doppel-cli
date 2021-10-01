@@ -65,20 +65,20 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
         logger.setLevel(logging.INFO)
 
     language = language.lower()
-    logger.info("Testing package {} [{}]".format(pkg_name, language))
+    logger.info(f"Testing package {pkg_name} [{language}]")
 
     if not os.path.isdir(data_dir):
-        msg = "Directory '{}' passed to --data-dir does not exist.".format(data_dir)
+        msg = f"Directory '{data_dir}' passed to --data-dir does not exist."
         logger.fatal(msg)  # type: ignore
         raise RuntimeError(msg)
 
     try:
         files = {"python": "analyze.py", "r": "analyze.R"}
         analysis_script = pkg_resources.resource_filename(
-            "doppel", "bin/{}".format(files[language])
+            "doppel", f"bin/{files[language]}"
         )
     except KeyError:
-        msg = "doppel does not know how to test {} packages".format(language)
+        msg = f"doppel does not know how to test {language} packages"
         logger.fatal(msg)  # type: ignore
         raise KeyError(msg)
 
@@ -94,13 +94,13 @@ def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bo
     if verbose is True:
         cmd += " --verbose"
 
-    logger.info("Describing package with command:\n {}".format(cmd))
+    logger.info(f"Describing package with command:\n {cmd}")
 
     # Invoke the analysis script
     exit_code = os.system(cmd)
 
     if exit_code != 0:
-        msg = "doppel-describe exited with non-zero exit code: {}".format(exit_code)
+        msg = f"doppel-describe exited with non-zero exit code: {exit_code}"
         logger.fatal(msg)  # type: ignore
         raise RuntimeError(msg)
 
