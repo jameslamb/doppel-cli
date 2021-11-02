@@ -107,7 +107,9 @@ class PackageAPI:
 
         :param class_name: Name of a class in the package
         """
-        return sorted(list(self.pkg_dict["classes"][class_name]["public_methods"].keys()))
+        return sorted(
+            list(self.pkg_dict["classes"][class_name]["public_methods"].keys())
+        )
 
     def public_method_args(self, class_name: str, method_name: str) -> List[str]:
         """
@@ -116,4 +118,6 @@ class PackageAPI:
         :param class_name: Name of a class in the package
         :param method-name: Name of the method to get arguments for
         """
-        return list(self.pkg_dict["classes"][class_name]["public_methods"][method_name]["args"])
+        return list(
+            self.pkg_dict["classes"][class_name]["public_methods"][method_name]["args"]
+        )

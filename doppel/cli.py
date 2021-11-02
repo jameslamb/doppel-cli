@@ -13,14 +13,19 @@ from doppel.PackageAPI import PackageAPI
 
 
 @click.command()
-@click.option("--files", "-f", default=None, help="Comma-delimited list of doppel output files.")
+@click.option(
+    "--files", "-f", default=None, help="Comma-delimited list of doppel output files."
+)
 @click.option(
     "--errors-allowed",
     default=0,
     help="Integer number of errors to allow before returning non-zero exit code. Default is 0.",
 )
 @click.option(
-    "--version", default=False, help="Get the current version of doppel-test", is_flag=True
+    "--version",
+    default=False,
+    help="Get the current version of doppel-test",
+    is_flag=True,
 )
 def main(files: str, errors_allowed: int, version: bool) -> None:
     """

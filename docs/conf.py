@@ -105,7 +105,13 @@ latex_elements = {}
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, f"{_PROJECT_NAME}.tex", f"{_PROJECT_NAME} Documentation", _AUTHOR, "manual"),
+    (
+        master_doc,
+        f"{_PROJECT_NAME}.tex",
+        f"{_PROJECT_NAME} Documentation",
+        _AUTHOR,
+        "manual",
+    ),
 ]
 
 # -- Options for manual page output ------------------------------------------

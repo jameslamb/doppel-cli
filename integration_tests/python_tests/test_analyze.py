@@ -27,7 +27,13 @@ def rundescribe():
     # there isn't a clean way to pass in
     # command-line args to test scripts, so
     # using environment variables
-    test_packages = ["testpkguno", "testpkgdos", "testpkgtres", "pythonspecific", "pythonspecific2"]
+    test_packages = [
+        "testpkguno",
+        "testpkgdos",
+        "testpkgtres",
+        "pythonspecific",
+        "pythonspecific2",
+    ]
 
     # Added this abomination because something about
     # os.getenv('TEST_PACKAGE_DIR') was resulting in a None
@@ -160,7 +166,9 @@ class TestBasicContract:
 
             assert len(class_interface.keys()) == 1
 
-            for method_name, method_interface in class_interface["public_methods"].items():
+            for method_name, method_interface in class_interface[
+                "public_methods"
+            ].items():
                 args = method_interface["args"]
                 assert isinstance(args, list)
                 assert len(method_interface.keys()) == 1
@@ -247,7 +255,9 @@ class TestClassStuff:
         for e in expected_methods:
             assert class_dict["ClassA"]["public_methods"].get(e, False)
 
-        assert len(class_dict["ClassA"]["public_methods"].keys()) == len(expected_methods)
+        assert len(class_dict["ClassA"]["public_methods"].keys()) == len(
+            expected_methods
+        )
 
     def test_inherited_class_public_methods_found(self, rundescribe):
         """
@@ -260,12 +270,20 @@ class TestClassStuff:
         within "classes".
         """
         class_dict = rundescribe["testpkguno"]["classes"]
-        expected_methods = ["~~CONSTRUCTOR~~", "anarchy", "banarchy", "canarchy", "hello_there"]
+        expected_methods = [
+            "~~CONSTRUCTOR~~",
+            "anarchy",
+            "banarchy",
+            "canarchy",
+            "hello_there",
+        ]
 
         for e in expected_methods:
             assert class_dict["ClassB"]["public_methods"].get(e, False)
 
-        assert len(class_dict["ClassB"]["public_methods"].keys()) == len(expected_methods)
+        assert len(class_dict["ClassB"]["public_methods"].keys()) == len(
+            expected_methods
+        )
 
     def test_classmethods_found(self, rundescribe):
         """
@@ -303,9 +321,9 @@ class TestClassStuff:
         Totally empty classes should still have their
         constructors documented
         """
-        assert list(rundescribe["testpkguno"]["classes"]["ClassF"]["public_methods"].keys()) == [
-            "~~CONSTRUCTOR~~"
-        ]
+        assert list(
+            rundescribe["testpkguno"]["classes"]["ClassF"]["public_methods"].keys()
+        ) == ["~~CONSTRUCTOR~~"]
         assert rundescribe["testpkguno"]["classes"]["ClassF"]["public_methods"][
             "~~CONSTRUCTOR~~"
         ] == {"args": []}
@@ -373,7 +391,9 @@ class TestPythonSpecific:
         result_json = rundescribe["pythonspecific"]
 
         assert set(result_json["functions"].keys()) == set(["some_function"])
-        assert set(result_json["classes"].keys()) == set(["SomeClass", "GreatClass", "MinWrapper"])
+        assert set(result_json["classes"].keys()) == set(
+            ["SomeClass", "GreatClass", "MinWrapper"]
+        )
 
     def test_inner_classes(self, rundescribe):
         """
@@ -383,10 +403,12 @@ class TestPythonSpecific:
         """
         result_json = rundescribe["pythonspecific"]
 
-        assert set(result_json["classes"]["GreatClass"]["public_methods"].keys()) == set(
-            ["do_stuff", "LilGreatClass", "~~CONSTRUCTOR~~"]
-        )
-        lil_args = result_json["classes"]["GreatClass"]["public_methods"]["LilGreatClass"]["args"]
+        assert set(
+            result_json["classes"]["GreatClass"]["public_methods"].keys()
+        ) == set(["do_stuff", "LilGreatClass", "~~CONSTRUCTOR~~"])
+        lil_args = result_json["classes"]["GreatClass"]["public_methods"][
+            "LilGreatClass"
+        ]["args"]
         assert set(lil_args) == set(["things", "stuff"])
 
     def test_builtin_func(self, rundescribe):
@@ -408,7 +430,9 @@ class TestPythonSpecific:
         """
         result_json = rundescribe["pythonspecific"]
 
-        assert result_json["classes"]["MinWrapper"]["public_methods"]["wrap_min"] == {"args": []}
+        assert result_json["classes"]["MinWrapper"]["public_methods"]["wrap_min"] == {
+            "args": []
+        }
 
 
 class TestWeirdImportStuff:
@@ -438,7 +462,9 @@ class TestWeirdImportStuff:
         """
         result_json = rundescribe["pythonspecific2"]
 
-        assert set(result_json["functions"].keys()) == set(["create_warning", "create_warm_things"])
+        assert set(result_json["functions"].keys()) == set(
+            ["create_warning", "create_warm_things"]
+        )
         # imports from other packages are included if you explicitly
         # wrap them in a def()
         assert "create_warm_things" in result_json["functions"]
@@ -476,7 +502,13 @@ class TestMissingFiles:
         '-p' should be required
         """
         result = subprocess.run(
-            ["doppel-describe", "--language", "python", "--data-dir", "../../test_data"],
+            [
+                "doppel-describe",
+                "--language",
+                "python",
+                "--data-dir",
+                "../../test_data",
+            ],
             stderr=subprocess.PIPE,
         )
         error_text = result.stderr.decode("utf-8")
@@ -498,7 +530,8 @@ class TestMissingFiles:
         '--data-dir' should be required
         """
         result = subprocess.run(
-            ["doppel-describe", "--pkg_name", "argparse", "-l", "python"], stderr=subprocess.PIPE
+            ["doppel-describe", "--pkg_name", "argparse", "-l", "python"],
+            stderr=subprocess.PIPE,
         )
         error_text = result.stderr.decode("utf-8")
         assert bool(re.search('Missing option "--data-dir"', error_text))

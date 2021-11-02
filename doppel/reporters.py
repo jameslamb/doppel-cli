@@ -195,7 +195,9 @@ class SimpleReporter:
         stdout.write("\nFunction Argument Names\n")
         stdout.write("=======================\n")
 
-        func_blocks_by_package = {pkg.name(): pkg.pkg_dict["functions"] for pkg in self.pkgs}
+        func_blocks_by_package = {
+            pkg.name(): pkg.pkg_dict["functions"] for pkg in self.pkgs
+        }
         pkg_names = self.pkg_collection.package_names()
         shared_functions = self.pkg_collection.shared_functions()
 
@@ -214,18 +216,24 @@ class SimpleReporter:
             args = [func_blocks_by_package[p][func_name]["args"] for p in pkg_names]
 
             # check 1: same number of arguments?
-            same_length = all([len(func_arg_list) == len(args[0]) for func_arg_list in args])
+            same_length = all(
+                [len(func_arg_list) == len(args[0]) for func_arg_list in args]
+            )
             if not same_length:
                 error_txt = (
                     "Function '{}()' exists in all packages but with "
                     "differing number of arguments ({})."
                 )
-                error_txt = error_txt.format(func_name, ",".join([str(len(a)) for a in args]))
+                error_txt = error_txt.format(
+                    func_name, ",".join([str(len(a)) for a in args])
+                )
                 self.errors.append(DoppelTestError(error_txt))
                 identical_api = "no"
 
             # check 2: same set of arguments
-            same_args = all([sorted(func_arg_list) == sorted(args[0]) for func_arg_list in args])
+            same_args = all(
+                [sorted(func_arg_list) == sorted(args[0]) for func_arg_list in args]
+            )
             if not same_args:
                 error_txt = (
                     "Function '{}()' exists in all packages but some arguments "
@@ -255,10 +263,12 @@ class SimpleReporter:
             rows.append([func_name, identical_api])
 
         # Report output
-        message = (
-            "\n{} of the {} functions shared across all packages have identical signatures\n\n"
+        message = "\n{} of the {} functions shared across all packages have identical signatures\n\n"
+        stdout.write(
+            message.format(
+                len([r for r in rows if r[1] == "yes"]), len(shared_functions)
+            )
         )
-        stdout.write(message.format(len([r for r in rows if r[1] == "yes"]), len(shared_functions)))
 
         out = _OutputTable(headers=headers, rows=rows)
         out.write()
@@ -376,7 +386,9 @@ class SimpleReporter:
 
             # If anything is in nonshared methods, add an error
             for method in nonshared_methods:
-                error_txt = "Not all implementations of class '{}' have public method '{}()'"
+                error_txt = (
+                    "Not all implementations of class '{}' have public method '{}()'"
+                )
                 error_txt = error_txt.format(class_name, method)
                 self.errors.append(DoppelTestError(error_txt))
 
@@ -407,10 +419,14 @@ class SimpleReporter:
                 display_name = f"{class_name}.{method_name}()"
 
                 # Generate a list of lists of args
-                args = [pkg.public_method_args(class_name, method_name) for pkg in self.pkgs]
+                args = [
+                    pkg.public_method_args(class_name, method_name) for pkg in self.pkgs
+                ]
 
                 # check 1: same number of arguments?
-                same_length = all([len(func_arg_list) == len(args[0]) for func_arg_list in args])
+                same_length = all(
+                    [len(func_arg_list) == len(args[0]) for func_arg_list in args]
+                )
                 if not same_length:
                     error_txt = (
                         "Public method '{}()' on class '{}' exists in all "

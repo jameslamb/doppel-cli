@@ -15,7 +15,9 @@ from typing import List
 
 logger = logging.getLogger()
 logging.basicConfig(
-    format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S", stream=sys.stdout
+    format="%(levelname)s [%(asctime)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    stream=sys.stdout,
 )
 
 
@@ -25,7 +27,9 @@ def parse_args(args):
     parser.add_argument(
         "--output_dir", type=str, default=os.getcwd(), help="Path to write files to"
     )
-    parser.add_argument("--kwargs-string", type=str, help="String value to replace **kwarg")
+    parser.add_argument(
+        "--kwargs-string", type=str, help="String value to replace **kwarg"
+    )
     parser.add_argument(
         "--constructor-string",
         type=str,
@@ -144,7 +148,9 @@ def do_everything(parsed_args):
                 # requests
                 #
                 if obj.__module__.startswith(PKG_NAME):
-                    logger.info("'{}' is a function in this package, adding it".format(obj_name))
+                    logger.info(
+                        "'{}' is a function in this package, adding it".format(obj_name)
+                    )
                     out[FUNCTIONS_KEY][obj_name] = {
                         ARGS_KEY: _get_arg_names(obj, kwargs_string=KWARGS_STRING)
                     }
@@ -162,7 +168,11 @@ def do_everything(parsed_args):
                     is_in_package = bool(re.search(regex, str(obj)))
 
                     if is_in_package:
-                        logger.info("'{}' is a class in this package, adding it".format(obj_name))
+                        logger.info(
+                            "'{}' is a class in this package, adding it".format(
+                                obj_name
+                            )
+                        )
                         out[CLASSES_KEY][obj_name] = {}
                         out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY] = {}
 
@@ -209,11 +219,17 @@ def do_everything(parsed_args):
                             # ClassB is basically being used like a public method. Treat it
                             # like that and grab the arguments of its constructor
                             #
-                            is_class_method = str(getattr(class_member, "__self__", None)) == str(
-                                obj
-                            )
-                            if not is_function and not is_constructor and not is_class_method:
-                                init_args = _get_arg_names(class_member.__init__, KWARGS_STRING)
+                            is_class_method = str(
+                                getattr(class_member, "__self__", None)
+                            ) == str(obj)
+                            if (
+                                not is_function
+                                and not is_constructor
+                                and not is_class_method
+                            ):
+                                init_args = _get_arg_names(
+                                    class_member.__init__, KWARGS_STRING
+                                )
                                 is_class_method = (CLASS_KEYWORD in init_args) or (
                                     SELF_KEYWORD in init_args
                                 )
@@ -230,11 +246,15 @@ def do_everything(parsed_args):
                             # this is_function is still here to catch the case where the constructor
                             # wasn't implemented
                             if is_function or is_class_method:
-                                method_args = _get_arg_names(class_member, KWARGS_STRING)
+                                method_args = _get_arg_names(
+                                    class_member, KWARGS_STRING
+                                )
 
                                 # Handle Python "self" conventions
                                 method_args = [
-                                    a for a in method_args if a not in SPECIAL_METHOD_ARGS
+                                    a
+                                    for a in method_args
+                                    if a not in SPECIAL_METHOD_ARGS
                                 ]
 
                                 # If we're dealing with the class constructor, use the
@@ -284,7 +304,9 @@ def do_everything(parsed_args):
                             logger.debug(msg.format(obj.__name__))
                         else:
                             logger.info(
-                                "Module '{}' is in this package, adding it.".format(obj.__name__)
+                                "Module '{}' is in this package, adding it.".format(
+                                    obj.__name__
+                                )
                             )
                             modules_to_parse.append(obj)
 

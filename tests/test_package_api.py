@@ -23,11 +23,15 @@ class TestPackageAPI(unittest.TestCase):
         self.assertEqual(pkg.name(), "boombap [python]")
         self.assertEqual(pkg.num_functions(), 1)
         self.assertEqual(pkg.function_names(), ["playback"])
-        self.assertEqual(pkg.functions_with_args(), {"playback": {"args": ["bpm", "bass"]}})
+        self.assertEqual(
+            pkg.functions_with_args(), {"playback": {"args": ["bpm", "bass"]}}
+        )
         self.assertEqual(pkg.num_classes(), 1)
         self.assertEqual(pkg.class_names(), ["LupeFiasco"])
         self.assertEqual(pkg.public_methods("LupeFiasco"), ["coast", "~~CONSTRUCTOR~~"])
-        self.assertEqual(pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"), ["kick", "push"])
+        self.assertEqual(
+            pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"), ["kick", "push"]
+        )
         self.assertEqual(pkg.public_method_args("LupeFiasco", "coast"), [])
 
     def test_from_json_r(self):
@@ -39,10 +43,18 @@ class TestPackageAPI(unittest.TestCase):
         self.assertEqual(pkg.name(), "boombap [r]")
         self.assertEqual(pkg.num_functions(), 1)
         self.assertEqual(pkg.function_names(), ["playback"])
-        self.assertEqual(pkg.functions_with_args(), {"playback": {"args": ["bpm", "bass"]}})
+        self.assertEqual(
+            pkg.functions_with_args(), {"playback": {"args": ["bpm", "bass"]}}
+        )
         self.assertEqual(pkg.num_classes(), 1)
         self.assertEqual(pkg.class_names(), ["LupeFiasco"])
-        self.assertEqual(pkg.public_methods("LupeFiasco"), ["coast", "words", "~~CONSTRUCTOR~~"])
-        self.assertEqual(pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"), ["kick", "push"])
+        self.assertEqual(
+            pkg.public_methods("LupeFiasco"), ["coast", "words", "~~CONSTRUCTOR~~"]
+        )
+        self.assertEqual(
+            pkg.public_method_args("LupeFiasco", "~~CONSTRUCTOR~~"), ["kick", "push"]
+        )
         self.assertEqual(pkg.public_method_args("LupeFiasco", "coast"), [])
-        self.assertEqual(pkg.public_method_args("LupeFiasco", "words"), ["i_said", "i_never_said"])
+        self.assertEqual(
+            pkg.public_method_args("LupeFiasco", "words"), ["i_said", "i_never_said"]
+        )

@@ -13,7 +13,10 @@ class TestPackageAPI(unittest.TestCase):
 
     def setUp(self):
         self.pkg_collection = PackageCollection(
-            packages=[PackageAPI.from_json(self.py_pkg_file), PackageAPI.from_json(self.r_pkg_file)]
+            packages=[
+                PackageAPI.from_json(self.py_pkg_file),
+                PackageAPI.from_json(self.r_pkg_file),
+            ]
         )
 
     def test_all_classes(self):
@@ -66,7 +69,9 @@ class TestPackageAPI(unittest.TestCase):
         """
         shared = self.pkg_collection.shared_methods_by_class()
         self.assertEqual(list(shared.keys()), ["LupeFiasco"])
-        self.assertEqual(sorted(shared["LupeFiasco"]), sorted(["~~CONSTRUCTOR~~", "coast"]))
+        self.assertEqual(
+            sorted(shared["LupeFiasco"]), sorted(["~~CONSTRUCTOR~~", "coast"])
+        )
 
     def test_same_names(self):
         """

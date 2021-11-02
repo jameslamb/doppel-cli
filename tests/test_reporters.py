@@ -31,7 +31,10 @@ PACKAGE_WITH_DIFFERENT_ARG_NUMBER["functions"]["playback"]["args"].append("other
 
 PACKAGE_WITH_DIFFERENT_ARGS = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_WITH_DIFFERENT_ARGS["name"] = "pkg2"
-PACKAGE_WITH_DIFFERENT_ARGS["functions"]["playback"]["args"] = ["bass", "beats_per_minute"]
+PACKAGE_WITH_DIFFERENT_ARGS["functions"]["playback"]["args"] = [
+    "bass",
+    "beats_per_minute",
+]
 
 PACKAGE_WITH_DIFFERENT_ARG_ORDER = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_WITH_DIFFERENT_ARG_ORDER["name"] = "pkg2"
@@ -50,28 +53,33 @@ BASE_PACKAGE_WITH_CLASSES["classes"] = {
 
 PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
 PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER["name"] = "pkg2"
-PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER["classes"]["WaleFolarin"]["public_methods"]["no_days_off"][
-    "args"
-].append("about_nothing")
+PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER["classes"]["WaleFolarin"]["public_methods"][
+    "no_days_off"
+]["args"].append("about_nothing")
 
 PACKAGE_WITH_DIFFERENT_PM_ARGS = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
 PACKAGE_WITH_DIFFERENT_PM_ARGS["name"] = "pkg3"
-PACKAGE_WITH_DIFFERENT_PM_ARGS["classes"]["WaleFolarin"]["public_methods"]["no_days_off"][
-    "args"
-] = ["days_to_take", "outchyea"]
+PACKAGE_WITH_DIFFERENT_PM_ARGS["classes"]["WaleFolarin"]["public_methods"][
+    "no_days_off"
+]["args"] = ["days_to_take", "outchyea"]
 
 PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
 PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER["name"] = "pkg4"
-PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER["classes"]["WaleFolarin"]["public_methods"]["no_days_off"][
-    "args"
-] = ["songs_to_record", "days_to_take"]
+PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER["classes"]["WaleFolarin"]["public_methods"][
+    "no_days_off"
+]["args"] = ["songs_to_record", "days_to_take"]
 
 # super different
 PACKAGE_SUPER_DIFFERENT = copy.deepcopy(BASE_PACKAGE)
 PACKAGE_SUPER_DIFFERENT["name"] = "pkg2"
 PACKAGE_SUPER_DIFFERENT["functions"]["playback"]["args"] = ["stuff", "things", "bass"]
 
-PACKAGE_EMPTY = {"name": "empty_pkg", "language": "python", "functions": {}, "classes": {}}
+PACKAGE_EMPTY = {
+    "name": "empty_pkg",
+    "language": "python",
+    "functions": {},
+    "classes": {},
+}
 PACKAGE_EMPTY2 = copy.deepcopy(PACKAGE_EMPTY)
 PACKAGE_EMPTY2["name"] = "pkg2"
 
@@ -83,7 +91,9 @@ for i in range(5):
 
     class_name = "class_" + str(i)
     PACKAGE_BEEFY["classes"][class_name] = {
-        "public_methods": {k: {"args": ["thing", "stuff", "ok"]} for k in ["get", "push", "delete"]}
+        "public_methods": {
+            k: {"args": ["thing", "stuff", "ok"]} for k in ["get", "push", "delete"]
+        }
     }
 
 PACKAGE_BEEFY2 = copy.deepcopy(PACKAGE_BEEFY)
@@ -95,7 +105,10 @@ PACKAGE_DIFFERENT_METHODS_1 = {
     "functions": {},
     "classes": {
         "SomeClass": {
-            "public_methods": {"~~CONSTRUCTOR~~": {"args": []}, "write_py": {"args": ["x", "y"]}}
+            "public_methods": {
+                "~~CONSTRUCTOR~~": {"args": []},
+                "write_py": {"args": ["x", "y"]},
+            }
         }
     },
 }
@@ -115,7 +128,10 @@ class TestSimpleReporter(unittest.TestCase):
         number of keyword arguments.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_NUMBER),
+            ],
             errors_allowed=100,
         )
         reporter._check_function_args()
@@ -156,7 +172,10 @@ class TestSimpleReporter(unittest.TestCase):
         both packages but they are in different orders'
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER)],
+            pkgs=[
+                PackageAPI(BASE_PACKAGE),
+                PackageAPI(PACKAGE_WITH_DIFFERENT_ARG_ORDER),
+            ],
             errors_allowed=100,
         )
         reporter._check_function_args()
@@ -176,14 +195,16 @@ class TestSimpleReporter(unittest.TestCase):
         and different order.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_SUPER_DIFFERENT)], errors_allowed=100
+            pkgs=[PackageAPI(BASE_PACKAGE), PackageAPI(PACKAGE_SUPER_DIFFERENT)],
+            errors_allowed=100,
         )
         reporter._check_function_args()
         errors = reporter.errors
         self.assertTrue(len(errors) == 3)
         self.assertTrue(all([isinstance(x, DoppelTestError) for x in errors]))
         expected_message = (
-            "Function 'playback()' exists in all packages but " "with differing number of arguments"
+            "Function 'playback()' exists in all packages but "
+            "with differing number of arguments"
         )
         self.assertTrue(errors[0].msg.startswith(expected_message))
 
@@ -276,7 +297,10 @@ class TestSimpleReporter(unittest.TestCase):
         but with different methods.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_DIFFERENT_METHODS_1), PackageAPI(PACKAGE_DIFFERENT_METHODS_2)],
+            pkgs=[
+                PackageAPI(PACKAGE_DIFFERENT_METHODS_1),
+                PackageAPI(PACKAGE_DIFFERENT_METHODS_2),
+            ],
             errors_allowed=2,
         )
         reporter._check_class_public_methods()
@@ -295,7 +319,8 @@ class TestSimpleReporter(unittest.TestCase):
         are totally empty.
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY2)], errors_allowed=0
+            pkgs=[PackageAPI(PACKAGE_EMPTY), PackageAPI(PACKAGE_EMPTY2)],
+            errors_allowed=0,
         )
         reporter._check_function_args()
         self.assertTrue(reporter.errors == [])
@@ -326,7 +351,8 @@ class TestSimpleReporter(unittest.TestCase):
         on shared classes and functions)
         """
         reporter = SimpleReporter(
-            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY2)], errors_allowed=100
+            pkgs=[PackageAPI(PACKAGE_BEEFY), PackageAPI(PACKAGE_BEEFY2)],
+            errors_allowed=100,
         )
 
         # SimpleReporter has a sys.exit() in it. Mock that out
@@ -344,7 +370,9 @@ class TestSimpleReporter(unittest.TestCase):
         SimpleReporter should not return any errors if you
         only use a single package
         """
-        reporter = SimpleReporter(pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)], errors_allowed=0)
+        reporter = SimpleReporter(
+            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)], errors_allowed=0
+        )
 
         # SimpleReporter has a sys.exit() in it. Mock that out
         def f():
