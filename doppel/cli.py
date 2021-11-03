@@ -20,7 +20,10 @@ from doppel.PackageAPI import PackageAPI
     help="Integer number of errors to allow before returning non-zero exit code. Default is 0.",
 )
 @click.option(
-    "--version", default=False, help="Get the current version of doppel-test", is_flag=True
+    "--version",
+    default=False,
+    help="Get the current version of doppel-test",
+    is_flag=True,
 )
 def main(files: str, errors_allowed: int, version: bool) -> None:
     """

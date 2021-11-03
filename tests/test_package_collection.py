@@ -13,7 +13,10 @@ class TestPackageAPI(unittest.TestCase):
 
     def setUp(self):
         self.pkg_collection = PackageCollection(
-            packages=[PackageAPI.from_json(self.py_pkg_file), PackageAPI.from_json(self.r_pkg_file)]
+            packages=[
+                PackageAPI.from_json(self.py_pkg_file),
+                PackageAPI.from_json(self.r_pkg_file),
+            ]
         )
 
     def test_all_classes(self):

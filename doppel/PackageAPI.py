@@ -44,7 +44,7 @@ class PackageAPI:
             target package's API.
 
         """
-        _log_info("Creating package from {}".format(filename))
+        _log_info(f"Creating package from {filename}")
 
         # read in output of "analyze.*" script
         with open(filename, "r") as f:

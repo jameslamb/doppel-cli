@@ -27,7 +27,13 @@ def rundescribe():
     # there isn't a clean way to pass in
     # command-line args to test scripts, so
     # using environment variables
-    test_packages = ["testpkguno", "testpkgdos", "testpkgtres", "pythonspecific", "pythonspecific2"]
+    test_packages = [
+        "testpkguno",
+        "testpkgdos",
+        "testpkgtres",
+        "pythonspecific",
+        "pythonspecific2",
+    ]
 
     # Added this abomination because something about
     # os.getenv('TEST_PACKAGE_DIR') was resulting in a None
@@ -260,7 +266,13 @@ class TestClassStuff:
         within "classes".
         """
         class_dict = rundescribe["testpkguno"]["classes"]
-        expected_methods = ["~~CONSTRUCTOR~~", "anarchy", "banarchy", "canarchy", "hello_there"]
+        expected_methods = [
+            "~~CONSTRUCTOR~~",
+            "anarchy",
+            "banarchy",
+            "canarchy",
+            "hello_there",
+        ]
 
         for e in expected_methods:
             assert class_dict["ClassB"]["public_methods"].get(e, False)
@@ -476,7 +488,13 @@ class TestMissingFiles:
         '-p' should be required
         """
         result = subprocess.run(
-            ["doppel-describe", "--language", "python", "--data-dir", "../../test_data"],
+            [
+                "doppel-describe",
+                "--language",
+                "python",
+                "--data-dir",
+                "../../test_data",
+            ],
             stderr=subprocess.PIPE,
         )
         error_text = result.stderr.decode("utf-8")
@@ -498,7 +516,8 @@ class TestMissingFiles:
         '--data-dir' should be required
         """
         result = subprocess.run(
-            ["doppel-describe", "--pkg_name", "argparse", "-l", "python"], stderr=subprocess.PIPE
+            ["doppel-describe", "--pkg_name", "argparse", "-l", "python"],
+            stderr=subprocess.PIPE,
         )
         error_text = result.stderr.decode("utf-8")
         assert bool(re.search('Missing option "--data-dir"', error_text))

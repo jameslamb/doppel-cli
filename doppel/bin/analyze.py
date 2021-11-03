@@ -15,7 +15,9 @@ from typing import List
 
 logger = logging.getLogger()
 logging.basicConfig(
-    format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S", stream=sys.stdout
+    format="%(levelname)s [%(asctime)s] %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    stream=sys.stdout,
 )
 
 
