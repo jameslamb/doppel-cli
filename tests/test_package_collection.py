@@ -69,9 +69,7 @@ class TestPackageAPI(unittest.TestCase):
         """
         shared = self.pkg_collection.shared_methods_by_class()
         self.assertEqual(list(shared.keys()), ["LupeFiasco"])
-        self.assertEqual(
-            sorted(shared["LupeFiasco"]), sorted(["~~CONSTRUCTOR~~", "coast"])
-        )
+        self.assertEqual(sorted(shared["LupeFiasco"]), sorted(["~~CONSTRUCTOR~~", "coast"]))
 
     def test_same_names(self):
         """

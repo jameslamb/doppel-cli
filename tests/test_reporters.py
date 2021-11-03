@@ -53,21 +53,21 @@ BASE_PACKAGE_WITH_CLASSES["classes"] = {
 
 PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
 PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER["name"] = "pkg2"
-PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER["classes"]["WaleFolarin"]["public_methods"][
-    "no_days_off"
-]["args"].append("about_nothing")
+PACKAGE_WITH_DIFFERENT_PM_ARG_NUMBER["classes"]["WaleFolarin"]["public_methods"]["no_days_off"][
+    "args"
+].append("about_nothing")
 
 PACKAGE_WITH_DIFFERENT_PM_ARGS = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
 PACKAGE_WITH_DIFFERENT_PM_ARGS["name"] = "pkg3"
-PACKAGE_WITH_DIFFERENT_PM_ARGS["classes"]["WaleFolarin"]["public_methods"][
-    "no_days_off"
-]["args"] = ["days_to_take", "outchyea"]
+PACKAGE_WITH_DIFFERENT_PM_ARGS["classes"]["WaleFolarin"]["public_methods"]["no_days_off"][
+    "args"
+] = ["days_to_take", "outchyea"]
 
 PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER = copy.deepcopy(BASE_PACKAGE_WITH_CLASSES)
 PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER["name"] = "pkg4"
-PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER["classes"]["WaleFolarin"]["public_methods"][
-    "no_days_off"
-]["args"] = ["songs_to_record", "days_to_take"]
+PACKAGE_WITH_DIFFERENT_PM_ARG_ORDER["classes"]["WaleFolarin"]["public_methods"]["no_days_off"][
+    "args"
+] = ["songs_to_record", "days_to_take"]
 
 # super different
 PACKAGE_SUPER_DIFFERENT = copy.deepcopy(BASE_PACKAGE)
@@ -91,9 +91,7 @@ for i in range(5):
 
     class_name = "class_" + str(i)
     PACKAGE_BEEFY["classes"][class_name] = {
-        "public_methods": {
-            k: {"args": ["thing", "stuff", "ok"]} for k in ["get", "push", "delete"]
-        }
+        "public_methods": {k: {"args": ["thing", "stuff", "ok"]} for k in ["get", "push", "delete"]}
     }
 
 PACKAGE_BEEFY2 = copy.deepcopy(PACKAGE_BEEFY)
@@ -203,8 +201,7 @@ class TestSimpleReporter(unittest.TestCase):
         self.assertTrue(len(errors) == 3)
         self.assertTrue(all([isinstance(x, DoppelTestError) for x in errors]))
         expected_message = (
-            "Function 'playback()' exists in all packages but "
-            "with differing number of arguments"
+            "Function 'playback()' exists in all packages but " "with differing number of arguments"
         )
         self.assertTrue(errors[0].msg.startswith(expected_message))
 
@@ -370,9 +367,7 @@ class TestSimpleReporter(unittest.TestCase):
         SimpleReporter should not return any errors if you
         only use a single package
         """
-        reporter = SimpleReporter(
-            pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)], errors_allowed=0
-        )
+        reporter = SimpleReporter(pkgs=[PackageAPI(BASE_PACKAGE_WITH_CLASSES)], errors_allowed=0)
 
         # SimpleReporter has a sys.exit() in it. Mock that out
         def f():

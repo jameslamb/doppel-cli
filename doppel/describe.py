@@ -14,9 +14,7 @@ import click
 import pkg_resources
 
 logger = logging.getLogger()
-logging.basicConfig(
-    format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
-)
+logging.basicConfig(format="%(levelname)s [%(asctime)s] %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 
 @click.command()
@@ -45,9 +43,7 @@ logging.basicConfig(
     default=False,
     help="Use this flag to get more detailed logs",
 )
-def main(
-    language: str, pkg_name: str, data_dir: str, version: bool, verbose: bool
-) -> None:
+def main(language: str, pkg_name: str, data_dir: str, version: bool, verbose: bool) -> None:
     """
     Generate a description of the public API for a software package and
     write out a JSON representation of it.
@@ -84,9 +80,7 @@ def main(
 
     try:
         files = {"python": "analyze.py", "r": "analyze.R"}
-        analysis_script = pkg_resources.resource_filename(
-            "doppel", f"bin/{files[language]}"
-        )
+        analysis_script = pkg_resources.resource_filename("doppel", f"bin/{files[language]}")
     except KeyError:
         msg = f"doppel does not know how to test {language} packages"
         logger.fatal(msg)  # type: ignore

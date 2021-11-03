@@ -13,9 +13,7 @@ from doppel.PackageAPI import PackageAPI
 
 
 @click.command()
-@click.option(
-    "--files", "-f", default=None, help="Comma-delimited list of doppel output files."
-)
+@click.option("--files", "-f", default=None, help="Comma-delimited list of doppel output files.")
 @click.option(
     "--errors-allowed",
     default=0,
