@@ -29,7 +29,6 @@ pip install \
     argparse \
     click \
     coverage \
-    codecov \
     requests \
     sphinx \
     sphinx_autodoc_typehints \

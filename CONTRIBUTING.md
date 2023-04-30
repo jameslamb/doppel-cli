@@ -5,7 +5,6 @@ This document contains information for maintainers and contributing developers. 
 #### Table of Contents
 
 * [Integrations](#integrations)
-    * [Codecov](#codecov)
     * [GitHub Actions](#gha)
     * [readthedocs.io](#rtd)
 * [Testing](#testing)
@@ -16,12 +15,6 @@ This document contains information for maintainers and contributing developers. 
 * [References for Developers](#references)
 
 ## Integrations <a name="integrations"></a>
-
-### Codecov <a name="codecov"></a>
-
-[https://codecov.io/](https://codecov.io/) is used to handle a variety of details related to the [code coverage](https://en.wikipedia.org/wiki/Code_coverage) of `doppel-cli`'s unit tests. This service handles details like hosting interactive reports with line-by-line coverage breakdown and telling GitHub whether or not to fail PR checks.
-
-configuration: [.codecov.yml](https://github.com/jameslamb/doppel-cli/blob/main/.codecovs.yml)
 
 ### GitHub Actions <a name="gha"></a>
 
@@ -88,7 +81,6 @@ GITHUB_USER=jameslamb
 * [Writing Command-Line tools with Click](https://dbader.org/blog/python-commandline-tools-with-click)
 * [Python entrypoints explained](https://amir.rachum.com/blog/2017/07/28/python-entry-points/)
 * [R packages available via conda](https://docs.anaconda.com/anaconda/packages/r-language-pkg-docs/)
-* [simple codecov Python example](https://github.com/codecov/example-python/blob/master/.travis.yml)
 * [pytest fixtures](https://docs.pytest.org/en/latest/fixture.html)
 * [inspecting builtins](https://docs.python.org/3/library/inspect.html#introspecting-callables-with-the-signature-object)
 * [putting stuff on conda](https://conda.io/projects/conda-build/en/latest/user-guide/tutorials/build-pkgs-skeleton.html)
