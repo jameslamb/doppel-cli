@@ -58,7 +58,6 @@ jobs:
           export PATH=${CONDA}/bin:${HOME}/.local/bin:$PATH
           $GITHUB_WORKSPACE/.ci/setup.sh
           $GITHUB_WORKSPACE/.ci/test.sh
-          codecov
       - name: Setup and run tests on Windows
         if: startsWith(matrix.os, 'windows')
         env:
@@ -67,7 +66,7 @@ jobs:
         shell: bash -l {0}
         run: |
           conda init powershell
-          pip install argparse click codecov coverage pytest pytest-cov requests tabulate
+          pip install argparse click coverage pytest pytest-cov requests tabulate
           $GITHUB_WORKSPACE/.ci/install-test-packages.sh
           $GITHUB_WORKSPACE/.ci/run-analyze-py-coverage.sh 50
           $GITHUB_WORKSPACE/.ci/run-unit-tests.sh 50
