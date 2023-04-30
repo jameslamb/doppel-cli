@@ -7,7 +7,6 @@ TESTDATA_DIR = os.path.join("tests", "testdata")
 
 
 class TestPackageAPI(unittest.TestCase):
-
     py_pkg_file = os.path.join(TESTDATA_DIR, "python_package1.json")
     r_pkg_file = os.path.join(TESTDATA_DIR, "r_package1.json")
 

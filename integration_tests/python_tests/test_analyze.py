@@ -163,7 +163,6 @@ class TestBasicContract:
         should be included in the class interface.
         """
         for class_name, class_interface in rundescribe["testpkguno"]["classes"].items():
-
             assert len(class_interface.keys()) == 1
 
             for method_name, method_interface in class_interface["public_methods"].items():

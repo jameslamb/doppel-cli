@@ -40,7 +40,6 @@ def parse_args(args):
 
 
 def do_everything(parsed_args):
-
     # Grab args (store in constants for easier debugging)
     PKG_NAME = parsed_args.pkg
     OUT_DIR = parsed_args.output_dir
@@ -117,7 +116,6 @@ def do_everything(parsed_args):
     names_of_parsed_modules = set([])
 
     while len(modules_to_parse) > 0:
-
         # Grab the next module
         pkg_env = modules_to_parse.pop()
 
@@ -128,14 +126,12 @@ def do_everything(parsed_args):
         export_names = list(filter(lambda x: not x.startswith("_"), dir(pkg_env)))
 
         for obj_name in export_names:
-
             # Grab the object
             obj = getattr(pkg_env, obj_name)
             obj = _remove_decorators(obj)
 
             # Is it a function?
             if isinstance(obj, types.FunctionType):
-
                 # Handle special cases where someone did
                 # "from <pkg> import <whatever>" in a module.
                 #
@@ -169,7 +165,6 @@ def do_everything(parsed_args):
                         out[CLASSES_KEY][obj_name][PUBLIC_METHODS_KEY] = {}
 
                         for f in dir(obj):
-
                             # If attribute is internal, move on.
                             # This short-circuiting is nice to also avoid having to deal
                             # with custom stuff like read-only descriptors
@@ -274,7 +269,6 @@ def do_everything(parsed_args):
 
                 is_in_package = exact_match or looks_like_submodule
                 if is_in_package:
-
                     # Some importing strategies can make it seem like the package
                     # has a sub-module exactly named the same as the package, which
                     # can cause an infinite recursion problem. Skip it when that happens
@@ -317,6 +311,5 @@ def do_everything(parsed_args):
 # for test coverage.
 # See https://stackoverflow.com/a/18161115 for more
 if __name__ == "__main__":  # pragma: no cover
-
     parsed_args = parse_args(sys.argv[1:])
     do_everything(parsed_args)
