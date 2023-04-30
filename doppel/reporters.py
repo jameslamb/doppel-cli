@@ -100,7 +100,6 @@ class SimpleReporter:
         num_errors = len(self.errors)
         i = 1
         if num_errors > 0:
-
             stdout.write(f"\nTest Failures ({num_errors})\n")
             stdout.write("===================\n")
             for err in self.errors:
@@ -208,7 +207,6 @@ class SimpleReporter:
         rows = []
 
         for func_name in shared_functions:
-
             identical_api = "yes"
 
             args = [func_blocks_by_package[p][func_name]["args"] for p in pkg_names]
@@ -399,7 +397,6 @@ class SimpleReporter:
         shared_methods_by_class = self.pkg_collection.shared_methods_by_class()
         for class_name, methods in shared_methods_by_class.items():
             for method_name in methods:
-
                 identical_api = "yes"
 
                 display_name = f"{class_name}.{method_name}()"

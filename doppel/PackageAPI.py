@@ -55,7 +55,6 @@ class PackageAPI:
 
     @staticmethod
     def _validate_pkg(pkg_dict: Dict[str, Any]) -> None:
-
         assert isinstance(pkg_dict, dict)
         assert pkg_dict["name"] is not None
         assert pkg_dict["language"] is not None

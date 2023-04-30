@@ -8,7 +8,6 @@ except ModuleNotFoundError:
 
 
 class TestAnalyzePy:
-
     TEST_PACKAGES = ["testpkguno", "testpkgdos", "testpkgtres", "pythonspecific"]
     output_dir = "../../test_data"
 

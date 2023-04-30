@@ -78,8 +78,9 @@ echo ""
     echo "###############"
     echo ""
     mypy \
+        --explicit-package-bases \
         --ignore-missing-imports \
-        ${SOURCE_DIR} \
+        ${SOURCE_DIR}/doppel \
     || exit  -1
 
 echo ""

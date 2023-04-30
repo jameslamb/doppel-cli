@@ -2,7 +2,6 @@ from functools import lru_cache
 
 
 class ClassA:
-
     story1 = True
     story3 = "hello"
     _secret1 = True
