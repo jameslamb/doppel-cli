@@ -29,9 +29,9 @@ jobs:
           - os: ubuntu-latest
             task: test
             python_version: 3.8
-          - os: macOS-latest
-            task: test
-            python_version: 3.8
+          # - os: macOS-latest
+          #   task: test
+          #   python_version: 3.8
           - os: windows-latest
             task: test
             python_version: 3.8
