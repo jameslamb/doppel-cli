@@ -32,7 +32,7 @@ setup(
     maintainer="James Lamb",
     maintainer_email="jaylamb20@gmail.com",
     install_requires=runtime_deps,
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     extras_require={
         "docs": documentation_deps,
         "testing": testing_deps,
@@ -53,9 +53,10 @@ setup(
         "License :: OSI Approved :: BSD License",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Software Development :: Testing",
     ],
 )
