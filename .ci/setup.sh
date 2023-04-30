@@ -9,26 +9,23 @@ conda info -a
 
 # Set up R (gulp)
 conda install \
-    -c r \
-    --quiet \
+    -c conda-forge \
+    r-argparse \
     r-assertthat \
+    r-covr \
+    r-futile.logger \
     r-jsonlite \
     r-r6 \
     r-roxygen2 \
     r-testthat
-
-conda install \
-    -c conda-forge \
-    --quiet \
-    r-covr \
-    r-argparse \
-    r-futile.logger
 
 # Get Python packages for testing
 pip install \
     argparse \
     click \
     coverage \
+    pytest \
+    pytest-cov \
     requests \
     sphinx \
     sphinx_autodoc_typehints \
@@ -37,8 +34,3 @@ pip install \
     types-setuptools \
     types-tabulate \
     wheel
-
-conda install \
-    -y \
-        pytest \
-        pytest-cov
