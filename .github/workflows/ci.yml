@@ -19,22 +19,22 @@ jobs:
         include:
           - os: ubuntu-latest
             task: lint
-            python_version: 3.8
+            python_version: '3.11'
           - os: ubuntu-latest
             task: test
-            python_version: 3.6
+            python_version: '3.8'
           - os: ubuntu-latest
             task: test
-            python_version: 3.7
+            python_version: '3.9'
           - os: ubuntu-latest
             task: test
-            python_version: 3.8
+            python_version: '3.10'
           # - os: macOS-latest
           #   task: test
           #   python_version: 3.8
           - os: windows-latest
             task: test
-            python_version: 3.8
+            python_version: '3.10'
     steps:
       - name: Prevent conversion of line endings on Windows
         if: startsWith(matrix.os, 'windows')
