@@ -26,7 +26,6 @@ if [[ $TASK == "lint" ]]; then
             black \
             flake8 \
             mypy \
-            pycodestyle \
             pylint
     make lint
     #Rscript ${CI_TOOLS}/lint-r-code.R $(pwd)

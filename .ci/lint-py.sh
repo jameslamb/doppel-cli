@@ -62,18 +62,6 @@ echo ""
 
     echo ""
     echo "###############"
-    echo "# pycodestyle #"
-    echo "###############"
-    echo ""
-    pycodestyle \
-        --show-source \
-        --max-line-length ${MAX_LINE_LENGTH} \
-        --count \
-        ${SOURCE_DIR} \
-    || exit -1
-
-    echo ""
-    echo "###############"
     echo "#    mypy     #"
     echo "###############"
     echo ""
