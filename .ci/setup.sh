@@ -35,6 +35,8 @@ pip install \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \
     tabulate \
+    types-setuptools \
+    types-tabulate \
     wheel
 
 conda install \
