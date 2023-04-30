@@ -1,9 +1,0 @@
-# Allow coverage to decrease by 4.0%.
-coverage:
-  status:
-    project:
-      default:
-        target: '95'
-    patch:
-      default:
-        target: '20'
