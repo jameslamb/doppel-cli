@@ -6,16 +6,14 @@ non-0 exit code)
 """
 
 import sys
-
-from typing import List
 from sys import stdout
-
-import doppel
+from typing import List
 
 from tabulate import tabulate
 
-from doppel.PackageAPI import PackageAPI
+import doppel
 from doppel.DoppelTestError import DoppelTestError
+from doppel.PackageAPI import PackageAPI
 
 
 class _OutputTable:

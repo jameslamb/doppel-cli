@@ -3,13 +3,12 @@ Implementation for ``doppel-test``
 """
 
 import os
-
 from sys import stdout
 
 import click
 
-from doppel.reporters import SimpleReporter
 from doppel.PackageAPI import PackageAPI
+from doppel.reporters import SimpleReporter
 
 
 @click.command()

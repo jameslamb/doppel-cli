@@ -1,5 +1,6 @@
-import unittest
 import os
+import unittest
+
 from doppel import PackageAPI
 
 TESTDATA_DIR = os.path.join("tests", "testdata")

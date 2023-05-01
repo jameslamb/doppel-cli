@@ -6,10 +6,11 @@ python package)
 
 import json
 import os
-import pytest
 import re
 import subprocess
 import uuid
+
+import pytest
 
 # details that will always be true of doppel-describe output
 EXPECTED_TOP_LEVEL_KEYS = set(["name", "language", "functions", "classes"])

@@ -5,13 +5,10 @@ import inspect
 import json
 import logging
 import os
+import re
 import sys
 import types
-import re
-
-from typing import Any
-from typing import Callable
-from typing import List
+from typing import Any, Callable, List
 
 logger = logging.getLogger()
 logging.basicConfig(
