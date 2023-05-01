@@ -3,9 +3,7 @@
 a list of multiple ``PackageAPI`` objects.
 """
 
-from typing import Dict
-from typing import List
-from typing import Set
+from typing import Dict, List, Set
 
 from doppel.PackageAPI import PackageAPI
 

@@ -7,7 +7,6 @@ Code for ``doppel-describe``. This code calls scripts in ``bin/``:
 
 import logging
 import os
-
 from sys import stdout
 
 import click

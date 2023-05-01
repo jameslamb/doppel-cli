@@ -1,7 +1,13 @@
 .PHONY: format
 format:
-	black --line-length 100 .
+	isort .
+	black .
 
 .PHONY: lint
 lint:
-	./.ci/lint-py.sh $$(pwd)
+	black \
+		--check \
+		.
+	flake8 .
+	mypy ./doppel
+	pylint ./doppel

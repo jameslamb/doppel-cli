@@ -1,14 +1,9 @@
-import unittest
 import copy
 import re
+import unittest
+from typing import Any, Dict
 
-from typing import Any
-from typing import Dict
-
-from doppel import SimpleReporter
-from doppel import PackageAPI
-from doppel import DoppelTestError
-
+from doppel import DoppelTestError, PackageAPI, SimpleReporter
 
 BASE_PACKAGE: Dict[str, Any] = {
     "name": "pkg1",
