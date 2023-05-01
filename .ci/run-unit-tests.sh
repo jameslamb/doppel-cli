@@ -15,8 +15,10 @@ echo ""
 echo "Running unit tests"
 echo ""
 
-    coverage run setup.py test
-    coverage report -m --fail-under=${MIN_TEST_COVERAGE}
+    pytest \
+        --cov \
+        --cov-fail-under=${MIN_TEST_COVERAGE} \
+        tests/
 
 echo ""
 echo "Done running unit tests"
