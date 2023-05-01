@@ -41,7 +41,9 @@ fi
 
 python setup.py install
 
-${CI_TOOLS}/check-docs.sh $(pwd)/docs
+make \
+    -C $(pwd)/docs \
+    html
 ${CI_TOOLS}/run-unit-tests.sh ${MIN_UNIT_TEST_COVERAGE}
 ${CI_TOOLS}/run-smoke-tests.sh $(pwd)/test_data
 

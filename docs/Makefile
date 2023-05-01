@@ -1,7 +1,6 @@
 # Minimal makefile for Sphinx documentation
 
-# You can set these variables from the command line.
-SPHINXOPTS    = -w warnings.txt
+SPHINXOPTS    = -W
 SPHINXBUILD   = sphinx-build
 SOURCEDIR     = .
 BUILDDIR      = _build
