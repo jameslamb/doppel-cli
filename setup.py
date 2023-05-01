@@ -36,8 +36,6 @@ setup(
             "doppel-test = doppel.cli:main",
         ]
     },
-    test_suite="tests",
-    tests_require=testing_deps,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
