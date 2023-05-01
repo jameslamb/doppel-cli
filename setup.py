@@ -8,10 +8,6 @@ with open("README.md", "r") as f:
 with open(os.path.join("doppel", "VERSION"), "r") as f:
     version = f.read().strip()
 
-runtime_deps = ["click", "tabulate"]
-documentation_deps = ["sphinx", "sphinx_autodoc_typehints", "sphinx_rtd_theme"]
-testing_deps = ["coverage"]
-
 setup(
     name="doppel-cli",
     packages=find_packages(),
@@ -31,13 +27,8 @@ setup(
     license="BSD 3-clause",
     maintainer="James Lamb",
     maintainer_email="jaylamb20@gmail.com",
-    install_requires=runtime_deps,
+    install_requires=["click", "tabulate"],
     python_requires=">=3.8",
-    extras_require={
-        "docs": documentation_deps,
-        "testing": testing_deps,
-        "all": runtime_deps + documentation_deps + testing_deps,
-    },
     package_data={"doppel": ["bin/analyze.R", "bin/analyze.py", "VERSION", "LICENSE"]},
     entry_points={
         "console_scripts": [
@@ -45,8 +36,6 @@ setup(
             "doppel-test = doppel.cli:main",
         ]
     },
-    test_suite="tests",
-    tests_require=testing_deps,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
