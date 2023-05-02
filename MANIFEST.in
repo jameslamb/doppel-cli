@@ -1,4 +1,2 @@
 include doppel/bin/analyze.py
 include doppel/bin/analyze.R
-include VERSION
-include LICENSE

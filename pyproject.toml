@@ -32,7 +32,7 @@ requires-python = ">=3.8"
 version = "0.3.1.99"
 
 [tool.setuptools.package-data]
-doppel = [
+"*" = [
     "bin/analyze.py",
     "bin/analyze.R"
 ]
@@ -50,7 +50,7 @@ changelog = "https://github.com/jameslamb/doppel-cli/releases"
 [build-system]
 
 requires = [
-    "setuptools>=63",
+    "setuptools>=67",
 ]
 build-backend = "setuptools.build_meta"
 
