@@ -2,7 +2,7 @@
 build:
 	rm -r ./dist || true
 	rm -r ./doppel/doppel_cli.egg-info || true
-	pipx run build --wheel
+	pipx run build --sdist --wheel
 
 .PHONY: check-wheels
 check-dists:
