@@ -1,3 +1,69 @@
+[project]
+
+authors = [
+  {name = "James Lamb", email = "jaylamb20@gmail.com"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Testing"
+]
+description = "An integration testing framework for testing API similarity of software libraries."
+keywords = [
+    "api",
+    "python-packaging",
+    "testing"
+]
+license = {file = "LICENSE"}
+maintainers = [
+  {name = "James Lamb", email = "jaylamb20@gmail.com"}
+]
+name = "doppel-cli"
+readme = "README.md"
+requires-python = ">=3.8"
+dynamic = ["version"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ["doppel"]
+
+[tool.setuptools.dynamic]
+version = {file = "doppel/VERSION"}
+
+[tool.setuptools.package-data]
+"*" = [
+    "bin/analyze.py",
+    "bin/analyze.R",
+    "VERSION"
+]
+
+[project.scripts]
+doppel-describe = "doppel.describe:main"
+doppel-test = "doppel.cli:main"
+
+[project.urls]
+homepage = "https://doppel-cli.readthedocs.io/en/latest/"
+documentation = "https://doppel-cli.readthedocs.io/en/latest/"
+repository = "https://github.com/jameslamb/doppel-cli"
+changelog = "https://github.com/jameslamb/doppel-cli/releases"
+
+[build-system]
+
+requires = [
+    "setuptools>=67",
+]
+build-backend = "setuptools.build_meta"
+
 [tool.black]
 line-length = 100
 
