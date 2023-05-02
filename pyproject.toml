@@ -38,12 +38,13 @@ include-package-data = false
 include = ["doppel"]
 
 [tool.setuptools.dynamic]
-version = {file = "VERSION"}
+version = {file = "doppel/VERSION"}
 
 [tool.setuptools.package-data]
 "*" = [
     "bin/analyze.py",
-    "bin/analyze.R"
+    "bin/analyze.R",
+    "VERSION"
 ]
 
 [project.scripts]
