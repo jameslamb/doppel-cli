@@ -39,7 +39,8 @@ if [[ $OS_NAME == "macOS-latest" ]]; then
     pip install argparse requests
 fi
 
-python setup.py install
+make build check-dists
+pip install dist/*.whl
 
 make \
     -C $(pwd)/docs \

@@ -27,13 +27,17 @@ conda install \
 # Get Python packages for testing
 pip install \
     argparse \
+    check-wheel-contents \
     click \
     coverage \
+    pydistcheck \
+    pyroma \
     requests \
     sphinx \
     sphinx_autodoc_typehints \
     sphinx_rtd_theme \
     tabulate \
+    twine \
     types-setuptools \
     types-tabulate \
     wheel
