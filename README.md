@@ -1,3 +1,5 @@
+# As of February 17, 2024, this project is no longer being maintained. You're welcome to fork it if you find it useful
+
 # doppel-cli
 
 [![PyPI Version](https://img.shields.io/pypi/v/doppel-cli.svg)](https://pypi.org/project/doppel-cli)
